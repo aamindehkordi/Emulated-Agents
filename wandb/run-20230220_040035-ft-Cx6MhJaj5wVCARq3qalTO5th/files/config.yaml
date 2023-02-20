@@ -1,0 +1,85 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.13.10
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.8.13
+    start_time: 1676894435.831874
+    t:
+      1:
+      - 55
+      2:
+      - 55
+      3:
+      - 2
+      - 13
+      - 14
+      - 16
+      - 23
+      4: 3.8.13
+      5: 0.13.10
+      8:
+      - 4
+      - 5
+created_at:
+  desc: null
+  value: '2023-02-20T01:31:43'
+fine_tuned_model:
+  desc: null
+  value: davinci:ft-personal:goobah-2023-02-20-10-48-58
+hyperparams:
+  desc: null
+  value:
+    batch_size: 8
+    learning_rate_multiplier: 0.1
+    n_epochs: 4
+    prompt_loss_weight: 0.01
+id:
+  desc: null
+  value: ft-Cx6MhJaj5wVCARq3qalTO5th
+model:
+  desc: null
+  value: davinci
+n_train:
+  desc: null
+  value: 5470
+object:
+  desc: null
+  value: fine-tune
+organization_id:
+  desc: null
+  value: org-c6u2GK4EOdxh4JnxrtOq2cL0
+result_files:
+  desc: null
+  value:
+    bytes: 157626
+    created_at: 1676890139
+    filename: compiled_results.csv
+    id: file-RyJixIQ850NRzMal7gikXJmB
+    object: file
+    purpose: fine-tune-results
+    status: processed
+    status_details: null
+status:
+  desc: null
+  value: succeeded
+training_files:
+  desc: null
+  value:
+    bytes: 455801
+    created_at: 1676884722
+    filename: ./data/processed/messages_prepared (1).jsonl
+    id: file-lXZYIj2Xu6xEp3SI7UllsKCi
+    object: file
+    purpose: fine-tune
+    status: processed
+    status_details: null
+updated_at:
+  desc: null
+  value: 1676890140
+validation_files:
+  desc: null
+  value: []

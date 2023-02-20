@@ -1,0 +1,36 @@
+{
+    "os": "macOS-13.2.1-arm64-arm-64bit",
+    "python": "3.8.13",
+    "heartbeatAt": "2023-02-20T12:00:36.490735",
+    "startedAt": "2023-02-20T12:00:35.815381",
+    "docker": null,
+    "cuda": null,
+    "args": [
+        "wandb",
+        "sync"
+    ],
+    "state": "running",
+    "program": "/Users/ali/miniforge3/envs/datascience/bin/openai",
+    "git": {
+        "remote": "https://github.com/aamindehkordi/Senior-Project.git",
+        "commit": "bbb46e4da633097631a9a14e6ac131720be2791a"
+    },
+    "email": "ali.amindehkordi@eagles.cui.edu",
+    "root": "/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project",
+    "host": "MaxPro",
+    "username": "ali",
+    "executable": "/Users/ali/miniforge3/envs/datascience/bin/python3.8",
+    "cpu_count": 10,
+    "cpu_count_logical": 10,
+    "disk": {
+        "total": 926.3517189025879,
+        "used": 814.9130859375
+    },
+    "gpuapple": {
+        "type": "arm",
+        "vendor": "Apple"
+    },
+    "memory": {
+        "total": 32.0
+    }
+}

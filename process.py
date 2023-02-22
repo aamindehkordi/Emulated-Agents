@@ -26,7 +26,7 @@ for line in lines:
 
 # Add the final message to the output list
 if current_message:
-    output.append({'prompt': prompt + '\n\n###\n\n', 'completion': current_message.strip() + ' ###\n'})
+    output.append({'prompt': prompt + '\n\n###\n\n', 'completion': current_message.strip() + ' \n###\n'})
 
 # Write the output to a JSONL file
 with open('./data/processed/messages.jsonl', 'w') as f:

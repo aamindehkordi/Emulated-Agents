@@ -1,9 +1,29 @@
 import json
 
+def read_file_lines(filename):
+    """
+    Opens the given file and returns the contents.
+    """
+    with open(filename, "r") as f:
+        return f.readlines()
+    
+def write_to_file(filename, text):
+    """
+    Writes the given text to the given file.
+    """
+    with open(filename, "w") as f:
+        f.write(text)
+        
+def create_jsonl_file(filename, messages):
+    """
+    Creates a JSONL file from the given list of messages.
+    """
+    with open(filename, "w") as f:
+        for message in messages:
+            f.write(json.dumps(message) + "\n")
 # Open the input file
-with open('./data/preprocessed/messages.txt', 'r') as f:
-    lines = f.readlines()
-
+#fn = "./data/preprocessed/messages.txt"
+"""
 # Loop over the lines and create a list of JSON objects
 output = []
 current_message = ''
@@ -32,3 +52,4 @@ if current_message:
 with open('./data/processed/messages.jsonl', 'w') as f:
     for item in output:
         f.write(json.dumps(item) + '\n')
+"""

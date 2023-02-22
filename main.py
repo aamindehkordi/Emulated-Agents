@@ -8,9 +8,9 @@ def main():
     for i in range(1, 6):
         filename = f"./data/videos/faded/{i}.mp3"
         print(f"Transcribing {filename}...")
-        result = transcribe.transcribe(filename, "medium")
-        process.write_to_file("./data/processed/faded/{i}.json", result)
-        print(f"Transcription result: {result[text]}")
+        result = transcribe.transcribe(filename, "small")
+        process.write_to_file(f"./data/processed/faded/{i}.json", result[text])
+        print(f"Transcription result: {result}")
     
     # Extract messages
     #messages = cleanup.extract_messages("./data/preproccessed/discord_chat.csv")

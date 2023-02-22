@@ -24,7 +24,7 @@ The data for the chatbots will be collected from a variety of sources, including
 - Audio recordings of real-life conversations
 - Text transcriptions of the audio recordings
 
-The chat logs will be taken from a Discord server that the group of friends is already a part of. The audio recordings will be transcribed using automatic speech recognition tools such as Google Cloud Speech-to-Text or Amazon Transcribe.
+The chat logs will be taken from a Discord server that the group of friends is already a part of. The audio recordings will be transcribed using automatic speech recognition tools such as Google Cloud Speech-to-Text or Amazon Transcribe or whisper.
 
 ## Data Preparation
 

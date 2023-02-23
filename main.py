@@ -3,10 +3,10 @@ import json
 
 def transcribe_audio(model_size, folder):
     for i in range(0, 6):
-        filename = f"./data/videos/{folder}/{i}.mp3"
+        filename = f"./data/videos/{folder}/{i}.m4a"
         print(f"~~~~~~~~~~\n Transcribing {filename}...")
         result = transcribe.transcribe(filename, model_size)
-        process.write_to_file(f"./data/processed/faded/{i}.json", json.dumps(result))
+        process.write_to_file(f"./data/processed/kyle_recording/{i}.json", json.dumps(result))
         print(f"Transcription result: {json.dumps(result['text'])[:80]} \n~~~~~~~~~~ \nEND\n~~~~~~~~~~~")
 
 def main():
@@ -14,9 +14,9 @@ def main():
     Main function.
     """
     # Transcribe audio from 1-5.mp3
-    #transcribe_audio("large", "faded")
+    transcribe_audio("medium", "kyle")
     # Extract messages
-    messages = cleanup.save_messages_csv(cleanup.extract_messages_csv("./data/preprocessed/goobahahhgoobah.csv"))
+    #messages = cleanup.save_messages_csv(cleanup.extract_messages_csv("./data/preprocessed/goobahahhgoobah.csv"))
     # Print messages
     #for username, text in messages:
     #    if cleanup.filter_profanity(text) and cleanup.filter_unnecessary_content(text):

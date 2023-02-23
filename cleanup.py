@@ -1,27 +1,52 @@
 import csv
 import re
 from better_profanity import profanity
+import pandas as pd
 
-def extract_messages(filename):
+def extract_messages_csv(filename):
     """
-    Extracts messages and usernames from a discord history csv file.
+    Extracts messages and usernames from a discord history csv file, creating a separate file for each user and their messages.
 
     Args:
         filename: The filename of the csv file to extract messages from.
 
     Returns:
-        A list of tuples containing (username, message) pairs.
+        An array of dataframes containing the messages for each username.
     """
-    # Extract message data
-    messages = []
-    with open(filename, newline='', encoding='utf-8') as f:
-        reader = csv.DictReader(f)
-        for row in reader:
-            username = row["Username"]
-            text = row["Content"]
-            messages.append((username, text))
-    return messages
+    # Read csv file
+    df = pd.read_csv(filename)
 
+    # Get unique users
+    users = df['Username'].unique()
+
+    # Create a dataframe for each user
+    user_dfs = []
+    for user in users:
+        user_df = df[df['Username'] == user]
+        user_dfs.append(user_df)
+    return user_dfs
+
+def save_messages_csv(user_dfs):
+    """
+    Saves only the messages for each user into a separate file.
+    
+    Args:
+        user_dfs: An array of dataframes containing the messages for each username.
+    
+    Returns:
+        None
+    """
+    # Save each user's messages to a separate file
+    messages = []
+    for user in user_dfs:
+        username = user['Username'].iloc[0]
+        messages = user['Content'].tolist()
+        # Save messages to file
+        with open(f"./data/processed/{username}.txt", "w") as f:
+            for message in messages:
+                f.write(f"{message}\n")
+                
+    
 def filter_profanity(message):
     return not profanity.contains_profanity(message)
 
@@ -38,18 +63,3 @@ def filter_unnecessary_content(message):
             return False
 
     return True
-
-def main():
-    """
-    Main function.
-    """
-    # Extract messages
-    messages = extract_messages("./data/preproccessed/discord_chat.csv")
-    # Print messages
-    with open("messages.txt", "w") as f:
-        for username, text in messages:
-            if filter_profanity(text) and filter_unnecessary_content(text):
-                f.write(f"{username}: {text}\n")
-        
-if __name__ == "__main__":
-    main()

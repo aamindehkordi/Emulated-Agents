@@ -4,10 +4,10 @@ import json
 def transcribe_audio(model_size, folder):
     for i in range(0, 6):
         filename = f"./data/videos/{folder}/{i}.m4a"
-        print(f"~~~~~~~~~~\n Transcribing {filename}...")
+        print(f"~~~~~~~~~~\n Transcribing {filename}...\n")
         result = transcribe.transcribe(filename, model_size)
-        process.write_to_file(f"./data/processed/kyle_recording/{i}.json", json.dumps(result))
-        print(f"Transcription result: {json.dumps(result['text'])[:80]} \n~~~~~~~~~~ \nEND\n~~~~~~~~~~~")
+        process.write_to_file(f"./data/processed/{folder}/{i}.json", json.dumps(result))
+        print(f"Transcription result: {json.dumps(result['text'])[:100]} \n~~~~~~~~~~ \nEND\n~~~~~~~~~~~")
 
 def main():
     """

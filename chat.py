@@ -11,4 +11,4 @@ comp = openai.ChatCompletion.create(
     ],
 )
 
-print(comp.choices[0].message["content"])
+print(comp["choices"][0]["message"]["content"])

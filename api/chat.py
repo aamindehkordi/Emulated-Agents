@@ -11,7 +11,7 @@ msgs=[
 #print(response["choices"][0]["message"]["content"])
 
 #Read prompt from file
-with open("/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/agents/nathan_prompt.txt", "r") as f:
+with open("api/agents/nathan_prompt.txt", "r") as f:
   prompt = f.read()
 
 def get_response(input):

@@ -1,5 +1,6 @@
 import tools.cleanup as cleanup, tools.process as process, gui.gui as gui
 import json, tkinter as tk
+
 """
 def transcribe_audio(model_size, folder):
     for i in range(0, 6):
@@ -9,6 +10,7 @@ def transcribe_audio(model_size, folder):
         process.write_to_file(f"./data/processed/{folder}/{i}.json", json.dumps(result))
         print(f"Transcription result: {json.dumps(result['text'])[:100]} \n~~~~~~~~~~ \nEND\n~~~~~~~~~~~")
 """
+
 def main():
     """
     Main function.

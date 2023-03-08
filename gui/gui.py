@@ -35,7 +35,7 @@ class ChatroomGUI:
         message = self.input_entry.get()
 
         # make API request and get response
-        response = chat.get_response(message)
+        response = chat.get_response(message, self.chat_history.get("1.0", tk.END))
 
         # display message and response in chat history
         self.chat_history.insert(tk.END, "You: {}\n".format(message))

@@ -1,1 +1,0 @@
-{"elapsed_tokens": 730312.0, "elapsed_examples": 21896.0, "training_loss": 0.8283302616394066, "training_sequence_accuracy": 0.0, "training_token_accuracy": 0.5272727272727272, "_timestamp": 1676894442.0951328, "_runtime": 6.263258934020996, "_step": 2737, "fine_tuned_model": "davinci:ft-personal:goobah-2023-02-20-10-48-58", "status": "succeeded", "_wandb": {"runtime": 10}}

@@ -10,9 +10,13 @@ msgs=[
 
 #print(response["choices"][0]["message"]["content"])
 
+#Read prompt from file
+with open("/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/agents/nathan_prompt.txt", "r") as f:
+  prompt = f.read()
+
 def get_response(input):
   msgs=[
-  {"role": "system", "content": ""},
+  {"role": "system", "content": f"{prompt}"},
   {"role": "user", "content": f"Ali: {input}"}]
   response = openai.ChatCompletion.create(
   model="gpt-3.5-turbo", # the name of the model to use
@@ -26,4 +30,5 @@ def get_response(input):
   presence_penalty=0,  
   frequency_penalty=0,
   logit_bias={})
+  print(response)
   return response["choices"][0]["message"]["content"]

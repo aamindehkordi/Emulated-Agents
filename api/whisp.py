@@ -1,25 +1,14 @@
-import whisper
+import openai
 
-model = whisper.load_model("medium")
-
-# load audio and pad/trim it to fit 30 seconds
-audio = whisper.load_audio("./data/videos/faded/1.mp3")
-result = model.transcribe("./data/videos/faded/1.mp3")
-# make log-Mel spectrogram and move to the same device as the model
-#mel = whisper.log_mel_spectrogram(audio).to(model.device)
-
-# detect the spoken language
-#_, probs = model.detect_language(mel)
-#print(f"Detected language: {max(probs, key=probs.get)}")
-
-# decode the audio
-#options = whisper.DecodingOptions(language="en", fp16=False)
-#result1 = whisper.decode(model, mel, options)
-
-# Save the result to a text file
-print(result)
-with open("result.txt", "w") as f:
-    f.write(result[text])
-    
-# Print the result
-#print(result1)
+import os
+import openai
+openai.api_key = os.getenv("OPENAI_API_KEY")
+audio_file = open("audio.mp3", "rb")
+transcript = openai.Audio.transcribe(
+    file = audio_file,# The audio file to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.
+    model = "whisper-1", # ID of the model to use. Only whisper-1 is currently available.
+    prompt="", # An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.
+    response_format="json", # json, text, srt, verbose_json, or vtt.
+    temperature=0, #The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
+    language="en", #The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency.
+    )

@@ -1,5 +1,5 @@
-import cleanup, process, transcribe
-import json
+import tools.cleanup as cleanup, tools.process as process, tools.transcribe as transcribe, gui.gui as gui
+import json, tkinter as tk
 
 def transcribe_audio(model_size, folder):
     for i in range(0, 6):
@@ -22,6 +22,11 @@ def main():
     #    if cleanup.filter_profanity(text) and cleanup.filter_unnecessary_content(text):
     #        text = f"{username}: {text}\n"
     #        write_to_file("./data/processed/messages.txt", text)
+    
+    # create GUI instance
+    root = tk.Tk()
+    chatroom = gui.ChatroomGUI(root)
+    root.mainloop()
         
 if __name__ == "__main__":
     main()

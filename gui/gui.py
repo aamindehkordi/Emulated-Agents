@@ -1,5 +1,5 @@
 import tkinter as tk
-import requests
+import api.chat as chat
 
 class ChatroomGUI:
 
@@ -35,15 +35,11 @@ class ChatroomGUI:
         message = self.input_entry.get()
 
         # make API request and get response
-        response = requests.get("https://api.example.com/chatroom", params={"message": message})
-        if response.status_code == 200:
-            response_text = response.json()["response"]
-        else:
-            response_text = "Error: Could not get response from API."
+        response = chat.get_response(message)
 
         # display message and response in chat history
         self.chat_history.insert(tk.END, "You: {}\n".format(message))
-        self.chat_history.insert(tk.END, "Bot: {}\n".format(response_text))
+        self.chat_history.insert(tk.END, "Bot: {}\n".format(response))
 
         # clear input entry
         self.input_entry.delete(0, tk.END)

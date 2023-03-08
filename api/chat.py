@@ -10,25 +10,31 @@ msgs=[
 
 #print(response["choices"][0]["message"]["content"])
 
-#Read prompt from file
-with open("api/agents/nathan_prompt.txt", "r") as f:
-  prompt = f.read()
 
-def get_response(input):
+
+def get_response(input, history):
+  
+  #Read prompt from file
+  with open("api/agents/nathan_prompt.txt", "r") as f:
+    prompt = f.read()
+    
   msgs=[
-  {"role": "system", "content": f"{prompt}"},
+  {"role": "system", "content": f"{prompt}\n\nHere is the past conversation history:\"\n{history}\""},
   {"role": "user", "content": f"Ali: {input}"}]
+  
   response = openai.ChatCompletion.create(
   model="gpt-3.5-turbo", # the name of the model to use
   messages=msgs,
-  temperature=0.69, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
+  temperature=0.333, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
   top_p=1, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
   n=1, #How many chat completion choices to generate for each input message.
   stream=False, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
-  stop= "null",
+  stop= "Ali:",
   max_tokens=2000,
   presence_penalty=0,  
   frequency_penalty=0,
   logit_bias={})
+  
   print(response)
+  
   return response["choices"][0]["message"]["content"]

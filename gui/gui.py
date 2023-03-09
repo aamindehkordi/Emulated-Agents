@@ -51,8 +51,8 @@ class ChatroomGUI:
 
     def send_message(self):
         chatHistory = self.chat_history.get("1.0", tk.END)
-        message = f"{self.user_var.get()}: {self.input_entry.get()}"
-        
+        message = f"{self.input_entry.get()}"
+        #{self.user_var.get()}: 
         # get user typing and requested user response
         user = self.user_var.get()
         bot = self.bot_var.get()

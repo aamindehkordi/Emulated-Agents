@@ -32,7 +32,7 @@ class ChatroomGUI:
         self.user_label.pack(side=tk.LEFT, padx=5, pady=5)
         self.user_var = tk.StringVar(master)
         self.user_var.set("Ali")
-        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat"]
+        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake"]
         self.user_dropdown = tk.OptionMenu(self.input_frame, self.user_var, *self.user_options)
         self.user_dropdown.pack(side=tk.LEFT, padx=5, pady=5)
 
@@ -41,7 +41,7 @@ class ChatroomGUI:
         self.bot_label.pack(side=tk.LEFT, padx=5, pady=5)
         self.bot_var = tk.StringVar(master)
         self.bot_var.set("Nathan")
-        self.bot_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "all"]
+        self.bot_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "jake", "all"]
         self.bot_dropdown = tk.OptionMenu(self.input_frame, self.bot_var, *self.bot_options)
         self.bot_dropdown.pack(side=tk.LEFT, padx=5, pady=5)
 

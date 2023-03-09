@@ -51,12 +51,13 @@ class ChatroomGUI:
 
     def send_message(self):
         chatHistory = self.chat_history.get("1.0", tk.END)
-        message = self.input_entry.get()
+        message = f"{self.user_var.get()}: {self.input_entry.get()}"
         
         # get user typing and requested user response
         user = self.user_var.get()
         bot = self.bot_var.get()
         temp = ""
+        
         # make API request and get response
         if bot == self.bot_options[0]: # Ali
             temp = chat.get_response_ali(message, chatHistory)
@@ -75,7 +76,7 @@ class ChatroomGUI:
         """
         response = temp
         # display message and response in chat history
-        self.chat_history.insert(tk.END, "{}: {}\n".format(user, message))
+        self.chat_history.insert(tk.END, "{}\n".format(message))
         self.chat_history.insert(tk.END, "{}: {}\n".format(bot, response))
 
         # clear input entry

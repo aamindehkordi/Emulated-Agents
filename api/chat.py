@@ -35,8 +35,9 @@ def get_response_nathan(input_msg, history):
   {'role':'user', 'content':'I just ate an oyster'},
   {'role':'assistant', 'content':'Who eats oysters theyre like the little cum dumpsters of the sea'},
   {"role": "user", "content": "New Conversation:"},
+  *history,
   {"role":"user", "content":input_msg}]
-
+  print(history)
   response = openai.ChatCompletion.create(
   model="gpt-3.5-turbo-0301", # the name of the model to use
   messages=msgs,
@@ -54,6 +55,7 @@ def get_response_nathan(input_msg, history):
   answer = response["choices"][0]["message"]["content"]
   if "language model" in answer or "OpenAI" in answer or "I was created" in answer:
     answer = "Really bro. That's what you want to talk about? Talk about something else."
+
   return  answer# type: ignore
 
 

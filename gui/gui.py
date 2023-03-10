@@ -13,6 +13,7 @@ class ChatroomGUI:
 
         # create chat history text widget
         self.chat_history = tk.Text(self.chatroom_frame, height=20, width=50)
+        self.chat_history_list = []
         self.chat_history.pack(side=tk.LEFT, padx=5, pady=5)
 
         # create input frame
@@ -54,12 +55,13 @@ class ChatroomGUI:
         user = self.user_var.get()
         bot = self.bot_var.get()
         message = f"{self.input_entry.get()}"
+        self.chat_history_list.append({'role':'user', 'content':message})
         # clear input entry and insert user message
         self.input_entry.delete(0, tk.END)
         self.chat_history.insert(tk.END, "{}: {}\n".format(user, message))
         
         # get chat history
-        chatHistory = self.chat_history.get("1.0", tk.END)
+        chatHistory = self.chat_history_list
         
         #{self.user_var.get()}: 
         response = ""
@@ -84,3 +86,4 @@ class ChatroomGUI:
         
         # display message and response in chat history
         self.chat_history.insert(tk.END, "{}: {}\n".format(bot, response))
+        self.chat_history_list.append({'role':'assistant', 'content':response})

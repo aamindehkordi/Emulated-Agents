@@ -1,8 +1,7 @@
-import os
 import openai
 
+openai.api_key_path = "./key_openai.txt"
 
-openai.api_key = os.getenv("OPENAI_API_KEY")
 audio_file = open("audio.mp3", "rb")
 transcript = openai.Audio.transcribe(
     file = audio_file,# The audio file to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.

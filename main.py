@@ -1,5 +1,5 @@
 import tools.cleanup as cleanup, tools.process as process, gui.gui as gui
-import json, tkinter as tk
+import tkinter as tk
 
 """
 def transcribe_audio(model_size, folder):

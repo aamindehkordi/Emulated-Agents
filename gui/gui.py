@@ -53,12 +53,10 @@ class ChatroomGUI:
         # get user typing and requested user response
         user = self.user_var.get()
         bot = self.bot_var.get()
-        
+        message = f"{self.input_entry.get()}"
         # clear input entry and insert user message
         self.input_entry.delete(0, tk.END)
         self.chat_history.insert(tk.END, "{}: {}\n".format(user, message))
-
-        message = f"{self.input_entry.get()}"
         
         # get chat history
         chatHistory = self.chat_history.get("1.0", tk.END)

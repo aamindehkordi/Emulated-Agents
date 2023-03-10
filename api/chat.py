@@ -35,7 +35,6 @@ def get_response_nathan(input_msg, history):
   {'role':'user', 'content':'I just ate an oyster'},
   {'role':'assistant', 'content':'Who eats oysters theyre like the little cum dumpsters of the sea'},
   {"role": "user", "content": "New Conversation:"},
-  *history,
   {"role":"user", "content":input_msg}]
   print(history)
   response = openai.ChatCompletion.create(
@@ -93,7 +92,7 @@ def get_response_ali(input_msg, history):
     agentPrompt = f.read()
     
   msgs=[
-  {"role": "system", "content": f"Here is the past conversation history if any:\"\n{history}\"\n\n {agentPrompt}\n"},
+  {"role": "system", "content": f"Here is the past conversation history:\"\n{history}\"\n\n{agentPrompt}\n\""},
   {"role": "user", "content": f"{input_msg}"}]
   
   response = openai.ChatCompletion.create(

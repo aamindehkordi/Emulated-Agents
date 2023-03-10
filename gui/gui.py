@@ -50,37 +50,39 @@ class ChatroomGUI:
         self.send_button.pack(side=tk.LEFT, padx=5, pady=5)
 
     def send_message(self):
-        chatHistory = self.chat_history.get("1.0", tk.END)
-        message = f"{self.input_entry.get()}"
-        #{self.user_var.get()}: 
         # get user typing and requested user response
         user = self.user_var.get()
         bot = self.bot_var.get()
-        temp = ""
+        
+        # clear input entry and insert user message
+        self.input_entry.delete(0, tk.END)
+        self.chat_history.insert(tk.END, "{}: {}\n".format(user, message))
+
+        message = f"{self.input_entry.get()}"
+        
+        # get chat history
+        chatHistory = self.chat_history.get("1.0", tk.END)
+        
+        #{self.user_var.get()}: 
+        response = ""
         
         # make API request and get response
         if bot == self.bot_options[0]: # Ali
-            temp = chat.get_response_ali(message, chatHistory)
+            response = chat.get_response_ali(message, chatHistory)
         elif bot == self.bot_options[1]: # Nathan
-            temp = chat.get_response_nathan(message, chatHistory)
+            response = chat.get_response_nathan(message, chatHistory)
+        elif bot == self.bot_options[2]: # Kyle
+            response = chat.get_response_kyle(message, chatHistory)
         elif bot == self.bot_options[3]: # Robby
-            temp = chat.get_response_robby(message, chatHistory)  
-        """elif bot == self.bot_options[4]: # Jett
-            temp = chat.get_response_jett(message, chatHistory)
+            response = chat.get_response_robby(message, chatHistory)  
+        elif bot == self.bot_options[4]: # Jett
+            response = chat.get_response_jett(message, chatHistory)
         elif bot == self.bot_options[5]: # Kate
-            temp = chat.get_response_kate(message, chatHistory)
+            response = chat.get_response_kate(message, chatHistory)
         elif bot == self.bot_options[6]: # Cat
-            temp = chat.get_response_cat(message, chatHistory)
+            response = chat.get_response_cat(message, chatHistory)
         elif bot == self.bot_options[7]: # all
-            temp = chat.get_response_all(message, chatHistory)
-        """
-        response = temp
+            response = chat.get_response_all(message, chatHistory)
+        
         # display message and response in chat history
-        self.chat_history.insert(tk.END, "{}\n".format(message))
         self.chat_history.insert(tk.END, "{}: {}\n".format(bot, response))
-
-        # clear input entry
-        self.input_entry.delete(0, tk.END)
-
-
-

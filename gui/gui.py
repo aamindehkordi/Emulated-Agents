@@ -68,7 +68,7 @@ class ChatroomGUI:
         # clear input entry and insert user message
         self.input_entry.delete(0, tk.END)
         self.chat_history.config(state=tk.NORMAL)
-        self.chat_history.insert(tk.END, "{}: {}\n".format(user, message), "user_message")
+        self.chat_history.insert(tk.END, "{}: {}\n".format(user, message+f"->{bot}"), "user_message")
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
 

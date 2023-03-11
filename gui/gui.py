@@ -20,7 +20,8 @@ class ChatroomGUI:
         # create chat history text widget
         self.chat_history = tk.Text(self.chatroom_frame, height=20, width=70, bg=self.primary_color, bd=0, font=("Arial", 12), state=tk.DISABLED)
         self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
-
+        self.chat_history_list = []
+        
         # create input frame
         self.input_frame = tk.Frame(master)
         self.input_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
@@ -61,8 +62,9 @@ class ChatroomGUI:
         self.master.config(cursor="wait")
 
         # get chat history
-        chatHistory = self.chat_history.get("1.0", tk.END)
-
+        self.chat_history_list.append({'role':'user', 'content':message})
+        chatHistory = self.chat_history_list
+        
         # clear input entry and insert user message
         self.input_entry.delete(0, tk.END)
         self.chat_history.config(state=tk.NORMAL)
@@ -96,6 +98,7 @@ class ChatroomGUI:
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
+        self.chat_history_list.append({'role':'assistant', 'content':response})
         
         # change cursor back to the default cursor
         self.master.config(cursor="")

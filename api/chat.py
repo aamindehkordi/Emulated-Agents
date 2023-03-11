@@ -34,7 +34,8 @@ def get_response_nathan(input_msg, history):
   {'role':'assistant', 'content':'You talking about that twink ramen boy? imma punk his ass.'},
   {'role':'user', 'content':'I just ate an oyster'},
   {'role':'assistant', 'content':'Who eats oysters theyre like the little cum dumpsters of the sea'},
-  {"role":"user", "content":f"Alrighty let's move on, \n{input_msg}"}]
+  {'role':'user', 'content':'Ok let\'s move on'},
+  *history]
   print(history)
   response = openai.ChatCompletion.create(
   model="gpt-3.5-turbo", # the name of the model to use

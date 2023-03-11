@@ -91,6 +91,8 @@ class ChatroomGUI:
                 response = chat.get_response_kate(message, chatHistory)
             elif bot == "Cat":
                 response = chat.get_response_cat(message, chatHistory)
+            elif bot == "jake":
+                response = chat.get_response_jake(message, chatHistory)
 
         # display response in chat history
         self.chat_history.config(state=tk.NORMAL)

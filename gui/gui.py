@@ -96,13 +96,13 @@ class ChatroomGUI:
 
         # display response in chat history
         self.chat_history.config(state=tk.NORMAL)
-        self.chat_history.insert(tk.END, "{}: {}\n".format(bot, response), "bot_message")
+        self.chat_history.insert(tk.END, "{}\n".format(response), "bot_message")
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
-        self.chat_history_list.append({'role':'assistant', 'content':f" {response}"})
+        self.chat_history_list.append({'role':'assistant', 'content':f"{response}"})
         #going to have to do something for bot to bot communication
-
+        #I think we remove the gui places names then make sure priming data has bots using Name: in their responses
 
 
         # change cursor back to the default cursor

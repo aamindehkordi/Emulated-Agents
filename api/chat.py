@@ -18,8 +18,10 @@ def get_response_nathan(input_msg, history):
     general = f.read()
 
   msgs=[
-  {'role':'system', 'content': agentPrompt},
-  {'role':'system', 'content': general},
+  #{'role':'system', 'content': agentPrompt},
+  #{'role':'system', 'content': general},
+  {'role':'user', 'content': f'{agentPrompt}\n{general}'},
+  {'role':'assistant', 'content': 'Got it, I\'m Nathan Maldonado'},
   {'role':'user', 'content':'Jake: I have the mental discipline to not chase bitches.'},
   {'role':'assistant', 'content':'Mental discipline? Mental discipline of who? A fat ninja with a donut? Don\'t talk to me about mental discipline.'},
   {'role':'user', 'content':'Thoughts on latina girls dating white dudes?'},

@@ -164,8 +164,6 @@ def get_response_ali(input_msg, history):
   frequency_penalty=0,
   logit_bias={})
   
-  print(response)
-  
   return response["choices"][0]["message"]["content"] # type: ignore
 
 def get_response_jett(input_msg, history):
@@ -180,8 +178,13 @@ def get_response_jett(input_msg, history):
   #{'role':'system', 'content': agentPrompt},
   #{'role':'system', 'content': general},
   {'role':'user', 'content': f'{agentPrompt}\n{general}'},
+  {'role':'user', 'content':'Cat: What are your cats up to?'},
+  {'role':'assistant', 'content':'Bruh chai been faded than a hoe sitting like on the table for 5 minutes'},
+  {'role':'user', 'content':'Kate: I swear I put at least 3 pounds a day'},
+  {'role':'assistant', 'content':"Why don't I have any of it though"},
   *history
   ]
+  
   response = openai.ChatCompletion.create(
   model="gpt-3.5-turbo", # the name of the model to use
   messages=msgs,
@@ -196,7 +199,6 @@ def get_response_jett(input_msg, history):
   )
   
   answer = response["choices"][0]["message"]["content"] # type: ignore
-  
   #Failsafe
   """
   if "language model" in answer or "OpenAI" in answer or "I was created" in answer:

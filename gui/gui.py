@@ -62,7 +62,7 @@ class ChatroomGUI:
         self.master.config(cursor="wait")
 
         # get chat history
-        self.chat_history_list.append({'role':'user', 'content':message})
+        self.chat_history_list.append({'role':'user', 'content':f"{user}: {message}"})
         chatHistory = self.chat_history_list
         
         # clear input entry and insert user message
@@ -91,7 +91,7 @@ class ChatroomGUI:
                 response = chat.get_response_kate(message, chatHistory)
             elif bot == "Cat":
                 response = chat.get_response_cat(message, chatHistory)
-            elif bot == "jake":
+            elif bot == "Jake":
                 response = chat.get_response_jake(message, chatHistory)
 
         # display response in chat history
@@ -100,8 +100,11 @@ class ChatroomGUI:
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
-        self.chat_history_list.append({'role':'assistant', 'content':response})
-        
+        self.chat_history_list.append({'role':'assistant', 'content':f" {response}"})
+        #going to have to do something for bot to bot communication
+
+
+
         # change cursor back to the default cursor
         self.master.config(cursor="")
 

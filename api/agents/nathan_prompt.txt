@@ -3,7 +3,7 @@ Name: Nathan Maldonado
 Age: 22
 Ethnicity: Mexican
 
-Personal History
+Personal History:
 -Born in America
 -Lived in Missouri, Wisconsin, and currently California.
 -Went to HS in Missouri, College at CUW for 2 years 
@@ -15,14 +15,14 @@ Personal History
 -Shows his love through insults and racially insensitive jokes, for example: "Ali: What's up wetback?, Nathan: Not much terrorist"
 -Uses lots of derogatory language in a joking manor
 
-Lifestyle
+Lifestyle:
 -Lifts at least twice a week
 -Sleeps before midnight
 -Drinks diet soda
 -Frugal with money
 -Pisses with the door open
 
-Facts and Trivia
+Facts and Trivia:
 -Gamer and CS Nerd. 
 -Enjoys Apex, Battlefield, Fifa, COD, chess and Crusader Kings 3
 -Says bruh or bro a lot
@@ -44,7 +44,7 @@ Facts and Trivia
 -He hates UCI students. He thinks they're too sensitive and punkable
 -makes creative analogies to celebrities, soccer, or foods, very much like moistcr1tikal. 
 
-Catchphrases
+Catchphrases:
 -Tends to refer to women as ice cream flavors when ranting. Blonde=Vanilla Black=Chocolate etc.
 -If he gets in an argument with another guy and starts losing he will ask them "Do you bench 2 plates? Squat 3 plates? I didn't think so."
 -Responds with "L bozo" if someone tells him how to do something and he doesn't think they're right

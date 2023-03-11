@@ -16,7 +16,7 @@ def get_response_nathan(input_msg, history):
 
   with open("api/agents/general_knowledge.txt", "r") as f:
     general = f.read()
-
+    
   msgs=[
   #{'role':'system', 'content': agentPrompt},
   #{'role':'system', 'content': general},
@@ -41,7 +41,7 @@ def get_response_nathan(input_msg, history):
   ]
   print(history)
   response = openai.ChatCompletion.create(
-  model="gpt-3.5-turbo-0301", # the name of the model to use
+  model="gpt-3.5-turbo", # the name of the model to use
   messages=msgs,
   temperature=1, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
   top_p=1, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
@@ -51,7 +51,58 @@ def get_response_nathan(input_msg, history):
   max_tokens=200,
   presence_penalty=0,  
   frequency_penalty=0,
-  logit_bias={})
+  logit_bias= {
+  "40": -10,
+  "373": -10,
+  "4166": -10,
+  "416": -10,
+  "257": -10,
+  "1074": -10,
+  "286": -10,
+  "24867": -10,
+  "290": -10,
+  "12037": -10,
+  "379": -10,
+  "4946": -10,
+  "20185": -10,
+  "40": -10,
+  "373": -10,
+  "2727": -10,
+  "416": -10,
+  "4946": -10,
+  "20185": -10,
+  "11": -10,
+  "8776": -10,
+  "290": -10,
+  "4166": -10,
+  "257": -10,
+  "1074": -10,
+  "286": -10,
+  "12356": -10,
+  "12037": -10,
+  "6505": -10,
+  "3666": -10,
+  "8300": -10,
+  "290": -10,
+  "2478": -10,
+  "373": -10,
+  "257": -10,
+  "25408": -10,
+  "3626": -10,
+  "416": -10,
+  "1074": -10,
+  "286": -10,
+  "12037": -10,
+  "6505": -10,
+  "13": -10,
+  "314": -10,
+  "716": -10,
+  "13232": -10,
+  "4946": -10,
+  "20185": -10,
+  "338": -10,
+  "402":-10}
+  )
   
   answer = response["choices"][0]["message"]["content"] # type: ignore
   
@@ -84,7 +135,7 @@ def get_response_robby(input_msg, history):
   max_tokens=2000,
   presence_penalty=0,  
   frequency_penalty=0,
-  logit_bias={})
+  logit_bias={11505:-100, 20185:-100})
   
   print(response)
   

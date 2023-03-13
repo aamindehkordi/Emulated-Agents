@@ -39,3 +39,4 @@ Locations:
 -UCI/ University of California Irvine: Where Kate goes to school.
 -UTC/ University Town Center: Outdoor shops and food near UCI.
 -CUW / Concordia University Wisconsin: Where Nathan used to go to school.
+-Eagles: Next to the cafeteria at Concordia. A popular place to hang out.

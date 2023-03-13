@@ -2,6 +2,40 @@ import csv
 import re
 from better_profanity import profanity
 import pandas as pd
+import os
+import ffmpeg
+import subprocess
+
+def compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec='aac', 
+                       crf=23, preset='fast', audio_bitrate='128k'):
+    """Compresses all .mov files in the input directory using ffmpeg and saves them in the output directory.
+
+    Args:
+        input_dir (str): The path to the directory containing the .mov files to compress.
+        output_dir (str): The path to the directory where the compressed files will be saved.
+        video_codec (str): The video codec to use for compression (default is 'libx264').
+        audio_codec (str): The audio codec to use for compression (default is 'aac').
+        crf (int): The Constant Rate Factor (CRF) to use for video compression (default is 23).
+        preset (str): The compression preset to use (default is 'fast').
+        audio_bitrate (str): The audio bitrate to use for compression (default is '128k').
+
+    Returns:
+        None
+    """
+    # Loop through the files in the input directory
+    for filename in os.listdir(input_dir):
+        if filename.endswith('.mov'):
+            input_file = os.path.join(input_dir, filename)
+            output_file = os.path.join(output_dir, filename)
+            (
+                ffmpeg
+                .input(input_file)
+                .output(output_file, vcodec='libx264', crf=23)
+                .run()
+            )
+    print('Finished compressing videos.')
+
+
 
 def extract_messages_csv(filename):
     """

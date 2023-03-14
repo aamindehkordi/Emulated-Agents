@@ -14,11 +14,11 @@ def get_response(user, history):
     response: a string containing the chat response
   """
   #Read Agent Prompt from file
-  with open(f"api/agents/{user}_prompt.txt", "r") as f:
+  with open(f"api/agents/{user}_prompt.txt", encoding='utf-8') as f:
     agentPrompt = f.read()
   
   #Read general knowledge from file
-  with open("api/agents/general_knowledge.txt", "r") as f:
+  with open("api/agents/general_knowledge.txt", encoding='utf-8') as f:
     general = f.read()
     
   msgs = [

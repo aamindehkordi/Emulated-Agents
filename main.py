@@ -1,4 +1,4 @@
-import tools.cleanup as cleanup, tools.process as process, gui.gui as gui
+import gui.gui as gui
 import tkinter as tk
 
 def main():

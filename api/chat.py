@@ -1,7 +1,20 @@
 import openai
 
 openai.api_key_path = "./key_openai.txt"
-#print(response["choices"][0]["message"]["content"])
+#print(response["choices"][1]["message"]["content"])
+def get_response(user, history):
+  """
+    Gets appropriate user chat response based off the chat history.
+    
+    *args:
+    user: a tuple containing the user's name and primed chat for that user (e.g. ("Nathan", "msgs=[]"))
+    history: chat history from this session
+  
+    *returns:
+    response: a string containing the chat response
+    """
+    
+    
 
 def get_response_nathan(history):
   #Read Agent Prompt from file
@@ -47,7 +60,7 @@ def get_response_nathan(history):
   frequency_penalty=0,
   )
   
-  answer = response["choices"][0]["message"]["content"] # type: ignore
+  answer = response["choices"][1]["message"]["content"] # type: ignore
   
   #Failsafe
   """
@@ -56,6 +69,81 @@ def get_response_nathan(history):
   """
   return  answer
 
+def get_response_kate(history):
+  #Read Agent Prompt from file
+  with open("api/agents/kate_prompt.txt", "r") as f:
+    agentPrompt = f.read()
+
+  with open("api/agents/general_knowledge.txt", "r") as f:
+    general = f.read()
+    
+  msgs=[
+  #{'role':'system', 'content': agentPrompt},
+  #{'role':'system', 'content': general},
+  {'role':'user', 'content': f'{agentPrompt}\n{general}'},
+  #{'role':'user', 'content':'Ok let\'s move on'},
+  *history
+  ]
+  
+  response = openai.ChatCompletion.create(
+  model="gpt-3.5-turbo-0301", # the name of the model to use
+  messages=msgs,
+  temperature=1, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
+  top_p=1, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+  n=3, #How many chat completion choices to generate for each input_msg message.
+  stream=False, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+  stop= "null",
+  max_tokens=200,
+  presence_penalty=0,  
+  frequency_penalty=0,
+  )
+  
+  answer = response["choices"][1]["message"]["content"] # type: ignore
+  
+  #Failsafe
+  """
+  if "language model" in answer or "OpenAI" in answer or "I was created" in answer:
+    answer = "Really bro. That's what you want to talk about? Talk about something else."
+  """
+  return  answer
+
+def get_response_cat(history):
+  #Read Agent Prompt from file
+  with open("api/agents/cat_prompt.txt", "r") as f:
+    agentPrompt = f.read()
+
+  with open("api/agents/general_knowledge.txt", "r") as f:
+    general = f.read()
+    
+  msgs=[
+  #{'role':'system', 'content': agentPrompt},
+  #{'role':'system', 'content': general},
+  {'role':'user', 'content': f'{agentPrompt}\n{general}'},
+  #{'role':'user', 'content':'Ok let\'s move on'},
+  *history
+  ]
+  
+  response = openai.ChatCompletion.create(
+  model="gpt-3.5-turbo-0301", # the name of the model to use
+  messages=msgs,
+  temperature=1, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
+  top_p=1, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+  n=3, #How many chat completion choices to generate for each input_msg message.
+  stream=False, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+  stop= "null",
+  max_tokens=200,
+  presence_penalty=0,  
+  frequency_penalty=0,
+  )
+  
+  answer = response["choices"][1]["message"]["content"] # type: ignore
+  
+  #Failsafe
+  """
+  if "language model" in answer or "OpenAI" in answer or "I was created" in answer:
+    answer = "Really bro. That's what you want to talk about? Talk about something else."
+  """
+  return  answer
 
 def get_response_robby(history):
   #Read Agent Prompt from file
@@ -86,7 +174,7 @@ def get_response_robby(history):
   frequency_penalty=0,
   )
   
-  answer = response#["choices"][0]["message"]["content"] # type: ignore
+  answer = response["choices"][1]["message"]["content"] # type: ignore
   
   #Failsafe
   """
@@ -124,7 +212,7 @@ def get_response_ali(history):
   frequency_penalty=0,
   )
   
-  answer = response#["choices"][0]["message"]["content"] # type: ignore
+  answer = response["choices"][1]["message"]["content"] # type: ignore
   
   #Failsafe
   """
@@ -162,7 +250,7 @@ def get_response_jett(history):
   frequency_penalty=0,
   )
   
-  answer = response#["choices"][0]["message"]["content"] # type: ignore
+  answer = response["choices"][1]["message"]["content"] # type: ignore
   
   #Failsafe
   """
@@ -170,3 +258,21 @@ def get_response_jett(history):
     answer = "Really bro. That's what you want to talk about? Talk about something else."
   """
   return  answer
+
+def get_response_all(history):
+  """
+    Get Responses from all agents and formats them into a chat history list
+    
+    *args:
+    history: list of chat history
+    
+    *returns:
+    updated history in this format {'role':'user', 'content':f"{user}: {message}"}
+  """
+  user_list = ['nathan', 'ali', 'jett', 'kate', 'robby', 'cat'] #add more users here
+  
+  #Get responses from all agents
+  for user in user_list:
+    response = get_response_user(history)
+    history.append({'role':'user', 'content':f"{user}: {response}"})
+  

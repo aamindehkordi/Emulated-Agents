@@ -75,24 +75,24 @@ class ChatroomGUI:
 
         # get response from selected bot
         if bot == "All":
-            response = chat.get_response_all(message, chatHistory)
+            response = chat.get_response_all(chatHistory)
         else:
             if bot == "Ali":
-                response = chat.get_response_ali(message, chatHistory)
+                response = chat.get_response_ali(chatHistory)
             elif bot == "Nathan":
-                response = chat.get_response_nathan(message, chatHistory)
+                response = chat.get_response_nathan(chatHistory)
             elif bot == "Kyle":
-                response = chat.get_response_kyle(message, chatHistory)
+                response = chat.get_response_kyle(chatHistory)
             elif bot == "Robby":
-                response = chat.get_response_robby(message, chatHistory)
+                response = chat.get_response_robby(chatHistory)
             elif bot == "Jett":
-                response = chat.get_response_jett(message, chatHistory)
+                response = chat.get_response_jett(chatHistory)
             elif bot == "Kate":
-                response = chat.get_response_kate(message, chatHistory)
+                response = chat.get_response_kate(chatHistory)
             elif bot == "Cat":
-                response = chat.get_response_cat(message, chatHistory)
+                response = chat.get_response_cat(chatHistory)
             elif bot == "Jake":
-                response = chat.get_response_jake(message, chatHistory)
+                response = chat.get_response_jake(chatHistory)
 
         # display response in chat history
         self.chat_history.config(state=tk.NORMAL)

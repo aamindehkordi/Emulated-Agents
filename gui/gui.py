@@ -101,9 +101,7 @@ class ChatroomGUI:
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
         self.chat_history_list.append({'role':'assistant', 'content':f"{response}"})
-        #going to have to do something for bot to bot communication
-        #I think we remove the gui places names then make sure priming data has bots using Name: in their responses
-
+        
 
         # change cursor back to the default cursor
         self.master.config(cursor="")

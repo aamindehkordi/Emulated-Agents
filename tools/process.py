@@ -1,4 +1,7 @@
 import json
+import ffmpeg
+import os
+import api.whisp as whisper
 
 def read_file_lines(filename):
     """
@@ -21,35 +24,18 @@ def create_jsonl_file(filename, messages):
     with open(filename, "w") as f:
         for message in messages:
             f.write(json.dumps(message) + "\n")
-# Open the input file
-#fn = "./data/preprocessed/messages.txt"
-"""
-# Loop over the lines and create a list of JSON objects
-output = []
-current_message = ''
-for line in lines:
-    line = line.strip()
-    if not line:
-        # Skip empty lines
-        continue
-    if ':' in line:
-        # Start a new message
-        if current_message:
-            # Add the previous message to the output list
-            output.append({'prompt': prompt + '\n\n###\n\n', 'completion': current_message.strip() + ' ###\n'})
-            current_message = ''
-        prompt, message = line.split(':', 1)
-        current_message = message
-    else:
-        # Continue the current message
-        current_message += ' ' + line
 
-# Add the final message to the output list
-if current_message:
-    output.append({'prompt': prompt + '\n\n###\n\n', 'completion': current_message.strip() + ' \n###\n'})
-
-# Write the output to a JSONL file
-with open('./data/processed/messages.jsonl', 'w') as f:
-    for item in output:
-        f.write(json.dumps(item) + '\n')
-"""
+def transcribe_updates(video_path, output_path):
+    """
+    Transcribes update videos from folder path and save transcripts to output path.
+    """
+    with open("api/agents/general_knowledge.txt", "r") as f:
+        general = f.read()
+    for filename in os.listdir(video_path):
+        if filename.endswith('.mov'):
+            transcript = whisper.transcribe_video(os.path.join(video_path, filename), model="large", prompt=str(general+"\n\n The following is a video update a friend group doing a road trip and talking about their experiences: \n"))
+            write_to_file(os.path.join(output_path, filename[:-4] + ".txt"), transcript)
+            
+        print(f'Transcribed {filename}')
+    print('Finished transcribing videos.')
+    

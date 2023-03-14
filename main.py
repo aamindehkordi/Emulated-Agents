@@ -6,7 +6,10 @@ def main():
     Main function.
     """
     # Compress videos
-    cleanup.compress_mov_files('./data/preprocessed/text/allUpdates', './data/processed/videos/all_updates')
+    #cleanup.compress_mov_files('./data/preprocessed/text/allUpdates', './data/processed/videos/all_updates')
+    
+    # Transcribe videos
+    process.transcribe_updates("data/processed/videos/all_updates", "data/processed/text/all_updates")
     
     # create GUI instance
     root = tk.Tk()

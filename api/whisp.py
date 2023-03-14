@@ -1,13 +1,33 @@
-import openai
+import whisper
 
-openai.api_key_path = "./key_openai.txt"
+def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
+    """ Transcribes a video file and returns the transcript.
+    *args:
+        fn_in: Input filename of the video to transcribe.
+        model_size: The size of the model to use. Options are "tiny, "small", "base", "medium", and "large".
+        prompt: The prompt to use for the model.
+        language: The language to use for the model.
+        fp16: Whether or not to use fp16 for the model.
+    *returns:
+        The transcript of the video.
+    """
+    # Load the model
+    model = whisper.load_model(model)
 
-audio_file = open("audio.mp3", "rb")
-transcript = openai.Audio.transcribe(
-    file = audio_file,# The audio file to transcribe, in one of these formats: mp3, mp4, mpeg, mpga, m4a, wav, or webm.
-    model = "whisper-1", # ID of the model to use. Only whisper-1 is currently available.
-    prompt="", # An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.
-    response_format="json", # json, text, srt, verbose_json, or vtt.
-    temperature=0, #The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.
-    language="en", #The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency.
-    )
+    # Load the audio
+    audio = whisper.load_audio(fn_in)
+    
+    # Transcribe the audio
+    result = model.transcribe(audio, prompt=prompt, language=language, fp16=fp16, temperature=temperature)
+    
+    # Return the result
+    return result["text"]
+
+"""
+with open("api/agents/general_knowledge.txt", "r") as f:
+    general = f.read()
+
+#Test the function
+transcript = transcribe_video("/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/data/preprocessed/all_updates/1.mov", prompt=str(general+"\n\n The following is a video update a friend group doing a road trip and talking about their experiences: \n"))
+print(transcript)
+"""

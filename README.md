@@ -1,46 +1,33 @@
-# Chatroom Application
+# Senior Project
 
-This is a chatroom application that allows users to communicate with several bots. The bots generate responses based on the user's message and the conversation history, using an API to perform these tasks. The GUI provides a simple and intuitive way for users to interact with the application and visualize the conversation history.
+This senior project aims to create an interactive AI chatroom with three distinct modes, simulating a conversation with an AI version of friends in a group. The project includes a text-based chat GUI, a zoom call simulation, and a photobooth-style live webcam conversation.
 
-## Overview
+## Modes
 
-The goal of this project is to create AI chatbots that can interact with users in a way that mimics the communication styles of a group of friends. The chatbots will be trained on a fine-tuned GPT-3 model and will be able to generate responses that are similar to how the friends would actually respond.
+1. **Text-based Chat GUI**: In this mode, users can type a message and receive a response from an AI version of someone in the friend group. The system should be able to semantically understand/guess who should respond. Users can also toggle a continuous conversation mode where the AI friends keep responding to each other until the stop button is pressed.
 
-## Data Collection
+2. **Zoom Call Simulation**: In this mode, a looping short video of all AI friends is displayed in a layout resembling a Zoom call. Each AI friend has its own voice synthesis and lip filter, making it look like they are talking while they speak. The AI friends can engage in a continuous conversation with each other.
 
-The data for the chatbots will be collected from a variety of sources, including:
+3. **Photobooth-style Live Webcam**: In this mode, a live webcam detects the user in front of the computer and selects their AI and voice synthesis. The user speaks, and the AI version of themselves talks back to them through their mirrored webcam feed.
 
-- Chat logs from messaging apps
-- Audio recordings of real-life conversations
-- Text transcriptions of the audio recordings
+## Project Structure
 
-The chat logs will be taken from a Discord server that the group of friends is already a part of. The audio recordings will be transcribed using automatic speech recognition tools such as Google Cloud Speech-to-Text or Amazon Transcribe or whisper.
+The project follows the Model-View-Controller (MVC) architecture:
 
-## Data Preparation
+- `./controller`: Contains the controller classes for each mode and a common controller.
+- `./model`: Contains the model components, including chat, user selection, continuous conversation, voice synthesis, lip sync, and user recognition.
+- `./view`: Contains the GUI classes for each mode and a common GUI class.
 
-Once the data has been collected, it will need to be cleaned and formatted for use in training the GPT-3 model. This will involve removing any personal information or irrelevant messages and standardizing the formatting of the text data. Tokenization and preprocessing will also be done using tools like NLTK or spaCy.
+## Next Steps
 
-## Technologies Used
+1. Implement the user selection and continuous conversation functionality in the text-based chat GUI.
+2. Plan and implement speech synthesis for each AI friend.
+3. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
+4. Implement user recognition for the photobooth-style live webcam mode.
 
-- Python
-- tkinter
-- OpenAI API
+## Future Enhancements
 
-## Features
-
-- Users can type a message and select a bot to respond.
-- Bots generate responses based on the user's message and the conversation history.
-- GUI displays conversation history between the user and selected bots.
-- Loading animations when the API call is being made.
-- User can send a message by pressing the Enter key.
-- Aesthetically pleasing color scheme and layout.
-
-## TODO
-
-- Error checking to prevent user from sending empty messages.
-- Implement feature to allow bots to communicate with each other.
-- Improve error handling for API calls.
-- Add option to save conversation history.
+As the project progresses, new features and enhancements may be considered, such as improving the AI friends' conversational abilities, refining the user experience, and incorporating additional modes or functionalities.
 
 ## How to Run
 

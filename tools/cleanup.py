@@ -4,7 +4,6 @@ from better_profanity import profanity
 import pandas as pd
 import os
 import ffmpeg
-import subprocess
 
 def compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec='aac', 
                        crf=23, preset='fast', audio_bitrate='128k'):
@@ -95,5 +94,4 @@ def filter_unnecessary_content(message):
     for extension in image_extensions:
         if message.endswith(extension):
             return False
-
     return True

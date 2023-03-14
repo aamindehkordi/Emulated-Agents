@@ -2,6 +2,20 @@ import openai
 
 openai.api_key_path = "./key_openai.txt"
 #print(response["choices"][1]["message"]["content"])
+def get_response_todo(self, user, message, target_user):
+    """
+    Given the user, message, and target user, returns the AI-generated response.
+    
+    Args:
+        user (str): The user sending the message.
+        message (str): The content of the message.
+        target_user (str): The user expected to respond.
+    
+    Returns:
+        response (str): The AI-generated response.
+    """
+    pass
+
 def get_response(user, history):
   """
     Gets appropriate user chat response based off the chat history.

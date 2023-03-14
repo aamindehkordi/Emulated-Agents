@@ -14,11 +14,11 @@ def get_response(user, history):
     response: a string containing the chat response
   """
   #Read Agent Prompt from file
-  with open(f"api/agents/{user}_prompt.txt", encoding='utf-8') as f:
+  with open(f"model/agents/{user}_prompt.txt", "r") as f:
     agentPrompt = f.read()
   
   #Read general knowledge from file
-  with open("api/agents/general_knowledge.txt", encoding='utf-8') as f:
+  with open("model/agents/general_knowledge.txt", "r") as f:
     general = f.read()
     
   msgs = [
@@ -144,9 +144,14 @@ def get_response_all(history):
   #Get responses from all agents
   for user in user_list:
     response = get_response(user, history)
-    responses.append({'role':'assistant', 'content':f"{user}: {response}"})
+    history.append({'role':'assistant', 'content':f"{user}: {response}"})
     
+  #Update history
   history = [*history, *responses]
   
-  return history
+  # Clean up responses for display
+  for response in responses:
+    response['content'] = response['content'].replace('{user}:', '')
+  
+  return responses, history
   

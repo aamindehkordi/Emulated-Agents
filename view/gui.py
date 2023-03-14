@@ -1,5 +1,5 @@
 import tkinter as tk
-import api.chat as chat
+import model.chat as chat
 
 class ChatroomGUI:
 
@@ -75,23 +75,25 @@ class ChatroomGUI:
 
         # get response from selected bot
         if bot == "All":
-            response = chat.get_response_all(chatHistory)
-        elif bot == "Ali":
-            response = chat.get_response_ali(chatHistory)
-        elif bot == "Nathan":
-            response = chat.get_response_nathan(chatHistory)
-        elif bot == "Kyle":
-            response = chat.get_response_kyle(chatHistory)
-        elif bot == "Robby":
-            response = chat.get_response_robby(chatHistory)
-        elif bot == "Jett":
-            response = chat.get_response_jett(chatHistory)
-        elif bot == "Kate":
-            response = chat.get_response_kate(chatHistory)
-        elif bot == "Cat":
-            response = chat.get_response_cat(chatHistory)
-        elif bot == "Jake":
-            response = chat.get_response_jake(chatHistory)
+            response, self.chat_history_list = chat.get_response_all(chatHistory)
+        else:
+            if bot == "Ali":
+                response = chat.get_response_ali(chatHistory)
+            elif bot == "Nathan":
+                response = chat.get_response_nathan(chatHistory)
+            #elif bot == "Kyle":
+                #response = chat.get_response_kyle(chatHistory)
+            elif bot == "Robby":
+                response = chat.get_response_robby(chatHistory)
+            elif bot == "Jett":
+                response = chat.get_response_jett(chatHistory)
+            elif bot == "Kate":
+                response = chat.get_response_kate(chatHistory)
+            elif bot == "Cat":
+                response = chat.get_response_cat(chatHistory)
+            #elif bot == "Jake":
+                #response = chat.get_response_jake(chatHistory)
+            self.chat_history_list.append({'role':'assistant', 'content':f"{response}"})    
 
         # display response in chat history
         self.chat_history.config(state=tk.NORMAL)
@@ -99,7 +101,6 @@ class ChatroomGUI:
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
-        self.chat_history_list.append({'role':'assistant', 'content':f"{response}"})
         
 
         # change cursor back to the default cursor

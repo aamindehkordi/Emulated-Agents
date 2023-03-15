@@ -1,5 +1,4 @@
 import tkinter as tk
-import model.chat as chat
 from .base_gui import BaseGUI
 
 class ChatGUI(BaseGUI):

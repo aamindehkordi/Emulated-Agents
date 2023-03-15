@@ -1,4 +1,3 @@
-import view.gui as gui
 import tkinter as tk
 from controller.chat_controller import ChatController
 from view.discord_gui import ChatGUI

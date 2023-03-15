@@ -72,7 +72,7 @@ class ChatGUI(BaseGUI):
         self.display_message(bot, response, "bot")
 
         # change cursor back to the default cursor
-        self.master.config(cursor="")
+        self.update_cursor()
 
     def get_ubm(self):
         user = self.user_var.get()
@@ -121,7 +121,7 @@ class ChatGUI(BaseGUI):
         pass
 
     def update_cursor(self):
-        self.chat_history.config(cursor="")
+        self.master.config(cursor="")
         
     def get_chat_history(self):
         return self.chat_history_list

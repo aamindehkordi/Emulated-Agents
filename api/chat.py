@@ -1,5 +1,7 @@
 import openai
-
+"""
+Handles all the openai API stuff and user responses.
+"""
 openai.api_key_path = "./key_openai.txt"
 #print(response["choices"][1]["message"]["content"])
 def get_response(user, history):

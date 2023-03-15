@@ -1,6 +1,8 @@
 import tkinter as tk
 import api.chat as chat
-
+"""
+This should only be gui stuff. 
+"""
 class ChatroomGUI:
 
     def __init__(self, master):

@@ -1,6 +1,6 @@
 import tkinter as tk
 import model.chat as chat
-import view.gui as gui
+import view.base_gui as gui
 
 class ChatGUI(gui.BaseGUI):
     def __init__(self, master):

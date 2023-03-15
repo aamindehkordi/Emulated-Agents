@@ -1,6 +1,5 @@
 import tkinter as tk
 import model.chat as chat
-
 class ChatroomGUI:
 
     def __init__(self, master):
@@ -127,3 +126,20 @@ class ChatroomGUI:
         # configure tags and start GUI
         self.set_tags()
         self.master.mainloop()
+        
+    def display_message(self, user, message, role):
+        """
+        Displays a message in the chat history.
+        
+        Args:
+            user (str): The user who sent the message.
+            message (str): The content of the message.
+            role (str): The role of the sender (e.g., 'user', 'assistant').
+        """
+        pass
+
+    def clear_input(self):
+        """
+        Clears the input field.
+        """
+        pass

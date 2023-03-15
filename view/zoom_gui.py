@@ -1,5 +1,5 @@
 import pygame
-import view.gui as gui
+import view.base_gui as gui
 class ZoomGUI(gui.BaseGUI):
     def __init__(self, master):
         super().__init__(master)

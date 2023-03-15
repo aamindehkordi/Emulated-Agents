@@ -1,4 +1,4 @@
-import gui.gui as gui
+import view.gui as gui
 import tkinter as tk
 
 def main():

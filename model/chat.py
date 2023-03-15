@@ -4,6 +4,20 @@ Handles all the openai API stuff and user responses.
 """
 openai.api_key_path = "./key_openai.txt"
 #print(response["choices"][1]["message"]["content"])
+def get_response_todo(self, user, message, target_user):
+    """
+    Given the user, message, and target user, returns the AI-generated response.
+    
+    Args:
+        user (str): The user sending the message.
+        message (str): The content of the message.
+        target_user (str): The user expected to respond.
+    
+    Returns:
+        response (str): The AI-generated response.
+    """
+    pass
+
 def get_response(user, history):
   """
     Gets appropriate user chat response based off the chat history.
@@ -16,11 +30,11 @@ def get_response(user, history):
     response: a string containing the chat response
   """
   #Read Agent Prompt from file
-  with open(f"api/agents/{user}_prompt.txt", encoding='utf-8') as f:
+  with open(f"model/agents/{user}_prompt.txt", "r") as f:
     agentPrompt = f.read()
   
   #Read general knowledge from file
-  with open("api/agents/general_knowledge.txt", encoding='utf-8') as f:
+  with open("model/agents/general_knowledge.txt", "r") as f:
     general = f.read()
     
   msgs = [
@@ -146,9 +160,14 @@ def get_response_all(history):
   #Get responses from all agents
   for user in user_list:
     response = get_response(user, history)
-    responses.append({'role':'assistant', 'content':f"{user}: {response}"})
+    history.append({'role':'assistant', 'content':f"{user}: {response}"})
     
+  #Update history
   history = [*history, *responses]
   
-  return history
+  # Clean up responses for display
+  for response in responses:
+    response['content'] = response['content'].replace('{user}:', '')
+  
+  return responses, history
   

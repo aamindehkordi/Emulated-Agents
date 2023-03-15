@@ -1,7 +1,7 @@
 import json
 import ffmpeg
 import os
-import api.whisp as whisper
+import model.tools.whisp as whisper
 
 def read_file_lines(filename):
     """

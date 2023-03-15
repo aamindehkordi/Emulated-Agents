@@ -26,7 +26,6 @@ def main():
 
     chat_gui.run()
     root.mainloop()
-    #TODO: fix mouse spin and double user input display
         
 if __name__ == "__main__":
     main()

@@ -63,13 +63,13 @@ class ChatGUI(BaseGUI):
 
         # clear input entry and insert user message
         self.clear_input()
-        self.display_message(user, message, "user")
+        self.display_message(user, message)
 
         # get response from selected bot
         response = self.controller.send_message(user, bot, message)
 
         # display response in chat history
-        self.display_message(bot, response, "bot")
+        self.display_response(response)
 
         # change cursor back to the default cursor
         self.update_cursor()
@@ -80,14 +80,21 @@ class ChatGUI(BaseGUI):
         message = self.input_entry.get()
         return user, bot, message
     
-    def display_message(self, user, message, role):
-        tag = f"{role}_message"
+    def display_message(self, user, message):
+        tag = f"user_message"
         self.chat_history.config(state=tk.NORMAL)
         self.chat_history.insert(tk.END, "{}: {}\n".format(user, message), tag)
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
 
+    def display_response(self, response):
+        tag = f"bot_message"
+        self.chat_history.config(state=tk.NORMAL)
+        self.chat_history.insert(tk.END, "{}\n".format(response), tag)
+        self.chat_history.insert(tk.END, "\n", "newline")
+        self.chat_history.config(state=tk.DISABLED)
+        self.chat_history.yview_moveto(1.0)
     def set_controller(self, controller):
         self.controller = controller
         self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method

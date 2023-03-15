@@ -14,13 +14,8 @@ class ChatController(BaseController):
         chat_history = self.gui.get_chat_history()
         chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
 
-        self.gui.clear_input()
-        self.gui.display_message(user, message, "user")
-
         response = self.get_bot_response(bot, chat_history)
 
-        self.gui.display_message(bot, response, "bot")
-        self.gui.update_cursor()
 
     def get_bot_response(self, bot, chat_history):
         if bot == "All":

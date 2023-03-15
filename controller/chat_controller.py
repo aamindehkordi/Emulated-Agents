@@ -15,6 +15,7 @@ class ChatController(BaseController):
         chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
 
         response = self.get_bot_response(bot, chat_history)
+        return response
 
 
     def get_bot_response(self, bot, chat_history):

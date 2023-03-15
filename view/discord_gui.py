@@ -66,7 +66,7 @@ class ChatGUI(BaseGUI):
         self.display_message(user, message, "user")
 
         # get response from selected bot
-        self.controller.send_message(user, bot, message)
+        response = self.controller.send_message(user, bot, message)
 
         # display response in chat history
         self.display_message(bot, response, "bot")

@@ -1,14 +1,45 @@
-import controller.base_controller as base_controller
-class ChatController(base_controller.BaseController):
-    def __init__(self, view):
-        super().__init__(view)
-        self.view.send_button.config(command=self.send_message)
-        self.view.input_entry.bind("<Return>", lambda event: self.send_message())
+from .base_controller import BaseController
+import model.chat as chat
 
-    def send_message(self):
-        # Implementation of send_message
-        pass
-    
+class ChatController(BaseController):
+    def __init__(self, gui):
+        super().__init__(gui)
+
+    def send_message(self, user, bot, message):
+        if message.strip() == "":
+            return
+
+        message = message.replace('\n', ' ')
+
+        chat_history = self.gui.get_chat_history()
+        chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
+
+        self.gui.clear_input()
+        self.gui.display_message(user, message, "user")
+
+        response = self.get_bot_response(bot, chat_history)
+
+        self.gui.display_message(bot, response, "bot")
+        self.gui.update_cursor()
+
+    def get_bot_response(self, bot, chat_history):
+        if bot == "All":
+            response, chat_history = chat.get_response_all(chat_history)
+        else:
+            bot_response_function = {
+                "Ali": chat.get_response_ali,
+                "Nathan": chat.get_response_nathan,
+                #"Kyle": chat.get_response_kyle,
+                "Robby": chat.get_response_robby,
+                "Jett": chat.get_response_jett,
+                "Kate": chat.get_response_kate,
+                "Cat": chat.get_response_cat,
+                #"Jake": chat.get_response_jake,
+            }
+            response = bot_response_function[bot](chat_history)
+            chat_history.append({'role': 'assistant', 'content': f"{response}"})
+        return response
+
     def on_send_button_click(self):
         """
         Handles the send button click event in the chat GUI.

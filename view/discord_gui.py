@@ -3,10 +3,12 @@ import model.chat as chat
 from .base_gui import BaseGUI
 
 class ChatGUI(BaseGUI):
+    
     def __init__(self, master):
         super().__init__(master)
         self.master.title("Chatroom")
-
+        
+        # Create all widgets
         self.create_widgets()
 
         # Create selectors for user typing and requested user response
@@ -42,7 +44,7 @@ class ChatGUI(BaseGUI):
         # Create send button
         self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
         self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
-        
+
     def send_message(self):
         # get user typing and requested user response
         user, bot, message = self.get_ubm()
@@ -64,32 +66,13 @@ class ChatGUI(BaseGUI):
         self.display_message(user, message, "user")
 
         # get response from selected bot
-        response = self.get_bot_response(bot, chatHistory)
+        self.controller.send_message(user, bot, message)
 
         # display response in chat history
         self.display_message(bot, response, "bot")
 
         # change cursor back to the default cursor
         self.master.config(cursor="")
-
-    def get_bot_response(self, bot, chat_history):
-        if bot == "All":
-            response, self.chat_history_list = chat.get_response_all(chat_history)
-        else:
-            bot_response_function = {
-                "Ali": chat.get_response_ali,
-                "Nathan": chat.get_response_nathan,
-                "Kyle": chat.get_response_kyle,  # Uncomment this when you implement this function
-                "Robby": chat.get_response_robby,
-                "Jett": chat.get_response_jett,
-                "Kate": chat.get_response_kate,
-                "Cat": chat.get_response_cat,
-                "Jake": chat.get_response_jake,  # Uncomment this when you implement this function
-            }
-            response = bot_response_function[bot](chat_history)
-            self.chat_history_list.append({'role': 'assistant', 'content': f"{response}"})
-        return response
-
 
     def get_ubm(self):
         user = self.user_var.get()
@@ -104,6 +87,10 @@ class ChatGUI(BaseGUI):
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
+
+    def set_controller(self, controller):
+        self.controller = controller
+        self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method
 
     def create_dropdown(self, parent, label_text, options, variable):
         # create dropdown menu with label
@@ -133,6 +120,12 @@ class ChatGUI(BaseGUI):
         # Implement switching to photobooth mode
         pass
 
+    def update_cursor(self):
+        self.chat_history.config(cursor="")
+        
+    def get_chat_history(self):
+        return self.chat_history_list
+    
     def clear_input(self):
         self.input_entry.delete(0, tk.END)
         

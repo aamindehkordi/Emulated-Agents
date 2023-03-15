@@ -1,5 +1,8 @@
 import view.gui as gui
 import tkinter as tk
+from controller.chat_controller import ChatController
+from view.discord_gui import ChatGUI
+
 
 def main():
     """
@@ -13,8 +16,17 @@ def main():
     
     # create GUI instance
     root = tk.Tk()
-    chatroom = gui.ChatroomGUI(root)
-    chatroom.run()
+    #chatroom = gui.ChatroomGUI(root)
+    
+    chat_gui = ChatGUI(root)
+    chat_controller = ChatController(chat_gui)
+
+    # Set the controller for the chat_gui
+    chat_gui.set_controller(chat_controller)
+
+    chat_gui.run()
+    root.mainloop()
+
         
 if __name__ == "__main__":
     main()

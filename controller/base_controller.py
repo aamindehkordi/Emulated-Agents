@@ -1,8 +1,9 @@
 class BaseController:
-    def __init__(self, view):
-        self.view = view
+    def __init__(self, gui):
+        self.gui = gui
 
-    # Common controller methods for all modes
+    def update_view(self):
+        pass
     
     def on_mode_change(self, mode):
         """

@@ -1,4 +1,6 @@
 import openai
+openai.api_key_path = "./key_openai.txt"
+
 
 def get_response(user, history):
   """

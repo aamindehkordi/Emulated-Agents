@@ -1,7 +1,7 @@
 import json
 import ffmpeg
 import os
-import model.tools.whisp as whisper
+from model.openai_api import transcribe_video as whisper
 
 def read_file_lines(filename):
     """

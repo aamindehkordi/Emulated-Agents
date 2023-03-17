@@ -2,8 +2,12 @@ key_openai.txt
 *.mov
 */.idea
 */.vscode
-*/.pytest_cache/*
 */__pycache__
+*.pyc
 */*.pyc
 .DS_Store
 */*.cpython-38.pyc
+*.cpython-38.pyc
+*/chat_controller.cpython-38.pyc
+*/discord_gui.cpython-38.pyc
+*/openai_api.cpython-38.pyc

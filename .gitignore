@@ -1,2 +1,9 @@
 key_openai.txt
 *.mov
+*/.idea
+*/.vscode
+*/.pytest_cache/*
+*/__pycache__
+*/*.pyc
+.DS_Store
+*/*.cpython-38.pyc

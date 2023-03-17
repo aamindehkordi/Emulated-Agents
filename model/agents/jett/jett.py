@@ -6,7 +6,7 @@ def get_response_jett(history):
   *history
   ]
   
-  answer = get_response('jett', msgs)
+  answer, tokens = get_response('jett', msgs)
   
-  return  answer
+  return  answer, tokens
 

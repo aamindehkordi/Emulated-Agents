@@ -1,6 +1,7 @@
 class BaseController:
     def __init__(self, gui):
         self.gui = gui
+        self.token_count = 0
 
     def update_view(self):
         pass

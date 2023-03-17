@@ -6,7 +6,7 @@ def get_response_robby(history):
   *history
   ]
   
-  answer = get_response('robby', msgs)
+  answer, tokens = get_response('robby', msgs)
   
-  return  answer
+  return  answer, tokens
 

@@ -7,7 +7,7 @@ def get_response_ali(history):
   *history
   ]
   
-  answer = get_response('ali', msgs)
+  answer, tokens = get_response('ali', msgs)
   
-  return  answer
+  return  answer, tokens
 

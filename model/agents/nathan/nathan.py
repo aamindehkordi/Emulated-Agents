@@ -22,7 +22,7 @@ def get_response_nathan(history):
   *history
   ]
   
-  answer = get_response('nathan', msgs)
+  answer, tokens = get_response('nathan', msgs)
   
-  return  answer
+  return  answer, tokens
 

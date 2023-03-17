@@ -6,6 +6,6 @@ def get_response_cat(history):
   *history
   ]
   
-  answer = get_response(user='cat', history=msgs)
+  answer, tokens = get_response(user='cat', history=msgs)
   
-  return  answer
+  return  answer, tokens

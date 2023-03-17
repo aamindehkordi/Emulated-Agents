@@ -9,7 +9,12 @@ def extract_embedding(text):
     return embedding
 
 def calculate_similarity(message, response):
-    message_embedding = extract_embedding(message)
+    
+    with open ('model/agents/general_knowledge.txt', 'r') as f:
+        general = f.read()
+    
+    similar = general + message
+    message_embedding = extract_embedding(similar)
     response_embedding = extract_embedding(response)
 
     similarity = cosine_similarity(message_embedding, response_embedding)

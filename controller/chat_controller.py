@@ -6,12 +6,16 @@ from model.agents.kate.kate import get_response_kate
 from model.agents.robby.robby import get_response_robby
 from model.agents.cat.cat import get_response_cat
 from model.openai_api import get_response
+from model.user_selection import predict_user
+
 """
 Handles all the openai API stuff and user responses.
 """
 class ChatController(BaseController):
     def __init__(self, gui):
         super().__init__(gui)
+        self.continuous_mode = False
+
 
     def send_message(self, user, bot, message):
         if message.strip() == "":
@@ -22,27 +26,41 @@ class ChatController(BaseController):
         chat_history = self.gui.get_chat_history()
         chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
 
-        response = self.get_bot_response(bot, chat_history)
+    #NEEDS TO BE fixed ----
+        if self.continuous_mode:
+            response = self.get_bot_response("nathan", chat_history)
+        else:
+            response = self.get_bot_response(bot, chat_history)
+
         return response
+
 
 
     def get_bot_response(self, bot, chat_history):
         if bot == "All":
             response, chat_history = self.get_response_all(chat_history)
         else:
+            user_list = ['nathan', 'ali', 'jett', 'kate', 'robby', 'cat']
             bot_response_function = {
-                "Ali": get_response_ali,
-                "Nathan":get_response_nathan,
-                #"Kyle":get_response_kyle,
-                "Robby":get_response_robby,
-                "Jett":get_response_jett,
-                "Kate":get_response_kate,
-                "Cat": get_response_cat,
-                #"Jake": chat.get_response_jake,
+                "ali": get_response_ali,
+                "nathan": get_response_nathan,
+                "robby": get_response_robby,
+                "jett": get_response_jett,
+                "kate": get_response_kate,
+                "cat": get_response_cat,
             }
-            response = bot_response_function[bot](chat_history)
+            
+            responses = [bot_response_function[user](chat_history) for user in user_list]
+            selected_user = predict_user(chat_history, user_list, responses)
+            
+            response = f"{selected_user}: {bot_response_function[selected_user](chat_history)}"
             chat_history.append({'role': 'assistant', 'content': f"{response}"})
         return response
+    #NEEDS TO BE fixed ----
+
+    def toggle_continuous_mode(self):
+        self.continuous_mode = not self.continuous_mode
+
 
     def on_send_button_click(self):
         """
@@ -76,6 +94,7 @@ class ChatController(BaseController):
         """
         pass
 
+    #NEEDS TO BE renewed ----
     def get_response_all(self,history):
         """
             Get Responses from all agents and formats them into a chat history list
@@ -101,4 +120,5 @@ class ChatController(BaseController):
             response['content'] = response['content'].replace('{user}:', '')
         
         return responses, history
+    #NEEDS TO BE renewed ----
     

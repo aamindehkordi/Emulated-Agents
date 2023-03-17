@@ -15,14 +15,11 @@ class ChatGUI(BaseGUI):
         self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake"]
         self.bot_var = tk.StringVar(value="Nathan")
         self.bot_options = self.user_options + ["All"]
-    #NEEDS TO BE REMOVED ----
         self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
         self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
-    #NEEDS TO BE REMOVED ----
 
         # Create loading label
         self.loading_label = tk.Label(self.input_frame, text="", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
-        
         
     def create_widgets(self):
         # Create chatroom frame
@@ -47,14 +44,6 @@ class ChatGUI(BaseGUI):
         self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
         self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
 
-        # Continuouos conversation
-        self.continuous_mode_var = tk.BooleanVar()
-        self.continuous_mode_checkbox = tk.Checkbutton(self.input_frame, text="Continuous Mode", variable=self.continuous_mode_var, command=self.toggle_continuous_mode, font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
-        self.continuous_mode_checkbox.pack(side=tk.LEFT, padx=(10, 0), pady=5)
-    
-    def toggle_continuous_mode(self):
-        self.controller.toggle_continuous_mode()
-        
     def send_message(self):
         # get user typing and requested user response
         user, bot, message = self.get_ubm()
@@ -105,7 +94,6 @@ class ChatGUI(BaseGUI):
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
-        
     def set_controller(self, controller):
         self.controller = controller
         self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method

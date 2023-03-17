@@ -55,25 +55,24 @@ def get_response(user, history):
     
   msgs = [
     {'role':'system', 'content': f'{agentPrompt}\n{general}'},
-    {'role':'user', 'content': f'{agentPrompt}\n{general}'},
     *history
   ]
   
   response = openai.ChatCompletion.create(
-  model="gpt-4", # the name of the model to use
+  model="gpt-3.5", # the name of the model to use
   messages=msgs,
   temperature=1, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
   top_p=1, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-  n=2, #How many chat completion choices to generate for each input_msg message.
+  n=1, #How many chat completion choices to generate for each input_msg message.
   stream=False, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
   stop= "null",
-  max_tokens=200,
+  max_tokens=500,
   presence_penalty=0,  
   frequency_penalty=0,
   )
   
-  answer = response["choices"][1]["message"]["content"] # type: ignore
-  
+  answer = response["choices"][0]["message"]["content"] # type: ignore
+  print(response)
   #Failsafe
   """
   if "language model" in answer or "OpenAI" in answer or "I was created" in answer:

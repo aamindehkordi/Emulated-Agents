@@ -1,3 +1,15 @@
+"""
+This module provides functions to clean up the chatbot's response.
+
+Functions in this module include:
+- cleanup_response(response): takes a raw chatbot response and returns a cleaned-up version
+- compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec='aac', crf=23, preset='fast', audio_bitrate='128k'): compresses all .mov files in the input directory using ffmpeg and saves them in the output directory
+- extract_messages_csv(filename): extracts the messages from a .csv file and returns them as a list
+- save_messages_csv(filename, messages): saves a list of messages to a .csv file
+- filter_profanity(messages): filters out profanity from a list of messages
+filter_unnecessary_content(message): filters out unnecessary content from a message
+"""
+
 import csv
 import re
 from better_profanity import profanity

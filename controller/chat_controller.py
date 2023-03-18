@@ -1,3 +1,10 @@
+"""
+This module provides the ChatController class, which connects the chatbot model with the user interface.
+
+Classes in this module include:
+- ChatController: Handles the communication between the chatbot model and the GUI.
+"""
+
 from .base_controller import BaseController
 from model.agents.ali.ali import get_response_ali
 from model.agents.jett.jett import get_response_jett

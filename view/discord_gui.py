@@ -1,3 +1,10 @@
+"""
+This module provides the DiscordGUI class, which displays a Discord-style chatbot interface.
+
+Classes in this module include:
+- DiscordGUI: Displays a Discord-style chatbot interface and handles user input.
+"""
+
 import tkinter as tk
 from .base_gui import BaseGUI
 

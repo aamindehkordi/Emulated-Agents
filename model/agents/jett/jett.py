@@ -1,3 +1,10 @@
+"""
+This module provides the get_response_jett+ function for the jett+ agent.
+
+Functions in this module include:
+- get_response_jett+(chat_history): returns the generated response from the jett+ agent based on the chat history
+"""
+
 from model.openai_api import get_response
 
 def get_response_jett(history):

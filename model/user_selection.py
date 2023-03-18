@@ -1,3 +1,12 @@
+"""
+This module provides functions to handle user selection and agent switching.
+
+Functions in this module include:
+- select_agent(agent_name): returns an agent instance based on the agent_name provided
+
+EVERYTHING BELOW IS TEMPORARY for now
+"""
+
 from sentence_transformers import SentenceTransformer
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity

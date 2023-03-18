@@ -1,3 +1,12 @@
+"""
+This module provides the PhotoboothGUI class, which displays a Photobooth-style chatbot interface.
+
+Classes in this module include:
+- PhotoboothGUI: Displays a Photobooth-style chatbot interface and handles user input.
+
+EVERYTHING BELOW IS TEMPORARY for now
+"""
+
 import cv2
 from PIL import Image, ImageTk
 import pygame

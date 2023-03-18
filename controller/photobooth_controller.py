@@ -1,3 +1,12 @@
+"""
+This module provides the PhotoboothController class, which connects the Photobooth-style GUI with the backend functionality.
+
+Classes in this module include:
+- PhotoboothController: Handles the communication between the Photobooth-style GUI and the backend.
+
+EVERYTHING BELOW IS TEMPORARY for now
+"""
+
 import controller.base_controller as base_controller
 import view.photobooth_gui as photobooth_gui
 class PhotoboothController(base_controller.BaseController):

@@ -44,6 +44,7 @@ class BaseGUI:
         self.photobooth_button = tk.Button(self.mode_selection_frame, text="Photobooth", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_photobooth)
         self.photobooth_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
 
+
     def switch_to_chat(self):
         pass  # Implement switching to chat mode
 

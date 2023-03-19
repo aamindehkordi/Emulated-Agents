@@ -1,6 +1,14 @@
+"""
+This module provides the BaseController class, a base class for various controllers in the application.
+
+Classes in this module include:
+- BaseController: The base class for other controllers, with common functionality.
+"""
+
 class BaseController:
     def __init__(self, gui):
         self.gui = gui
+        self.token_count = 0
 
     def update_view(self):
         pass

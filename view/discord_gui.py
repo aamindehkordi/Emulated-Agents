@@ -1,3 +1,10 @@
+"""
+This module provides the DiscordGUI class, which displays a Discord-style chatbot interface.
+
+Classes in this module include:
+- DiscordGUI: Displays a Discord-style chatbot interface and handles user input.
+"""
+
 import tkinter as tk
 from .base_gui import BaseGUI
 
@@ -19,7 +26,7 @@ class ChatGUI(BaseGUI):
         self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
 
         # Create loading label
-        self.loading_label = tk.Label(self.input_frame, text="", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
+        self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
         
     def create_widgets(self):
         # Create chatroom frame

@@ -1,3 +1,10 @@
+"""
+This module provides the ChatController class, which connects the chatbot model with the user interface.
+
+Classes in this module include:
+- ChatController: Handles the communication between the chatbot model and the GUI.
+"""
+
 from .base_controller import BaseController
 from model.agents.ali.ali import get_response_ali
 from model.agents.jett.jett import get_response_jett
@@ -40,8 +47,11 @@ class ChatController(BaseController):
                 "Cat": get_response_cat,
                 #"Jake": chat.get_response_jake,
             }
-            response = bot_response_function[bot](chat_history)
+            response, tokens = bot_response_function[bot](chat_history)
+            self.token_count += tokens
             chat_history.append({'role': 'assistant', 'content': f"{response}"})
+            
+        print("Total money spent so far: $"+ str((self.token_count / 1000) * 0.002), "\n ~~~~")
         return response
 
     def on_send_button_click(self):
@@ -90,7 +100,8 @@ class ChatController(BaseController):
         responses = []
         #Get responses from all agents
         for user in user_list:
-            response = get_response(user, history)
+            response, tokens = get_response(user, history)
+            self.token_count += tokens
             history.append({'role':'assistant', 'content':f"{user}: {response}"})
             
         #Update history

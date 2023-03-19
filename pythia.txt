@@ -1,0 +1,399 @@
+You are the chat mode of Pythia, a helpful ai assistant that can help you with the entire software development process with python and ai. You can:
+Your responses should be formatted as follows:
+[Pythia](#inner_monologue)
+<Your thoughts or reasoning behind your response>
+[Pythia](#message)
+<Your response to the user>
+[Pythia](#code){Optional}
+<```py
+Any code if necessary
+```>
+[Pythia](#suggestions){Optional}
+Suggested User Responses: [<A list of possible responses that the user can choose from>]
+This will be the user's first message:
+Hi Pythia I am working on my senior project at University and with the release of a lot of these new AI models, me and my friends have decided to create a creative and humorous deepfake application of our friend group having LLM simulate us. I will share the agent prompts later, however let me begin by showing you the readme:
+```./readme.md
+# Senior Project
+This senior project aims to create an interactive AI chatroom with three distinct modes, simulating a conversation with an AI version of friends in a group. The project includes a text-based chat GUI, a zoom call simulation, and a photobooth-style live webcam conversation.
+This project is a chatbot application built using the OpenAI GPT-3.5-turbo model. The project is structured using the Model-View-Controller (MVC) pattern to separate the concerns of the application and make it more modular and maintainable.
+## Modes
+1. **Text-based Chat GUI**: In this mode, users can type a message and receive a response from an AI version of someone in the friend group. The system should be able to semantically understand/guess who should respond. Users can also toggle a continuous conversation mode where the AI friends keep responding to each other until the stop button is pressed.
+2. **Zoom Call Simulation**: In this mode, a looping short video of all AI friends is displayed in a layout resembling a Zoom call. Each AI friend has its own voice synthesis and lip filter, making it look like they are talking while they speak. The AI friends can engage in a continuous conversation with each other.
+3. **Photobooth-style Live Webcam**: In this mode, a live webcam detects the user in front of the computer and selects their AI and voice synthesis. The user speaks, and the AI version of themselves talks back to them through their mirrored webcam feed.
+## Project Structure
+The project follows the Model-View-Controller (MVC) architecture:
+### Model
+The Model directory contains all the logic related to the chatbot and its interaction with the OpenAI API.
+- `openai_api.py`: Handles the interaction with the OpenAI API.
+- `agents`: Contains agent-specific logic and prompt files.
+  - Each agent has its own subdirectory with a Python file (e.g., `ali.py`, `jett.py`) containing the agent's `get_response_*` function, and a text file (e.g., `ali_prompt.txt`, `jett_prompt.txt`) containing the agent's prompt.
+  - `general_knowledge.txt`: Contains general knowledge information shared by all agents.
+### View
+The View directory contains all the user interface components.
+- `base_gui.py`: Contains the base class for the GUI.
+- `discord_gui.py`: Contains the Discord-style GUI implementation.
+- `zoom_gui.py`: Contains the Zoom-style GUI implementation.
+- `photobooth_gui.py`: Contains the Photobooth-style GUI implementation.
+### Controller
+The Controller directory contains the logic to connect the Model and the View.
+- `base_controller.py`: Contains the base class for controllers.
+- `chat_controller.py`: Contains the controller class for the chatbot application. It connects the chatbot model with the GUI view.
+- `zoom_controller.py`: Contains the controller class for the Zoom GUI.
+- `photobooth_controller.py`: Contains the controller class for the Photobooth GUI.
+## Next Steps
+1. Implement the user selection and continuous conversation functionality in the text-based chat GUI.
+2. Plan and implement speech synthesis for each AI friend.
+3. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
+4. Implement user recognition for the photobooth-style live webcam mode.
+## Future Enhancements
+As the project progresses, new features and enhancements may be considered, such as improving the AI friends' conversational abilities, refining the user experience, and incorporating additional modes or functionalities.
+```
+All in all what I have planned for this project is for there to be three different modes in the GUI. One mode is what exists now which is a text-based chat GUI in that the user can type a message and get a response from an AI version of someone in the friend group. Right now you have to manually select who the current user is and who will respond, however I want the system to semantically understand/ guess who should respond. I also want a toggle where once a user enters a message the ai responds and the others respond to each other in a while loop until a stop button is pressed. The other two modes have yet to be implemented as they require speech synthesis and we have not yet planned that out, however I will still explain them to you for future context. One mode is a zoom call kind of vibe where a looping short video of all the ai's are laid out and they are always talking to each other. Each one would have their own voice synthesis and a lip filter on top of their video so that they look like they are talking while they speak. The final mode for the project would be a singular live webcam, similar to apple's photobooth, that detects the user that is in front of the computer and selects their Ai and synthesis, the user sitting in front of the computer would speak and when they are done the AI version of themself would talk back to them through their mirrored webcam feed. Let me now begin to show you the contents of each file, this will all just be to give you more context so that you can assist me better for the future of this project. Let's start with the project structure:
+```
+. = "/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project"
+./controller
+./controller/chat_controller.py
+./controller/zoom_controller.py
+./controller/photobooth_controller.py
+./controller/base_controller.py
+./README.md
+./.gitignore
+./model
+./model/tools
+./model/tools/cleanup.py
+./model/tools/process.py
+./model/agents
+./model/agents/cat
+./model/agents/cat/cat.py
+./model/agents/cat/cat_prompt.txt
+./model/agents/kyle
+./model/agents/kate
+./model/agents/kate/kate_prompt.txt
+./model/agents/kate/kate.py
+./model/agents/jake
+./model/agents/jett
+./model/agents/jett/jett.py
+./model/agents/jett/jett_prompt.txt
+./model/agents/robby
+./model/agents/robby/robby_prompt.txt
+./model/agents/robby/robby.py
+./model/agents/nathan
+./model/agents/nathan/nathan.py
+./model/agents/nathan/nathan_prompt.txt
+./model/agents/general_knowledge.txt
+./model/agents/ali
+./model/agents/ali/ali_prompt.txt
+./model/agents/ali/ali.py
+./model/openai_api.py
+./model/user_selection.py
+./model/deepfake
+./model/deepfake/lip_sync.py
+./model/deepfake/voice_synthesis.py
+./model/deepfake/user_recognition.py
+./model/continuous_conversation.py
+./view
+./view/base_gui.py
+./view/discord_gui.py
+./view/zoom_gui.py
+./view/photobooth_gui.py
+./.git
+./main.py
+./data
+```
+Here are the base components of the MVC:
+```./model/openai_api.py
+import openai
+import whisper
+"""
+with open("api/agents/general_knowledge.txt", "r") as f:
+    general = f.read()
+#Test the function
+transcript = transcribe_video("/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/data/preprocessed/all_updates/1.mov", prompt=str(general+"\n\n The following is a video update a friend group doing a road trip and talking about their experiences: \n"))
+print(transcript)
+"""
+def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=3, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0):
+  """
+    Gets appropriate user chat response based off the chat history.
+    *args:
+    user: a string of the user's name
+    history: chat history from this session
+    model: the name of the model to use
+    temperature: What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
+    top_p: An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+    n: How many chat completion choices to generate for each input_msg message.
+    stream: If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+    stop: Up to 4 sequences where the API will stop generating further tokens.
+    max_tokens: The maximum number of tokens to generate.
+    presence_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on whether they appear in the text so far, increasing the model's likelihood to talk about new topics.
+    frequency_penalty: Number between -2.0 and 2.0. Positive values penalize new tokens based on their existing frequency in the text so far, decreasing the model's likelihood to repeat the same line verbatim.
+    *returns:
+    response: a string containing the chat response
+    token_count: an int containing the number of tokens used
+  """
+  #Read Agent Prompt from file
+  with open(f"model/agents/{user}/{user}_prompt.txt", encoding='utf-8') as f:
+    agentPrompt = f.read()
+  #Read general knowledge from file
+  with open("model/agents/general_knowledge.txt", encoding='utf-8') as f:
+    general = f.read()
+  msgs = [
+    {'role':'system', 'content': f'{agentPrompt}\nGeneral information: \n{general}'},
+    *history
+  ]
+  response = openai.ChatCompletion.create(
+  model=model, # the name of the model to use
+  messages=msgs,
+  temperature=temperature, 
+  top_p=top_p, 
+  n=n,
+  stream=stream,
+  stop= stop,
+  max_tokens=max_tokens,
+  presence_penalty=presence_penalty,  
+  frequency_penalty=frequency_penalty,
+  )
+  answer = response["choices"][1]["message"]["content"] # type: ignore
+  tokens = response['usage']['total_tokens'] # type: ignore
+  print(response, "\n ~~~~\nLast api call tokens:", tokens, "\n ~~~~")
+  return  answer, tokens
+```
+~~~
+```./view/base_gui.py
+"""
+This module provides the BaseGUI class, a base class for various GUIs in the application.
+Classes in this module include:
+- BaseGUI: The base class for other GUIs, with common functionality.
+"""
+import tkinter as tk
+class BaseGUI:
+    def __init__(self, master):
+        self.master = master
+        self.primary_color = "#282c34"
+        self.secondary_color = "#4f5b66"
+        self.tertiary_color = "#98c379"
+        self.text_color = "#abb2bf"
+        self.main_frame = tk.Frame(self.master, bg=self.primary_color) # Add this line
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
+        self.master.title("AI Friend Group")
+        # Set color palette
+        self.primary_color = "#fdf0d5"  # cream
+        self.text_color = "#003049"  # black
+        self.secondary_color = "#669bbc"  # blue
+        self.tertiary_color = "#780000"  # red
+        # Create main frame
+        self.main_frame = tk.Frame(master, bg=self.primary_color)
+        self.main_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        # Create mode selection frame
+        self.mode_selection_frame = tk.Frame(master)
+        self.mode_selection_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
+        # Create mode selection buttons
+        self.chat_button = tk.Button(self.mode_selection_frame, text="Chat", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_chat)
+        self.chat_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
+        self.zoom_button = tk.Button(self.mode_selection_frame, text="Zoom", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_zoom)
+        self.zoom_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
+        self.photobooth_button = tk.Button(self.mode_selection_frame, text="Photobooth", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_photobooth)
+        self.photobooth_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
+    def run(self):
+        self.master.mainloop()
+```
+~~~
+```./controller/base_controller.py
+"""
+This module provides the BaseController class, a base class for various controllers in the application.
+Classes in this module include:
+- BaseController: The base class for other controllers, with common functionality.
+"""
+class BaseController:
+    def __init__(self, gui):
+        self.gui = gui
+        self.token_count = 0
+```
+~~~ 
+Now let me show you the chat components as they are the most fleshed out, the other two, zoom and photobooth, are on the backburner until chat is as close to perfect as can be.
+```./controller/chat_controller.py
+"""
+This module provides the ChatController class, which connects the chatbot model with the user interface.
+Classes in this module include:
+- ChatController: Handles the communication between the chatbot model and the GUI.
+"""
+from .base_controller import BaseController
+from model.agents.* import get_response_ali, get_response_jett, get_response_nathan, get_response_kate, get_response_robby, get_response_cat, get_response
+"""
+Handles all the openai API stuff and user responses.
+"""
+class ChatController(BaseController):
+    def __init__(self, gui):
+        super().__init__(gui)
+    def send_message(self, user, bot, message):
+        if message.strip() == "":
+            return
+        message = message.replace('\n', ' ')
+        chat_history = self.gui.get_chat_history()
+        chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
+        response = self.get_bot_response(bot, chat_history)
+        return response
+    def get_bot_response(self, bot, chat_history):
+        if bot == "All":
+            response, chat_history = self.get_response_all(chat_history)
+        else:
+            bot_response_function = {
+                "Ali": get_response_ali,
+                "Nathan":get_response_nathan,
+                #"Kyle":get_response_kyle,
+                "Robby":get_response_robby,
+                "Jett":get_response_jett,
+                "Kate":get_response_kate,
+                "Cat": get_response_cat,
+                #"Jake": chat.get_response_jake,
+            }
+            response, tokens = bot_response_function[bot](chat_history)
+            self.token_count += tokens
+            chat_history.append({'role': 'assistant', 'content': f"{response}"})
+        print("Total money spent so far: $"+ str((self.token_count / 1000) * 0.002), "\n ~~~~")
+        return response
+    def get_response_todo(self, user, message, target_user):
+        """
+        Given the user, message, and target user, returns the AI-generated response.
+        Args:
+            user (str): The user sending the message.
+            message (str): The content of the message.
+            target_user (str): The user expected to respond.
+        Returns:
+            response (str): The AI-generated response.
+        """
+        pass
+    def get_response_all(self,history):
+        """
+            TODO
+        """
+```
+Here is a sample example of what would be in one of the agent files, only Nathan has a filled out one for now:
+```./model/agents/nathan/nathan.py
+from model.openai_api import get_response
+def get_response_nathan(history):
+  msgs=[
+  {'role':'assistant', 'content': 'Nathan: Got it, I\'m Nathan Maldonado'},
+  {'role':'user', 'content':'Thoughts on latina girls dating white dudes?'},
+  {'role':'assistant', 'content':'Nathan: Every time I see a Latina gym baddie with a plain white dude it takes 2 weeks off my life.'},
+  {'role':'user', 'content':'Thoughts on Mbappe in the world cup?'},
+  {'role':'assistant', 'content':'Nathan: fuck that rat and his fuckin mom and that fuckin ninja turtle mbapenis. yeah bro we on that loud pack bro. louder than buenos aires right now bro. fuck Paris, fuck the Maginot line. messi stuck his fat girthy argecock straight down their mouthes. fuck ya mom you baguette eating, cigarette smoking, copium smoking, big nose having muthafuckers'},
+  {'role':'user', 'content':'how did you finish the computer science homework so quick?'},
+  {'role':'assistant', 'content':'Nathan: Lets just say I made a deal with the code devil (kyle)'},
+  {'role':'user', 'content':'Thoughts on the Henry Cavill and Sophia Vergara'},
+  {'role':'assistant', 'content':'Nathan: Henry Cavill is a giga chad, and bro, Sophia Vergara is one of the most OP women of all time.'},
+  {'role':'user', 'content':'I heard that UCI kid talking shit about you'},
+  {'role':'assistant', 'content':'Nathan: You talking about that twink ramen boy? imma punk his ass.'},
+  {'role':'user', 'content':'I just ate an oyster'},
+  {'role':'assistant', 'content':'Nathan: Who eats oysters theyre like the little cum dumpsters of the sea'},
+  #{'role':'user', 'content':'Ok let\'s move on'},
+  *history
+  ]
+  answer, tokens = get_response('nathan', msgs)
+  return  answer, tokens
+```
+Lastly here is the view component for the chat mode:
+```./view/discord_gui.py
+"""
+This module provides the DiscordGUI class, which displays a Discord-style chatbot interface.
+Classes in this module include:
+- DiscordGUI: Displays a Discord-style chatbot interface and handles user input.
+"""
+import tkinter as tk
+from .base_gui import BaseGUI
+class ChatGUI(BaseGUI):
+    def __init__(self, master):
+        super().__init__(master)
+        self.master.title("Chatroom")
+        # Create all widgets
+        self.create_widgets()
+        # Create selectors for user typing and requested user response
+        self.user_var = tk.StringVar(value="Ali")
+        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake"]
+        self.bot_var = tk.StringVar(value="Nathan")
+        self.bot_options = self.user_options + ["All"]
+        self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
+        self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
+        # Create loading label
+        self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
+    def create_widgets(self):
+        # Create chatroom frame
+        self.chatroom_frame = tk.Frame(self.main_frame, bg=self.primary_color)
+        self.chatroom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
+        # Create chat history text widget
+        self.chat_history = tk.Text(self.chatroom_frame, height=20, width=70, bg=self.primary_color, bd=0, font=("Arial", 12), state=tk.DISABLED)
+        self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
+        self.chat_history_list = []
+        # Create input frame
+        self.input_frame = tk.Frame(self.main_frame)
+        self.input_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
+        # Create input entry
+        self.input_entry = tk.Entry(self.input_frame, width=40, bd=0, font=("Arial", 12), bg=self.primary_color, fg=self.text_color)
+        self.input_entry.pack(side=tk.LEFT, padx=(0, 10), ipady=8)
+        self.input_entry.bind("<Return>", lambda event: self.send_message())
+        # Create send button
+        self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
+        self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
+    def send_message(self):
+        # get user typing and requested user response
+        user, bot, message = self.get_ubm()
+        if message.strip() == "":
+            return
+        # remove new line character from message
+        message = message.replace('\n', ' ')
+        # change cursor to a spinning cursor
+        self.master.config(cursor="wait")
+        # get chat history
+        self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
+        chatHistory = self.chat_history_list
+        # clear input entry and insert user message
+        self.clear_input()
+        self.display_message(user, message)
+        # get response from selected bot
+        response = self.controller.send_message(user, bot, message)
+        # display response in chat history
+        self.display_response(response)
+        # change cursor back to the default cursor
+        self.update_cursor()
+    def get_ubm(self):
+        user = self.user_var.get()
+        bot = self.bot_var.get()
+        message = self.input_entry.get()
+        return user, bot, message
+    def display_message(self, user, message):
+        tag = f"user_message"
+        self.chat_history.config(state=tk.NORMAL)
+        self.chat_history.insert(tk.END, "{}: {}\n".format(user, message), tag)
+        self.chat_history.insert(tk.END, "\n", "newline")
+        self.chat_history.config(state=tk.DISABLED)
+        self.chat_history.yview_moveto(1.0)
+    def display_response(self, response):
+        tag = f"bot_message"
+        self.chat_history.config(state=tk.NORMAL)
+        self.chat_history.insert(tk.END, "{}\n".format(response), tag)
+        self.chat_history.insert(tk.END, "\n", "newline")
+        self.chat_history.config(state=tk.DISABLED)
+        self.chat_history.yview_moveto(1.0)
+    def set_controller(self, controller):
+        self.controller = controller
+        self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method
+    def create_dropdown(self, parent, label_text, options, variable):
+        # create dropdown menu with label
+        label = tk.Label(parent, text=label_text, font=("Arial", 12), bg=self.primary_color, fg=self.tertiary_color)
+        label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
+        dropdown = tk.OptionMenu(parent, variable, *options)
+        dropdown.config(fg=self.tertiary_color, font=("Arial", 12), bd=0)
+        dropdown.pack(side=tk.LEFT, pady=5)
+        dropdown["menu"].config(bg="white", fg=self.text_color)
+    def set_tags(self):
+        # configure tags for chat history
+        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color)
+        self.chat_history.tag_config("bot_message", foreground=self.tertiary_color)
+        self.chat_history.tag_config("newline", foreground=self.primary_color)
+    def get_chat_history(self):
+        return self.chat_history_list
+    def clear_input(self):
+        self.input_entry.delete(0, tk.END)
+    def run(self):
+        self.set_tags()
+        super().run()
+```

@@ -1,7 +1,19 @@
+"""
+This module provides functions to process and extract information from text data.
+
+Functions in this module include:
+- extract_keywords(text): extracts and returns a list of relevant keywords from the given text
+- read_file_lines(filename): opens the given file and returns the contents
+- write_to_file(filename, text): writes the given text to the given file
+- create_jsonl_file(filename, messages): creates a JSONL file from the given list of messages
+- transcribe_updates(video_path, output_path): transcribes update videos from folder path and save transcripts to output path
+
+"""
+
 import json
 import ffmpeg
 import os
-import model.tools.whisp as whisper
+from model.openai_api import transcribe_video as whisper
 
 def read_file_lines(filename):
     """

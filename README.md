@@ -2,6 +2,8 @@
 
 This senior project aims to create an interactive AI chatroom with three distinct modes, simulating a conversation with an AI version of friends in a group. The project includes a text-based chat GUI, a zoom call simulation, and a photobooth-style live webcam conversation.
 
+This project is a chatbot application built using the OpenAI GPT-3.5-turbo model. The project is structured using the Model-View-Controller (MVC) pattern to separate the concerns of the application and make it more modular and maintainable.
+
 ## Modes
 
 1. **Text-based Chat GUI**: In this mode, users can type a message and receive a response from an AI version of someone in the friend group. The system should be able to semantically understand/guess who should respond. Users can also toggle a continuous conversation mode where the AI friends keep responding to each other until the stop button is pressed.
@@ -14,9 +16,32 @@ This senior project aims to create an interactive AI chatroom with three distinc
 
 The project follows the Model-View-Controller (MVC) architecture:
 
-- `./controller`: Contains the controller classes for each mode and a common controller.
-- `./model`: Contains the model components, including chat, user selection, continuous conversation, voice synthesis, lip sync, and user recognition.
-- `./view`: Contains the GUI classes for each mode and a common GUI class.
+### Model
+
+The Model directory contains all the logic related to the chatbot and its interaction with the OpenAI API.
+
+- `openai_api.py`: Handles the interaction with the OpenAI API.
+- `agents`: Contains agent-specific logic and prompt files.
+  - Each agent has its own subdirectory with a Python file (e.g., `ali.py`, `jett.py`) containing the agent's `get_response_*` function, and a text file (e.g., `ali_prompt.txt`, `jett_prompt.txt`) containing the agent's prompt.
+  - `general_knowledge.txt`: Contains general knowledge information shared by all agents.
+
+### View
+
+The View directory contains all the user interface components.
+
+- `base_gui.py`: Contains the base class for the GUI.
+- `discord_gui.py`: Contains the Discord-style GUI implementation.
+- `zoom_gui.py`: Contains the Zoom-style GUI implementation.
+- `photobooth_gui.py`: Contains the Photobooth-style GUI implementation.
+
+### Controller
+
+The Controller directory contains the logic to connect the Model and the View.
+
+- `base_controller.py`: Contains the base class for controllers.
+- `chat_controller.py`: Contains the controller class for the chatbot application. It connects the chatbot model with the GUI view.
+- `zoom_controller.py`: Contains the controller class for the Zoom GUI.
+- `photobooth_controller.py`: Contains the controller class for the Photobooth GUI.
 
 ## Next Steps
 

@@ -1,3 +1,10 @@
+"""
+This module provides the BaseGUI class, a base class for various GUIs in the application.
+
+Classes in this module include:
+- BaseGUI: The base class for other GUIs, with common functionality.
+"""
+
 import tkinter as tk
 
 class BaseGUI:

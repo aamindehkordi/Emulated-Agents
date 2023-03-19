@@ -51,6 +51,21 @@ class ChatGUI(BaseGUI):
         self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
         self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
 
+        # Create reset chat button
+        self.reset_button = tk.Button(self.input_frame, text="Reset Chat", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.reset_chat)
+        self.reset_button.pack(side=tk.LEFT, padx=(10, 0), ipadx=10, ipady=8)
+
+
+    def reset_chat(self):
+        # Clear chat history text widget
+        self.chat_history.config(state=tk.NORMAL)
+        self.chat_history.delete('1.0', tk.END)
+        self.chat_history.config(state=tk.DISABLED)
+
+        # Clear chat_history_list
+        self.chat_history_list = []
+
+    
     def send_message(self):
         # get user typing and requested user response
         user, bot, message = self.get_ubm()

@@ -47,6 +47,27 @@ class ChatGUI(BaseGUI):
         self.input_entry.pack(side=tk.LEFT, padx=(0, 10), ipady=8)
         self.input_entry.bind("<Return>", lambda event: self.send_message())
 
+        # Set default text for input entry
+        self.input_entry.insert(0, 'Type here to chat')
+        self.input_entry.config(fg=self.tertiary_color)
+
+        # Remove default text when user clicks on entry
+        def remove_default_text(event):
+            if self.input_entry.get() == 'Type here to chat':
+                self.input_entry.delete(0, tk.END)
+
+        self.input_entry.bind("<FocusIn>", remove_default_text)
+
+        # Add default text back if user leaves entry blank
+        def add_default_text(event):
+            if not self.input_entry.get():
+                self.input_entry.insert(0, 'Type here to chat')
+
+        self.input_entry.bind("<FocusOut>", add_default_text)
+
+        # Bind send_message to return key press
+        self.input_entry.bind("<Return>", lambda event: self.send_message())
+
         # Create send button
         self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
         self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)

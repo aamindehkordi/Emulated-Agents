@@ -39,13 +39,13 @@ class BaseGUI:
         self.mode_selection_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
 
         # Create mode selection buttons
-        self.chat_button = tk.Button(self.mode_selection_frame, text="Chat", bg=self.quaternary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_chat)
+        self.chat_button = tk.Button(self.mode_selection_frame, text="Chat", bg=self.quaternary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.switch_to_chat)
         self.chat_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
 
-        self.zoom_button = tk.Button(self.mode_selection_frame, text="Zoom", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_zoom)
+        self.zoom_button = tk.Button(self.mode_selection_frame, text="Zoom", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.switch_to_zoom)
         self.zoom_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
 
-        self.photobooth_button = tk.Button(self.mode_selection_frame, text="Photobooth", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.switch_to_photobooth)
+        self.photobooth_button = tk.Button(self.mode_selection_frame, text="Photobooth", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.switch_to_photobooth)
         self.photobooth_button.pack(side=tk.LEFT, padx=(0, 10), ipadx=10, ipady=8)
 
 

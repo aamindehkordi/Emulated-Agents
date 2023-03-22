@@ -34,16 +34,17 @@ class ChatGUI(BaseGUI):
         self.chatroom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         # Create chat history text widget
-        self.chat_history = tk.Text(self.chatroom_frame,height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Arial", 12), state=tk.DISABLED)
+        self.chat_history = tk.Text(self.chatroom_frame,height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Arial", 13), state=tk.DISABLED)
         self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
         self.chat_history_list = []
+
 
         # Create input frame
         self.input_frame = tk.Frame(self.main_frame)
         self.input_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
 
         # Create input entry
-        self.input_entry = tk.Entry(self.input_frame, width=40, bd=0, font=("Arial", 12), bg=self.primary_color, fg=self.text_color)
+        self.input_entry = tk.Entry(self.input_frame, width=40, bd=0, font=("Arial", 13), bg=self.primary_color, fg=self.text_color)
         self.input_entry.pack(side=tk.LEFT, padx=(0, 10), ipady=8)
         self.input_entry.bind("<Return>", lambda event: self.send_message())
 
@@ -69,11 +70,11 @@ class ChatGUI(BaseGUI):
         self.input_entry.bind("<Return>", lambda event: self.send_message())
 
         # Create send button
-        self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.send_message)
+        self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.send_message)
         self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
 
         # Create reset chat button
-        self.reset_button = tk.Button(self.input_frame, text="Reset Chat", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 12), bd=0, command=self.reset_chat)
+        self.reset_button = tk.Button(self.input_frame, text="Reset Chat", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.reset_chat)
         self.reset_button.pack(side=tk.LEFT, padx=(10, 0), ipadx=10, ipady=8)
 
 
@@ -144,11 +145,11 @@ class ChatGUI(BaseGUI):
 
     def create_dropdown(self, parent, label_text, options, variable):
         # create dropdown menu with label
-        label = tk.Label(parent, text=label_text, font=("Arial", 12), bg=self.tertiary_color, fg=self.primary_color )
+        label = tk.Label(parent, text=label_text, font=("Arial", 13), bg=self.tertiary_color, fg=self.primary_color )
         label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
 
         dropdown = tk.OptionMenu(parent, variable, *options)
-        dropdown.config(fg=self.primary_color, font=("Arial", 12), bd=0)
+        dropdown.config(fg=self.primary_color, font=("Arial", 13), bd=0)
         dropdown.pack(side=tk.LEFT, pady=5)
         dropdown["menu"].config(bg="white", fg=self.text_color)
 

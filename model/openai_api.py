@@ -122,7 +122,7 @@ def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1
     except Exception as oops:
         if 'maximum context length' in str(oops):
             #TODO better solution
-            msgs = msgs[len(msgs)//2-1:len(msgs)//2+1]
+            msgs = msgs[1:]
             continue
         retry += 1
         if retry >= max_retry:

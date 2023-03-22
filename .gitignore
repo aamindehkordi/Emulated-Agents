@@ -6,3 +6,4 @@ key_openai.txt
 *.pyc
 */*.pyc
 .DS_Store
+.vscode

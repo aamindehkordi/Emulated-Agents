@@ -12,6 +12,7 @@ from model.agents.nathan.nathan import get_response_nathan
 from model.agents.kate.kate import get_response_kate
 from model.agents.robby.robby import get_response_robby
 from model.agents.cat.cat import get_response_cat
+from model.agents.developer.developer import get_response_developer
 from model.openai_api import get_response
 """
 Handles all the openai API stuff and user responses.
@@ -27,7 +28,6 @@ class ChatController(BaseController):
         message = message.replace('\n', ' ')
 
         chat_history = self.gui.get_chat_history()
-        chat_history.append({'role': 'user', 'content': f"{user}: {message}"})
 
         response = self.get_bot_response(bot, chat_history)
         return response
@@ -46,12 +46,12 @@ class ChatController(BaseController):
                 "Kate":get_response_kate,
                 "Cat": get_response_cat,
                 #"Jake": chat.get_response_jake,
+                "developer": get_response_developer
             }
             response, tokens = bot_response_function[bot](chat_history)
-            self.token_count += tokens
+            self.token_count = self.token_count + tokens[0]
             chat_history.append({'role': 'assistant', 'content': f"{response}"})
             
-        print("Total money spent so far: $"+ str((self.token_count / 1000) * 0.002), "\n ~~~~")
         return response
 
     def on_send_button_click(self):

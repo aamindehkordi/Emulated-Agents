@@ -19,7 +19,7 @@ class ChatGUI(BaseGUI):
 
         # Create selectors for user typing and requested user response
         self.user_var = tk.StringVar(value="Ali")
-        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake"]
+        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "developer"]
         self.bot_var = tk.StringVar(value="Nathan")
         self.bot_options = self.user_options + ["All"]
         self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
@@ -116,6 +116,7 @@ class ChatGUI(BaseGUI):
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
+        
     def set_controller(self, controller):
         self.controller = controller
         self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method

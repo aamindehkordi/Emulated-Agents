@@ -123,11 +123,11 @@ class ChatGUI(BaseGUI):
 
     def create_dropdown(self, parent, label_text, options, variable):
         # create dropdown menu with label
-        label = tk.Label(parent, text=label_text, font=("Arial", 12), bg=self.primary_color, fg=self.tertiary_color)
+        label = tk.Label(parent, text=label_text, font=("Arial", 12), bg=self.tertiary_color, fg=self.primary_color )
         label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
 
         dropdown = tk.OptionMenu(parent, variable, *options)
-        dropdown.config(fg=self.tertiary_color, font=("Arial", 12), bd=0)
+        dropdown.config(fg=self.primary_color, font=("Arial", 12), bd=0)
         dropdown.pack(side=tk.LEFT, pady=5)
         dropdown["menu"].config(bg="white", fg=self.text_color)
 

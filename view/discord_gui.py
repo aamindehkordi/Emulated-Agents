@@ -34,7 +34,7 @@ class ChatGUI(BaseGUI):
         self.chatroom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         # Create chat history text widget
-        self.chat_history = tk.Text(self.chatroom_frame, height=20, width=70, bg=self.primary_color, bd=0, font=("Arial", 12), state=tk.DISABLED)
+        self.chat_history = tk.Text(self.chatroom_frame,height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Arial", 12), state=tk.DISABLED)
         self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
         self.chat_history_list = []
 

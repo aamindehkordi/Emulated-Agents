@@ -18,6 +18,8 @@ class BaseGUI:
         self.main_frame = tk.Frame(self.master, bg=self.primary_color) # Add this line
         self.main_frame.pack(fill=tk.BOTH, expand=True)
 
+        self.master.minsize(950, 500)
+
         self.master.title("AI Friend Group")
 
         # Set color palette

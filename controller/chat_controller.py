@@ -4,7 +4,6 @@ This module provides the ChatController class, which connects the chatbot model 
 Classes in this module include:
 - ChatController: Handles the communication between the chatbot model and the GUI.
 """
-
 from .base_controller import BaseController
 from model.agents.ali.ali import get_response_ali
 from model.agents.jett.jett import get_response_jett
@@ -14,6 +13,9 @@ from model.agents.robby.robby import get_response_robby
 from model.agents.cat.cat import get_response_cat
 from model.agents.developer.developer import get_response_developer
 from model.openai_api import get_response
+from model.tools.code_extractor import *
+import ast, astor, os
+
 """
 Handles all the openai API stuff and user responses.
 """
@@ -29,13 +31,39 @@ class ChatController(BaseController):
 
         chat_history = self.gui.get_chat_history()
 
-        response = self.get_bot_response(bot, chat_history)
+        # Pass the selected_classes from the GUI to the get_bot_response method
+        response = self.get_bot_response(bot, chat_history, self.gui.selected_classes)
         return response
 
+    def get_all_classes(self):
+        self.file_dict = {}
+        name_dict = find_py_files(".")
+        for name, path in name_dict.items():
+            file_content = read_file_content(path)
+            relevant_code = extract_relevant_code(file_content)
+            self.file_dict[path] = {'content': file_content, 'code': relevant_code}
+        all_classes = []
+        for data in self.file_dict.values():
+            code = data['code']
+            parsed_ast = ast.parse(code)  # Parse the code string into an AST
+            classes = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]  # Extract class names from the AST
+            all_classes.extend(classes)
+        return all_classes
 
-    def get_bot_response(self, bot, chat_history):
+    def get_bot_response(self, bot, chat_history, class_list=[]):
         if bot == "All":
             response, chat_history = self.get_response_all(chat_history)
+
+        elif bot == "developer":
+            for path, data in self.file_dict.items():
+                content = data['content']
+                for class_name in class_list:
+                    if class_name in content:
+                        chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:\n```{path}\n{content}\n```"})
+            response, tokens = get_response_developer(chat_history)
+            self.token_count = self.token_count + tokens[0]
+            chat_history.append({'role': 'assistant', 'content': f"{response}"})
+            
         else:
             bot_response_function = {
                 "Ali": get_response_ali,
@@ -45,46 +73,13 @@ class ChatController(BaseController):
                 "Jett":get_response_jett,
                 "Kate":get_response_kate,
                 "Cat": get_response_cat,
-                #"Jake": chat.get_response_jake,
-                "developer": get_response_developer
+                #"Jake": chat.get_response_jake
             }
             response, tokens = bot_response_function[bot](chat_history)
             self.token_count = self.token_count + tokens[0]
             chat_history.append({'role': 'assistant', 'content': f"{response}"})
             
         return response
-
-    def on_send_button_click(self):
-        """
-        Handles the send button click event in the chat GUI.
-        """
-        pass
-
-    def on_user_dropdown_change(self):
-        """
-        Handles the user dropdown change event in the chat GUI.
-        """
-        pass
-
-    def on_target_user_dropdown_change(self):
-        """
-        Handles the target user dropdown change event in the chat GUI.
-        """
-        pass
-    
-    def get_response_todo(self, user, message, target_user):
-        """
-        Given the user, message, and target user, returns the AI-generated response.
-        
-        Args:
-            user (str): The user sending the message.
-            message (str): The content of the message.
-            target_user (str): The user expected to respond.
-        
-        Returns:
-            response (str): The AI-generated response.
-        """
-        pass
 
     def get_response_all(self,history):
         """
@@ -113,3 +108,4 @@ class ChatController(BaseController):
         
         return responses, history
     
+

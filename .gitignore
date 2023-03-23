@@ -4,7 +4,10 @@ key_openai.txt
 */.vscode
 */__pycache__
 *.pyc
+*.cpython-38.pyc
 */*.pyc
 .DS_Store
 .vscode
 .idea
+/videos
+/__pycache__

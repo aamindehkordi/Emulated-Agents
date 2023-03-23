@@ -5,7 +5,6 @@ import os, json
 
 openai.api_key_path = "./key_openai.txt"
 
-
 #Not an api but makes more sense to put it here
 def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
     """ Transcribes a video file and returns the transcript.
@@ -39,7 +38,7 @@ transcript = transcribe_video("/Users/ali/Library/CloudStorage/OneDrive-Personal
 print(transcript)
 """
 
-def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False):
+def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=450, presence_penalty=0, frequency_penalty=0, debug=False):
   """
     Gets appropriate user chat response based off the chat history.
     

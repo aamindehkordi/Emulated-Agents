@@ -104,8 +104,16 @@ def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1
       if model=="gpt-4":
         prompt_tokens = response['usage']['prompt_tokens'] # type: ignore
         completion_tokens = response['usage']['completion_tokens'] # type: ignore
-        tokens = (prompt_tokens, completion_tokens)
+        total_tokens = response['usage']['total_tokens'] # type: ignore
+        tokens = (total_tokens, prompt_tokens, completion_tokens)
         print(f"token cost for last response: {prompt_tokens/1000*0.03 + completion_tokens/1000*0.06}")
+        
+      if model=="gpt-4-32k":
+        prompt_tokens = response['usage']['prompt_tokens'] # type: ignore
+        completion_tokens = response['usage']['completion_tokens'] # type: ignore
+        total_tokens = response['usage']['total_tokens'] # type: ignore
+        tokens = (total_tokens, prompt_tokens, completion_tokens)
+        print(f"token cost for last response: {prompt_tokens/1000*0.06 + completion_tokens/1000*0.12}")
       
       else:
         tokens = (response['usage']['total_tokens'],) # type: ignore

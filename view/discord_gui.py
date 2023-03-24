@@ -28,7 +28,8 @@ class ChatGUI(BaseGUI):
 
         # Create loading label
         self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
-        
+    
+    
 
     def create_widgets(self):
         # Create chatroom frame
@@ -54,19 +55,9 @@ class ChatGUI(BaseGUI):
         self.input_entry.insert(0, 'Type here to chat')
         self.input_entry.config(fg=self.tertiary_color)
 
-        # Remove default text when user clicks on entry
-        def remove_default_text(event):
-            if self.input_entry.get() == 'Type here to chat':
-                self.input_entry.delete(0, tk.END)
+        self.input_entry.bind("<FocusIn>", self.remove_default_text)
 
-        self.input_entry.bind("<FocusIn>", remove_default_text)
-
-        # Add default text back if user leaves entry blank
-        def add_default_text(event):
-            if not self.input_entry.get():
-                self.input_entry.insert(0, 'Type here to chat')
-
-        self.input_entry.bind("<FocusOut>", add_default_text)
+        self.input_entry.bind("<FocusOut>", self.add_default_text)
 
         # Bind send_message to return key press
         self.input_entry.bind("<Return>", lambda event: self.send_message())
@@ -83,6 +74,7 @@ class ChatGUI(BaseGUI):
 
         
     def create_developer_frame(self):
+        self.selected_classes = []
         # Create developer class frame
         self.dev_class_frame = tk.Frame(self.main_frame, bg=self.secondary_color)
         self.dev_class_frame.pack(side=tk.RIGHT, padx=20, pady=20)
@@ -122,7 +114,7 @@ class ChatGUI(BaseGUI):
         # Clear chat_history_list
         self.chat_history_list = []
 
-    def toggle_checkboxes(self, *args):
+    def developer_mode(self, *args):
         selected_bot = self.bot_var.get()
         if selected_bot == "developer":
             self.dev_class_frame.place(relx=0.75, rely=0.25, anchor="center")
@@ -202,7 +194,7 @@ class ChatGUI(BaseGUI):
         label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
 
         dropdown = ttk.Combobox(parent, textvariable=variable, values=options, state="readonly")
-        dropdown.bind("<<ComboboxSelected>>", self.toggle_checkboxes)
+        dropdown.bind("<<ComboboxSelected>>", self.developer_mode)
 
         dropdown.pack(side=tk.LEFT, pady=5)
 
@@ -215,7 +207,16 @@ class ChatGUI(BaseGUI):
         self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color)
         self.chat_history.tag_config("bot_message", foreground=self.tertiary_color)
         self.chat_history.tag_config("newline", foreground=self.primary_color)
-
+        
+    # Remove default text when user clicks on entry
+    def remove_default_text(self,event):
+        if self.input_entry.get() == 'Type here to chat':
+            self.input_entry.delete(0, tk.END)
+    
+    # Add default text back if user leaves entry blank
+    def add_default_text(self,event):
+        if not self.input_entry.get():
+            self.input_entry.insert(0, 'Type here to chat')
     def switch_to_chat(self):
         # Do nothing, already in chat mode
         pass
@@ -236,7 +237,11 @@ class ChatGUI(BaseGUI):
     
     def clear_input(self):
         self.input_entry.delete(0, tk.END)
-        
+    
     def run(self):
         self.set_tags()
         super().run()
+
+
+    def get_selected_classes(self):
+        return self.selected_classes

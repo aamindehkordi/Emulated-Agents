@@ -52,7 +52,12 @@ The Controller directory contains the logic to connect the Model and the View.
 
 ## Future Enhancements
 
-As the project progresses, new features and enhancements may be considered, such as improving the AI friends' conversational abilities, refining the user experience, and incorporating additional modes or functionalities.
+1. Implement context management when interacting with the OpenAI API to manage tokens and avoid exceeding API limits.
+2. Implement a caching mechanism to store the chatbot's responses, reducing the number of calls to the OpenAI API and saving on costs.
+3. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees.
+4. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations.
+5. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance.
+6. Utilize a logging system to monitor the chatbot's performance and user interactions.
 
 ## How to Run
 

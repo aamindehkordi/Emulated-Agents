@@ -1,7 +1,9 @@
+from time import sleep
 import openai
-openai.api_key_path = "./key_openai.txt"
-
 import whisper
+import os, json
+
+openai.api_key_path = "./key_openai.txt"
 
 #Not an api but makes more sense to put it here
 def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
@@ -36,7 +38,7 @@ transcript = transcribe_video("/Users/ali/Library/CloudStorage/OneDrive-Personal
 print(transcript)
 """
 
-def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=3, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0):
+def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=450, presence_penalty=0, frequency_penalty=0, debug=False):
   """
     Gets appropriate user chat response based off the chat history.
     
@@ -57,6 +59,9 @@ def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1
     response: a string containing the chat response
     token_count: an int containing the number of tokens used
   """
+  if str(user) == "developer":
+    debug = True
+    print("debug mode")
   #Read Agent Prompt from file
   with open(f"model/agents/{user}/{user}_prompt.txt", encoding='utf-8') as f:
     agentPrompt = f.read()
@@ -65,30 +70,70 @@ def get_response(user, history, model="gpt-3.5-turbo", temperature=0.91, top_p=1
   with open("model/agents/general_knowledge.txt", encoding='utf-8') as f:
     general = f.read()
     
-  msgs = [
-    {'role':'system', 'content': f'{agentPrompt}\nGeneral information: \n{general}'},
-    *history
-  ]
+  if not debug:
+    msgs = [
+      {'role':'system', 'content': f'{agentPrompt}\nGeneral information: \n{general}'},
+      *history
+    ]
+  else:
+    msgs = [
+      {'role':'system', 'content': f'{agentPrompt}'},
+      *history
+    ]
   
-  response = openai.ChatCompletion.create(
-  model=model, # the name of the model to use
-  messages=msgs,
-  temperature=temperature, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
-  top_p=top_p, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-  n=n, #How many chat completion choices to generate for each input_msg message.
-  stream=stream, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
-  stop= stop,
-  max_tokens=max_tokens,
-  presence_penalty=presence_penalty,  
-  frequency_penalty=frequency_penalty,
-  )
-  
-  answer = response["choices"][1]["message"]["content"] # type: ignore
-  tokens = response['usage']['total_tokens'] # type: ignore
-  print(response, "\n ~~~~\nLast api call tokens:", tokens, "\n ~~~~")
-  #Failsafe
-  """
-  if "language model" in answer or "OpenAI" in answer or "I was created" in answer:
-    answer = "Really bro. That's what you want to talk about? Talk about something else."
-  """
-  return  answer, tokens
+  max_retry = 2
+  retry = 0
+  while True:
+    try:
+      response = openai.ChatCompletion.create(
+      model=model, # the name of the model to use
+      messages=msgs,
+      temperature=temperature, #What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
+      top_p=top_p, #An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
+      n=n, #How many chat completion choices to generate for each input_msg message.
+      stream=stream, #If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
+      stop= stop,
+      max_tokens=max_tokens,
+      presence_penalty=presence_penalty,
+      frequency_penalty=frequency_penalty,
+      )
+      
+      answer = response["choices"][0]["message"]["content"] # type: ignore
+      
+      if model=="gpt-4":
+        prompt_tokens = response['usage']['prompt_tokens'] # type: ignore
+        completion_tokens = response['usage']['completion_tokens'] # type: ignore
+        total_tokens = response['usage']['total_tokens'] # type: ignore
+        tokens = (total_tokens, prompt_tokens, completion_tokens)
+        print(f"token cost for last response: {prompt_tokens/1000*0.03 + completion_tokens/1000*0.06}")
+        
+      if model=="gpt-4-32k":
+        prompt_tokens = response['usage']['prompt_tokens'] # type: ignore
+        completion_tokens = response['usage']['completion_tokens'] # type: ignore
+        total_tokens = response['usage']['total_tokens'] # type: ignore
+        tokens = (total_tokens, prompt_tokens, completion_tokens)
+        print(f"token cost for last response: {prompt_tokens/1000*0.06 + completion_tokens/1000*0.12}")
+      
+      else:
+        tokens = (response['usage']['total_tokens'],) # type: ignore
+        print(f"token cost for last response: {tokens[0]/1000*0.002}")
+      
+      if debug:
+        #write response to history file ./model/agents/{user}/{user}_history.json
+        with open(f"model/agents/{user}/{user}_history.json", "w") as f:
+          json.dump(answer, f)
+          #TODO add permanent history
+          
+      return answer, tokens
+    
+    except Exception as oops:
+        if 'maximum context length' in str(oops):
+            #TODO better solution
+            msgs = msgs[1:]
+            continue
+        retry += 1
+        if retry >= max_retry:
+            print(f"Exiting due to an error in ChatGPT: {oops}")
+            exit(1)
+        print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
+        sleep(2 ** (retry - 1) * 5)

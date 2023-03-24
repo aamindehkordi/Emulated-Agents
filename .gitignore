@@ -5,4 +5,12 @@ key_openai.txt
 */__pycache__
 *.pyc
 */*.pyc
+*.cpython-38.pyc
+*/*.cpython-38.pyc
+*/*.pyc
 .DS_Store
+.vscode
+.idea
+/videos
+/__pycache__
+model/__pycache__/openai_api.cpython-38.pyc

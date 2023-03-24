@@ -3,20 +3,24 @@ import astor
 import ast
 
 class CodeExtractor(ast.NodeVisitor):
+
     def __init__(self, include_strings=False):
-        self.relevant_code = ""
+        self.relevant_code = ''
         self.include_strings = include_strings
 
     def visit_ClassDef(self, node):
-        self.process_node(node)
+        self.relevant_code += astor.to_source(node) + '\n'
 
     def visit_FunctionDef(self, node):
-        self.process_node(node)
+        self.relevant_code += astor.to_source(node) + '\n'
 
     def visit_AsyncFunctionDef(self, node):
-        self.process_node(node)
-
-    def process_node(self, node):
+        self.relevant_code += astor.to_source(node) + '\n'
+        for child_node in ast.iter_child_nodes(node):
+            if not isinstance(child_node, ast.Str) or self.include_strings:
+                self.relevant_code += astor.to_source(child_node) + '\n'
+            else:
+                self.relevant_code += '\n'
         for child_node in ast.iter_child_nodes(node):
             if not isinstance(child_node, ast.Str) or self.include_strings:
                 self.relevant_code += astor.to_source(child_node) + "\n"

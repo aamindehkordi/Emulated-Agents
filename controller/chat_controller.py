@@ -8,6 +8,7 @@ from .base_controller import BaseController
 from model.agents.ali.ali import get_response_ali
 from model.agents.jett.jett import get_response_jett
 from model.agents.nathan.nathan import get_response_nathan
+from model.agents.kyle.kyle import get_response_kyle
 from model.agents.kate.kate import get_response_kate
 from model.agents.robby.robby import get_response_robby
 from model.agents.cat.cat import get_response_cat
@@ -71,7 +72,7 @@ class ChatController(BaseController):
             bot_response_function = {
                 "Ali": get_response_ali,
                 "Nathan":get_response_nathan,
-                #"Kyle":get_response_kyle,
+                "Kyle":get_response_kyle,
                 "Robby":get_response_robby,
                 "Jett":get_response_jett,
                 "Kate":get_response_kate,

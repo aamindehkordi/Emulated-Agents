@@ -6,6 +6,18 @@ import os, json
 class BaseModel:
     def __init__(self):
         pass
+
+    def process_input(self, input_data):
+        """
+        Processes the input data and returns the result.
+
+        Args:
+            input_data (str): The input data to be processed.
+
+        Returns:
+            str: The result of processing the input data.
+        """
+        pass
     
     def transcribe_video(self, fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
         """ Transcribes a video file and returns the transcript.

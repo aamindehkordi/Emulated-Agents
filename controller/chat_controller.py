@@ -13,7 +13,7 @@ from model.agents.robby.robby import get_response_robby
 from model.agents.cat.cat import get_response_cat
 from model.agents.developer.developer import get_response_developer
 from model.openai_api import get_response
-from model.tools.code_extractor import *
+from model.tools.code_extractor import FileSearcher, CodeExtractor
 import ast, astor, os
 
 """
@@ -37,10 +37,11 @@ class ChatController(BaseController):
 
     def get_all_classes(self):
         self.file_dict = {}
-        name_dict = find_py_files(".")
+        fs = FileSearcher()
+        name_dict = fs.find_py_files(".")
         for name, path in name_dict.items():
-            file_content = read_file_content(path)
-            relevant_code = extract_relevant_code(file_content)
+            file_content = fs.read_file_content(path)
+            relevant_code = fs.extract_relevant_code(file_content)
             self.file_dict[path] = {'content': file_content, 'code': relevant_code}
         all_classes = []
         for data in self.file_dict.values():
@@ -55,11 +56,13 @@ class ChatController(BaseController):
             response, chat_history = self.get_response_all(chat_history)
 
         elif bot == "developer":
+            relevantCode = "Here are a few relevant code snippets:\n"
             for path, data in self.file_dict.items():
                 content = data['content']
                 for class_name in class_list:
                     if class_name in content:
-                        chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:\n```{path}\n{content}\n```"})
+                        relevantCode += f"```{path}\n{data['code']}\n```\n"
+            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:\n```{relevantCode}\n```"})
             response, tokens = get_response_developer(chat_history)
             self.token_count = self.token_count + tokens[0]
             chat_history.append({'role': 'assistant', 'content': f"{response}"})

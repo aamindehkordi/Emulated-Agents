@@ -1,7 +1,7 @@
 # ./controller/chat_controller.py
 from .base_controller import BaseController
 from model.tools.code_extractor import FileSearcher
-import ast, astor, os
+import ast
 
 class ChatController(BaseController):
     def __init__(self, gui, model):

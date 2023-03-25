@@ -6,8 +6,9 @@ Classes in this module include:
 """
 
 class BaseController:
-    def __init__(self, gui):
+    def __init__(self, gui, model):
         self.gui = gui
+        self.model = model
         self.token_count = 0
 
     def update_view(self):

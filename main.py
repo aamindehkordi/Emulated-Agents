@@ -10,7 +10,7 @@ Functions in this module include:
 import tkinter as tk
 from controller.chat_controller import ChatController
 from view.discord_gui import ChatGUI
-
+from model.base_model import BaseModel
 def main():
     """
     Main function.
@@ -27,8 +27,9 @@ def main():
     root = tk.Tk()
     #chatroom = gui.ChatroomGUI(root)
     
+    model = BaseModel()
     chat_gui = ChatGUI(root)
-    chat_controller = ChatController(chat_gui)
+    chat_controller = ChatController(chat_gui, model)
 
     # Set the controller for the chat_gui
     chat_gui.set_controller(chat_controller)

@@ -28,7 +28,7 @@ The Model directory contains all the logic related to the chatbot and its intera
 - `history`: Contains agent-specific history JSON files.
   - Each agent has a JSON file (e.g., `ali_history.json`, `nathan_history.json`) containing their chat history.
 - `tools`: Contains helper functions for different aspects of the project.
-- `deepfake.py` TODO: Currently unused. Will be used to implement the live webcam and zoom modes.
+- `deepfake` TODO: Currently unused. Will be used to implement the live webcam and zoom modes.
 
 ### View
 

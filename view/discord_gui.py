@@ -14,7 +14,7 @@ class ChatGUI(BaseGUI):
     def __init__(self, master):
         super().__init__(master)
         self.master.title("Chatroom")
-        
+
         # Create all widgets
         self.create_widgets()
 
@@ -28,6 +28,8 @@ class ChatGUI(BaseGUI):
 
         # Create loading label
         self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
+        self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5) 
+        self.loading_label.pack_forget()
     
     
 
@@ -141,6 +143,7 @@ class ChatGUI(BaseGUI):
 
         # change cursor to a spinning cursor
         self.master.config(cursor="wait")
+        self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5)
 
         # get chat history
         self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
@@ -157,6 +160,7 @@ class ChatGUI(BaseGUI):
 
         # change cursor back to the default cursor
         self.update_cursor()
+        self.loading_label.pack_forget()
 
     def get_ubm(self):
         user = self.user_var.get()
@@ -201,7 +205,7 @@ class ChatGUI(BaseGUI):
         label = tk.Label(parent, text=label_text, font=("Arial", 13), bg=self.tertiary_color, fg=self.primary_color )
         label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
 
-        dropdown = ttk.Combobox(parent, textvariable=variable, values=options, state="readonly")
+        dropdown = ttk.Combobox(parent, textvariable=variable, values=options, state="readonly", width=10) 
         dropdown.bind("<<ComboboxSelected>>", self.developer_mode)
 
         dropdown.pack(side=tk.LEFT, pady=5)
@@ -212,8 +216,8 @@ class ChatGUI(BaseGUI):
 
     def set_tags(self):
         # configure tags for chat history
-        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color)
-        self.chat_history.tag_config("bot_message", foreground=self.tertiary_color)
+        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color, spacing1=5, spacing3=5)  # CHANGES: 9
+        self.chat_history.tag_config("bot_message", foreground=self.tertiary_color, spacing1=5, spacing3=5) 
         self.chat_history.tag_config("newline", foreground=self.primary_color)
         
     # Remove default text when user clicks on entry
@@ -245,11 +249,15 @@ class ChatGUI(BaseGUI):
     
     def clear_input(self):
         self.input_entry.delete(0, tk.END)
+        
+    def close_app(self):
+        self.controller.close_app()
+        self.master.destroy()
     
     def run(self):
         self.set_tags()
+        self.master.protocol("WM_DELETE_WINDOW", self.close_app)
         super().run()
-
 
     def get_selected_classes(self):
         return self.selected_classes

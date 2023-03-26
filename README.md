@@ -51,11 +51,15 @@ The Controller directory contains the logic to connect the Model and the View.
 ## Next Steps
 
 1. Implement autonomous user selection and continuous conversation functionality perhaps using another OpenAI model.
-2. Plan and implement speech synthesis for each AI friend.
-3. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
+2. Implement threading
+   1. multiple user responses
+   2. fix lag in between responses
+3. Update the GUI further, file and options menu perhaps + others
+4. Plan and implement speech synthesis for each AI friend.
+5. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
    1. GUI first,
    2. then implement the deepfake functionality.
-4. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
+6. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
 
 ## Future Enhancements
 

@@ -6,21 +6,14 @@ Classes in this module include:
 """
 
 import tkinter as tk
+from tkinter import ttk
+from ttkthemes import ThemedTk 
 
 class BaseGUI:
     def __init__(self, master):
+        
         self.master = master
-        self.primary_color = "#282c34"
-        self.secondary_color = "#4f5b66"
-        self.tertiary_color = "#98c379"
-        self.text_color = "#abb2bf"
-
-        self.main_frame = tk.Frame(self.master, bg=self.primary_color) # Add this line
-        self.main_frame.pack(fill=tk.BOTH, expand=True)
-
-        self.master.minsize(950, 500)
-
-        self.master.title("AI Friend Group")
+        #self.master = ThemedTk(theme="arc")
 
         # Set color palette
         self.primary_color = "#FFFFFF"  # white
@@ -29,6 +22,11 @@ class BaseGUI:
         self.tertiary_color = "#5B89AE"  # light blue
         self.quaternary_color = "#ADC4D7"  # some sort of blue
         self.quinary_color = "#52688F"  # some sort of blue pt 2
+        
+        self.main_frame = tk.Frame(self.master, bg=self.primary_color) # Add this line
+        self.main_frame.pack(fill=tk.BOTH, expand=True)
+
+        self.master.title("AI Friend Group")
 
         # Create main frame
         self.main_frame = tk.Frame(master, bg=self.primary_color)

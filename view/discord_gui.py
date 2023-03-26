@@ -9,11 +9,22 @@ from tkinter import ttk
 from tkinter import StringVar
 from .base_gui import BaseGUI
 
+import tkinter as tk
+from tkinter import ttk
+from tkinter import StringVar
+from .base_gui import BaseGUI
+
 class ChatGUI(BaseGUI):
     
     def __init__(self, master):
         super().__init__(master)
-        self.master.title("Chatroom")
+
+        # Make the GUI resizable
+        self.master.rowconfigure(0, weight=1)
+        self.master.columnconfigure(0, weight=1)
+
+        # Create a menu bar
+        self.create_menu_bar()
 
         # Create all widgets
         self.create_widgets()
@@ -26,11 +37,37 @@ class ChatGUI(BaseGUI):
         self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
         self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
 
-        # Create loading label
+        # Create loading label and loading animation
         self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
         self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5) 
         self.loading_label.pack_forget()
-    
+
+        # Loading animation
+        #image = Image.open("path/to/your/loading/image.gif")  # Set the path to your loading image
+        #self.loading_image = ImageTk.PhotoImage(image)
+        #self.loading_animation = tk.Label(self.input_frame, image=self.loading_image, bg=self.secondary_color)
+        self.loading_animation = tk.Label(self.input_frame, bg=self.secondary_color)
+        self.loading_animation.pack(side=tk.LEFT, padx=(10, 0), pady=5)
+        self.loading_animation.pack_forget()
+
+    def create_menu_bar(self):
+        self.menu_bar = tk.Menu(self.master)
+        self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
+        self.file_menu.add_command(label="Open", command=self.open_file)
+        self.file_menu.add_command(label="Save", command=self.save_file)
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Exit", command=self.close_app)
+        self.menu_bar.add_cascade(label="File", menu=self.file_menu)
+        self.master.config(menu=self.menu_bar)
+
+    def open_file(self):
+        # Add code to open a file
+        pass
+
+    def save_file(self):
+        # Add code to save a file
+        pass
+
     def create_widgets(self):
         # Create chatroom frame
         self.chatroom_frame = tk.Frame(self.main_frame, bg=self.primary_color)
@@ -195,6 +232,10 @@ class ChatGUI(BaseGUI):
             self.check_boxes.append(cb)
             
         self.update_class_selection()
+        
+    def show_preferences(self):
+        print("Show preferences window")  # You can replace this with your implementation for a preferences window
+
 
     def create_dropdown(self, parent, label_text, options, variable):
         # create dropdown menu with label

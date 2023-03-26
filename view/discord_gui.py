@@ -38,6 +38,14 @@ class ChatGUI(BaseGUI):
 
         # Create chat history text widget
         self.chat_history = tk.Text(self.chatroom_frame,height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Arial", 13), state=tk.DISABLED)
+        
+        #Set up scrollbar
+        self.chat_history_scrollbar = ttk.Scrollbar(self.chatroom_frame, orient="vertical", command=self.chat_history.yview)
+        self.chat_history_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        # Configure the chat_history widget to use the scrollbar
+        self.chat_history.config(yscrollcommand=self.chat_history_scrollbar.set)
+
         self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
         self.chat_history_list = []
 

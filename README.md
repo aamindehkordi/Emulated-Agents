@@ -50,27 +50,33 @@ The Controller directory contains the logic to connect the Model and the View.
 
 ## Next Steps
 
-1. Implement autonomous user selection and continuous conversation functionality perhaps using another OpenAI model.
-2. Implement threading
-   1. multiple user responses
-   2. fix lag in between responses
-3. Update the GUI further, file and options menu perhaps + others
-4. Plan and implement speech synthesis for each AI friend.
-5. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
-   1. GUI first,
-   2. then implement the deepfake functionality.
-6. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
+1. Add a timestamp for each message in the chat.
+2. Implement an autoscroll feature for the chat history.
+3. Make the input text entry box expandable vertically.
+4. Add tooltips for GUI elements to explain their functions.
+5. Improve the appearance of the dropdown menus for user and bot selection.
+6. Add a feature to allow users to customize the appearance of their chat bubbles.
+7. Allow users to change their chatbot's name.
+8. Add a settings menu to let users adjust preferences.
+9. Implement the ability to switch between a light and dark theme.
+10. Implement threading
+11. Add a more visually appealing theme and/or color customization options.
+12. Implement autonomous user selection and continuous conversation functionality perhaps using another OpenAI model.
+13. Update the GUI further, file and options menu perhaps + others
+14. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
+15. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
+16. Plan and implement speech synthesis for each AI friend.
 
 ## Future Enhancements
 
-1. Implement context management when interacting with the OpenAI API to manage tokens and avoid exceeding API limits.
+1. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance. _(maybe)_
 2. Implement a caching mechanism to store the chatbot's responses to basic questions, reducing the number of calls to the OpenAI API and saving on costs.
-3. Implement a longer external memory system for the agents to remember past conversations and provide more meaningful responses.
-   1. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees. _(maybe)_
-   2. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations. Moods and emotions can also be incorporated into the conversation context.
-   3. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance. _(maybe)_
+3. Implement context management when interacting with the OpenAI API to manage tokens and avoid exceeding API limits.
 4. Utilize a logging system to monitor the chatbot's performance and user interactions.
-5. Give our agents consciousness. _(maybe)_
+5. Implement a longer external memory system for the agents to remember past conversations and provide more meaningful responses.
+6. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations. Moods and emotions can also be incorporated into the conversation context.
+7. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees. _(maybe)_
+8. Give our agents consciousness. _(maybe)_
 
 ## How to Run
 

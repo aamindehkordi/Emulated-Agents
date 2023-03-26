@@ -1,28 +1,11 @@
-"""
-This module provides the ChatController class, which connects the chatbot model with the user interface.
-
-Classes in this module include:
-- ChatController: Handles the communication between the chatbot model and the GUI.
-"""
+# ./controller/chat_controller.py
 from .base_controller import BaseController
-from model.agents.ali.ali import get_response_ali
-from model.agents.jett.jett import get_response_jett
-from model.agents.nathan.nathan import get_response_nathan
-from model.agents.kyle.kyle import get_response_kyle
-from model.agents.kate.kate import get_response_kate
-from model.agents.robby.robby import get_response_robby
-from model.agents.cat.cat import get_response_cat
-from model.agents.developer.developer import get_response_developer
-from model.openai_api import get_response
-from model.tools.code_extractor import FileSearcher, CodeExtractor
-import ast, astor, os
+from model.tools.code_extractor import FileSearcher
+import ast
 
-"""
-Handles all the openai API stuff and user responses.
-"""
 class ChatController(BaseController):
-    def __init__(self, gui):
-        super().__init__(gui)
+    def __init__(self, gui, model):
+        super().__init__(gui, model)
 
     def send_message(self, user, bot, message):
         if message.strip() == "":
@@ -30,12 +13,75 @@ class ChatController(BaseController):
 
         message = message.replace('\n', ' ')
 
+        #Chat History from the gui
         chat_history = self.gui.get_chat_history()
 
         # Pass the selected_classes from the GUI to the get_bot_response method
         response = self.get_bot_response(bot, chat_history, self.gui.selected_classes)
         return response
 
+    def get_bot_response(self, bot, chat_history, class_list=[]):
+
+        agent = self.model.agents.get(bot.lower())
+        
+        if bot == "All":
+            response, chat_history = self.get_response_all(chat_history)
+
+        elif bot == "developer":
+            relevantCode = "\n"
+            for path, data in self.file_dict.items():
+                content = data['content']
+                for class_name in class_list:
+                    if class_name in content:
+                        relevantCode += f"```{path[1:]}\n{data['code']}\n```\n"
+            
+            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevantCode}"})
+            response, tokens = self.get_response_developer(agent, chat_history)
+            self.token_count = self.token_count + tokens[0]
+            chat_history.append({'role': 'assistant', 'content': f"{response}"})
+            return response
+        
+        response, tokens = self.model.get_response(agent, chat_history)
+        self.token_count = self.token_count + tokens[0]
+        chat_history.append({'role': 'assistant', 'content': f"{response}"})
+
+        return response    
+
+    
+    def get_response_developer(self, agent, history):
+    # Create a dictionary of filename and file contents
+      fs = FileSearcher(exclude=[
+      '*/.git/*',
+      '*/__pycache__/*',
+      '*/.DS_Store',
+      '*/data/*',
+      '*/.idea/*',
+      '*/*.mov',
+      '*/.vscode/*',
+      '*/videos/*',
+      '.idea',
+      '.vscode',
+      'data',
+      'videos',
+      '.git',
+      '.DS_Store',
+      '__pycache__',
+      '*.pyc'
+      ])
+      # generate a string of file paths
+      file_paths = '\n'.join([path for path in fs.search()])
+    
+      msgs=[
+          {'role':'user', 'content':f"Let me start by showing you the project structure: \n``` \n. = \"/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project\" \n{file_paths} \n``` \n"}
+          ]
+      
+      
+      msgs += history # type: ignore
+
+      answer, tokens = self.model.get_response(agent, msgs) # type: ignore
+      return answer, tokens
+  
+  
     def get_all_classes(self):
         self.file_dict = {}
         fs = FileSearcher()
@@ -51,40 +97,7 @@ class ChatController(BaseController):
             classes = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]  # Extract class names from the AST
             all_classes.extend(classes)
         return all_classes
-
-    def get_bot_response(self, bot, chat_history, class_list=[]):
-        if bot == "All":
-            response, chat_history = self.get_response_all(chat_history)
-
-        elif bot == "developer":
-            relevantCode = "Here are a few relevant code snippets:\n"
-            for path, data in self.file_dict.items():
-                content = data['content']
-                for class_name in class_list:
-                    if class_name in content:
-                        relevantCode += f"```{path[1:]}\n{data['code']}\n```\n"
-            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:\n```{relevantCode}\n```"})
-            response, tokens = get_response_developer(chat_history)
-            self.token_count = self.token_count + tokens[0]
-            chat_history.append({'role': 'assistant', 'content': f"{response}"})
-            
-        else:
-            bot_response_function = {
-                "Ali": get_response_ali,
-                "Nathan":get_response_nathan,
-                "Kyle":get_response_kyle,
-                "Robby":get_response_robby,
-                "Jett":get_response_jett,
-                "Kate":get_response_kate,
-                "Cat": get_response_cat,
-                #"Jake": chat.get_response_jake
-            }
-            response, tokens = bot_response_function[bot](chat_history)
-            self.token_count = self.token_count + tokens[0]
-            chat_history.append({'role': 'assistant', 'content': f"{response}"})
-            
-        return response
-
+    #TODO
     def get_response_all(self,history):
         """
             Get Responses from all agents and formats them into a chat history list
@@ -99,7 +112,7 @@ class ChatController(BaseController):
         responses = []
         #Get responses from all agents
         for user in user_list:
-            response, tokens = get_response(user, history)
+            response, tokens = self.model.get_response(user, history)
             self.token_count += tokens
             history.append({'role':'assistant', 'content':f"{user}: {response}"})
             
@@ -111,5 +124,3 @@ class ChatController(BaseController):
             response['content'] = response['content'].replace('{user}:', '')
         
         return responses, history
-    
-

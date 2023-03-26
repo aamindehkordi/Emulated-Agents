@@ -20,10 +20,15 @@ The project follows the Model-View-Controller (MVC) architecture:
 
 The Model directory contains all the logic related to the chatbot and its interaction with the OpenAI API.
 
-- `openai_api.py`: Handles the interaction with the OpenAI API.
-- `agents`: Contains agent-specific logic and prompt files.
-  - Each agent has its own subdirectory with a Python file (e.g., `ali.py`, `jett.py`) containing the agent's `get_response_*` function, and a text file (e.g., `ali_prompt.txt`, `jett_prompt.txt`) containing the agent's prompt.
+- `base_model.py`: Contains the base class for the chatbot model, handling agent initialization and API interaction.
+- `agent.py`: Contains the Agent class, which represents an individual AI friend in the chat.
+- `prompts`: Contains agent-specific prompt files and general knowledge information shared by all agents.
+  - Each agent has a text file (e.g., `ali_prompt.txt`, `nathan_prompt.txt`) containing the agent's prompt.
   - `general_knowledge.txt`: Contains general knowledge information shared by all agents.
+- `history`: Contains agent-specific history JSON files.
+  - Each agent has a JSON file (e.g., `ali_history.json`, `nathan_history.json`) containing their chat history.
+- `tools`: Contains helper functions for different aspects of the project.
+- `deepfake` TODO: Currently unused. Will be used to implement the live webcam and zoom modes.
 
 ### View
 
@@ -45,19 +50,23 @@ The Controller directory contains the logic to connect the Model and the View.
 
 ## Next Steps
 
-1. Implement the user selection and continuous conversation functionality in the text-based chat GUI.
+1. Implement autonomous user selection and continuous conversation functionality perhaps using another OpenAI model.
 2. Plan and implement speech synthesis for each AI friend.
 3. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
-4. Implement user recognition for the photobooth-style live webcam mode.
+   1. GUI first,
+   2. then implement the deepfake functionality.
+4. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
 
 ## Future Enhancements
 
 1. Implement context management when interacting with the OpenAI API to manage tokens and avoid exceeding API limits.
-2. Implement a caching mechanism to store the chatbot's responses, reducing the number of calls to the OpenAI API and saving on costs.
-3. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees.
-4. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations.
-5. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance.
-6. Utilize a logging system to monitor the chatbot's performance and user interactions.
+2. Implement a caching mechanism to store the chatbot's responses to basic questions, reducing the number of calls to the OpenAI API and saving on costs.
+3. Implement a longer external memory system for the agents to remember past conversations and provide more meaningful responses.
+   1. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees. _(maybe)_
+   2. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations. Moods and emotions can also be incorporated into the conversation context.
+   3. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance. _(maybe)_
+4. Utilize a logging system to monitor the chatbot's performance and user interactions.
+5. Give our agents consciousness. _(maybe)_
 
 ## How to Run
 

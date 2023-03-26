@@ -124,3 +124,8 @@ class ChatController(BaseController):
             response['content'] = response['content'].replace('{user}:', '')
         
         return responses, history
+
+    def close_app(self):
+        #called from the gui
+        self.model.save_history()
+        self.on_exit()

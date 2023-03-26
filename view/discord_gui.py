@@ -31,16 +31,14 @@ class ChatGUI(BaseGUI):
         self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5) 
         self.loading_label.pack_forget()
     
-    
-
     def create_widgets(self):
         # Create chatroom frame
         self.chatroom_frame = tk.Frame(self.main_frame, bg=self.primary_color)
         self.chatroom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
 
         # Create chat history text widget
-        self.chat_history = tk.Text(self.chatroom_frame,height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Arial", 13), state=tk.DISABLED)
-        
+        self.chat_history = tk.Text(self.chatroom_frame, height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Courier", 13), state=tk.DISABLED)
+
         #Set up scrollbar
         self.chat_history_scrollbar = ttk.Scrollbar(self.chatroom_frame, orient="vertical", command=self.chat_history.yview)
         self.chat_history_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
@@ -114,7 +112,6 @@ class ChatGUI(BaseGUI):
         # Initially hide checkboxes and dev_class_frame
         self.dev_class_frame.pack_forget()
 
-
     def reset_chat(self):
         # Clear chat history text widget
         self.chat_history.config(state=tk.NORMAL)
@@ -130,7 +127,6 @@ class ChatGUI(BaseGUI):
             self.dev_class_frame.place(relx=0.75, rely=0.25, anchor="center")
         else:
             self.dev_class_frame.place_forget()
-
     
     def send_message(self):
         # get user typing and requested user response
@@ -220,6 +216,10 @@ class ChatGUI(BaseGUI):
         self.chat_history.tag_config("bot_message", foreground=self.tertiary_color, spacing1=5, spacing3=5) 
         self.chat_history.tag_config("newline", foreground=self.primary_color)
         
+    
+    def get_selected_classes(self):
+        return self.selected_classes
+    
     # Remove default text when user clicks on entry
     def remove_default_text(self,event):
         if self.input_entry.get() == 'Type here to chat':
@@ -229,17 +229,6 @@ class ChatGUI(BaseGUI):
     def add_default_text(self,event):
         if not self.input_entry.get():
             self.input_entry.insert(0, 'Type here to chat')
-    def switch_to_chat(self):
-        # Do nothing, already in chat mode
-        pass
-
-    def switch_to_zoom(self):
-        # Implement switching to zoom mode
-        pass
-
-    def switch_to_photobooth(self):
-        # Implement switching to photobooth mode
-        pass
 
     def update_cursor(self):
         self.master.config(cursor="")
@@ -256,8 +245,5 @@ class ChatGUI(BaseGUI):
     
     def run(self):
         self.set_tags()
-        self.master.protocol("WM_DELETE_WINDOW", self.close_app)
+        #self.master.protocol("WM_DELETE_WINDOW", self.close_app)
         super().run()
-
-    def get_selected_classes(self):
-        return self.selected_classes

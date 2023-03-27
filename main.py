@@ -9,8 +9,29 @@ Functions in this module include:
 
 import tkinter as tk
 from controller.chat_controller import ChatController
-from view.discord_gui import ChatGUI
+from view.base_gui import BaseGUI
+from view.discord_gui import DiscordGUI
 from model.base_model import BaseModel
+
+class MainApp:
+    def __init__(self):
+        self.model = BaseModel()
+        self.controller = ChatController()
+
+        self.init_base_gui()
+
+    def init_base_gui(self):
+        self.gui = BaseGUI(self.controller)
+        self.gui.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+    def on_closing(self):
+        # Perform cleanup and close the application
+        self.gui.destroy()
+
+    def run(self):
+        self.gui.mainloop()
+
+    
 def main():
     """
     Main function.
@@ -23,19 +44,8 @@ def main():
     #process.transcribe_updates("data/processed/videos/all_updates", "data/preprocessed/text/all_updates")
     #DONE
     
-    # create GUI instance
-    root = tk.Tk()
-    #chatroom = gui.ChatroomGUI(root)
-    
-    model = BaseModel()
-    chat_gui = ChatGUI(root)
-    chat_controller = ChatController(chat_gui, model)
-
-    # Set the controller for the chat_gui
-    chat_gui.set_controller(chat_controller)
-
-    chat_gui.run()
-    root.mainloop()
+    app = MainApp()
+    app.run()
         
 if __name__ == "__main__":
     main()

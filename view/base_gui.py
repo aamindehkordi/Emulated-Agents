@@ -28,7 +28,7 @@ class BaseGUI(ThemedTk):
 
         self.set_theme(self.theme)
         self.title("AI Friends App")
-        self.geometry("800x600")
+        self.geometry("1500x750")
 
         self.create_menu_bar()
         self.create_main_frame()

@@ -44,7 +44,11 @@ agent_history = [x for x in history]
 agent_prompt = 'model/prompts/nathan_prompt.txt'
 msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
        *agent_history, 
-       { "role": "user", "content": f" [{query}]\n\n{relevant_doc}" }]
+       { "role": "user", "content": 
+        f"""You are currently talking to Kyle. Maintain your Nathan person as if you are currently talking to him. 
+        Here is what he said [{query}]\n The following is some information that could help you.
+        Use this for knowledge rather than speaking style or response generation.
+        If it doesn't seem related enough to the current conversation then don't use it.\n\n{relevant_doc}""" }]
 response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
 answer = response["choices"][0]["message"]["content"]
 print(answer)

@@ -4,8 +4,9 @@ from model.tools.code_extractor import FileSearcher
 import ast
 
 class ChatController(BaseController):
-    def __init__(self, gui, model):
-        super().__init__(gui, model)
+    def __init__(self):
+        super().__init__()
+        self.token_count = 0
 
     def send_message(self, user, bot, message):
         if message.strip() == "":
@@ -14,10 +15,10 @@ class ChatController(BaseController):
         message = message.replace('\n', ' ')
 
         #Chat History from the gui
-        chat_history = self.gui.get_chat_history()
+        chat_history = self.chat_gui.get_chat_history()
 
         # Pass the selected_classes from the GUI to the get_bot_response method
-        response = self.get_bot_response(bot, chat_history, self.gui.selected_classes)
+        response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
         return response
 
     def get_bot_response(self, bot, chat_history, class_list=[]):
@@ -97,6 +98,9 @@ class ChatController(BaseController):
             classes = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]  # Extract class names from the AST
             all_classes.extend(classes)
         return all_classes
+    
+        
+    
     #TODO
     def get_response_all(self,history):
         """
@@ -113,7 +117,7 @@ class ChatController(BaseController):
         #Get responses from all agents
         for user in user_list:
             response, tokens = self.model.get_response(user, history)
-            self.token_count += tokens
+            self.token_count += tokens # type: ignore
             history.append({'role':'assistant', 'content':f"{user}: {response}"})
             
         #Update history
@@ -127,5 +131,7 @@ class ChatController(BaseController):
 
     def close_app(self):
         #called from the gui
-        self.model.save_history()
+        #self.model.save_history()
         self.on_exit()
+        
+    

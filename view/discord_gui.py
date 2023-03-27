@@ -1,122 +1,85 @@
 """
-This module provides the DiscordGUI class, which displays a Discord-style chatbot interface.
+./view/discord_gui.py
+This module provides the DiscordGUI class, which is a chat interface that inherits from the BaseGUI.
 
 Classes in this module include:
-- DiscordGUI: Displays a Discord-style chatbot interface and handles user input.
+- DiscordGUI: The chat interface, extending the BaseGUI class.
 """
 import tkinter as tk
 from tkinter import ttk
 from tkinter import StringVar
-from .base_gui import BaseGUI
+from view.base_gui import BaseGUI
+#Debugging
+#from base_gui import BaseGUI
 
-import tkinter as tk
-from tkinter import ttk
-from tkinter import StringVar
-from .base_gui import BaseGUI
+class DiscordGUI(BaseGUI):
+    def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
+        super().__init__(controller, theme, font, padx, pady)
+        self.title("AI Friends Chat Mode")
 
-class ChatGUI(BaseGUI):
-    
-    def __init__(self, master):
-        super().__init__(master)
+    def create_main_frame(self):
+        # create main frame
+        self.main_frame = ttk.Frame(self)
+        self.main_frame.pack(expand=True, fill=tk.BOTH, padx=self.padx, pady=self.pady)
 
-        # Make the GUI resizable
-        self.master.rowconfigure(0, weight=1)
-        self.master.columnconfigure(0, weight=1)
+        # create chat history frame
+        self.chat_history = tk.Text(self.main_frame, wrap=tk.WORD, font=self.font, state=tk.DISABLED, bg=self.primary_color, fg=self.text_color)
+        self.chat_history.pack(expand=True, fill=tk.BOTH, padx=self.padx, pady=self.pady)
 
-        # Create a menu bar
-        self.create_menu_bar()
+        self.chat_history_list = []
+        
+        # create input frame
+        self.input_frame = ttk.Frame(self.main_frame)
+        self.input_frame.pack(fill=tk.X, padx=self.padx, pady=self.pady)
 
-        # Create all widgets
-        self.create_widgets()
+        # create input field
+        self.message_entry = tk.Text(self.input_frame, wrap=tk.WORD, font=self.font, height=3, bg=self.secondary_color, fg=self.text_color)
+        self.message_entry.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(self.padx, 0), pady=self.pady)
+        self.message_entry.bind("<Return>", self.on_enter_pressed)
+
+        # Set default text for input entry
+        self.message_entry.config(fg=self.tertiary_color)
+
+        self.message_entry.bind("<FocusIn>", self.remove_default_text)
+
+        self.message_entry.bind("<FocusOut>", self.add_default_text)
+        
+        # create send button
+        self.send_button = ttk.Button(self.input_frame, text="Send", command=self.send_message)
+        self.send_button.pack(side=tk.RIGHT, padx=self.padx, pady=self.pady)
+        
+        # create reset chat button
+        self.reset_button = tk.Button(self.main_frame, text="Reset Chat", command=self.reset_chat)
+        self.reset_button.pack(side=tk.BOTTOM, padx=self.padx, pady=self.pady)
 
         # Create selectors for user typing and requested user response
         self.user_var = tk.StringVar(value="Ali")
         self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "developer"]
         self.bot_var = tk.StringVar(value="Nathan")
-        self.bot_options = self.user_options + ["All"]
+        self.bot_options = ["Nathan", "Ali", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "developer", "All"]
         self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
         self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
-
-        # Create loading label and loading animation
-        self.loading_label = tk.Label(self.input_frame, text="Generating Response...", font=("Arial", 12), bg=self.secondary_color, fg=self.text_color)
-        self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5) 
-        self.loading_label.pack_forget()
-
-        # Loading animation
-        #image = Image.open("path/to/your/loading/image.gif")  # Set the path to your loading image
-        #self.loading_image = ImageTk.PhotoImage(image)
-        #self.loading_animation = tk.Label(self.input_frame, image=self.loading_image, bg=self.secondary_color)
-        self.loading_animation = tk.Label(self.input_frame, bg=self.secondary_color)
-        self.loading_animation.pack(side=tk.LEFT, padx=(10, 0), pady=5)
-        self.loading_animation.pack_forget()
-
-    def create_menu_bar(self):
-        self.menu_bar = tk.Menu(self.master)
-        self.file_menu = tk.Menu(self.menu_bar, tearoff=0)
-        self.file_menu.add_command(label="Open", command=self.open_file)
-        self.file_menu.add_command(label="Save", command=self.save_file)
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", command=self.close_app)
-        self.menu_bar.add_cascade(label="File", menu=self.file_menu)
-        self.master.config(menu=self.menu_bar)
-
-    def open_file(self):
-        # Add code to open a file
-        pass
-
-    def save_file(self):
-        # Add code to save a file
-        pass
-
-    def create_widgets(self):
-        # Create chatroom frame
-        self.chatroom_frame = tk.Frame(self.main_frame, bg=self.primary_color)
-        self.chatroom_frame.pack(fill=tk.BOTH, expand=True, padx=20, pady=20)
-
-        # Create chat history text widget
-        self.chat_history = tk.Text(self.chatroom_frame, height=20, width=70, bg=self.primary_color, fg=self.quinary_color, bd=0, font=("Courier", 13), state=tk.DISABLED)
-
-        #Set up scrollbar
-        self.chat_history_scrollbar = ttk.Scrollbar(self.chatroom_frame, orient="vertical", command=self.chat_history.yview)
-        self.chat_history_scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
-
-        # Configure the chat_history widget to use the scrollbar
-        self.chat_history.config(yscrollcommand=self.chat_history_scrollbar.set)
-
-        self.chat_history.pack(side=tk.LEFT, padx=10, fill=tk.BOTH, expand=True)
-        self.chat_history_list = []
-
-
-        # Create input frame
-        self.input_frame = tk.Frame(self.main_frame)
-        self.input_frame.pack(fill=tk.X, padx=20, pady=(0, 20))
-
-        # Create input entry
-        self.input_entry = tk.Entry(self.input_frame, width=40, bd=0, font=("Arial", 13), bg=self.primary_color, fg=self.text_color)
-        self.input_entry.pack(side=tk.LEFT, padx=(0, 10), ipady=8)
-        self.input_entry.bind("<Return>", lambda event: self.send_message())
-
-        # Set default text for input entry
-        self.input_entry.insert(0, 'Type here to chat')
-        self.input_entry.config(fg=self.tertiary_color)
-
-        self.input_entry.bind("<FocusIn>", self.remove_default_text)
-
-        self.input_entry.bind("<FocusOut>", self.add_default_text)
-
-        # Bind send_message to return key press
-        self.input_entry.bind("<Return>", lambda event: self.send_message())
-
-        # Create send button
-        self.send_button = tk.Button(self.input_frame, text="Send", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.send_message)
-        self.send_button.pack(side=tk.LEFT, ipadx=10, ipady=8)
-
-        # Create reset chat button
-        self.reset_button = tk.Button(self.input_frame, text="Reset Chat", bg=self.primary_color, fg=self.tertiary_color, font=("Arial", 13), bd=0, command=self.reset_chat)
-        self.reset_button.pack(side=tk.LEFT, padx=(10, 0), ipadx=10, ipady=8)
         
         self.create_developer_frame()
-
+        
+    def create_dropdown(self, parent, label_text, options, default):
+        # create dropdown menu with label
+        label = tk.Label(parent, text=label_text, font=self.font, bg=self.secondary_color, fg=self.text_color)
+        label.pack(side=tk.LEFT, padx=(self.padx, 0), pady=self.pady)
+        
+        # create dropdown menu with options (ComboBox)
+        dropdown = ttk.Combobox(parent, textvariable=default, values=options, state="readonly")
+        dropdown.bind("<<ComboboxSelected>>", self.on_dropdown_selected)
+        dropdown.pack(side=tk.LEFT, padx=(0, self.padx), pady=self.pady)
+        
+        # Set default value
+        dropdown.current(0)
+        
+    def on_dropdown_selected(self, event):
+        if self.user_var.get() == "developer":
+            self.dev_class_frame.pack(side=tk.RIGHT, padx=self.padx, pady=self.pady)
+        else:
+            self.dev_class_frame.pack_forget()
         
     def create_developer_frame(self):
         self.selected_classes = []
@@ -148,57 +111,37 @@ class ChatGUI(BaseGUI):
 
         # Initially hide checkboxes and dev_class_frame
         self.dev_class_frame.pack_forget()
-
-    def reset_chat(self):
-        # Clear chat history text widget
-        self.chat_history.config(state=tk.NORMAL)
-        self.chat_history.delete('1.0', tk.END)
-        self.chat_history.config(state=tk.DISABLED)
-
-        # Clear chat_history_list
-        self.chat_history_list = []
-
-    def developer_mode(self, *args):
-        selected_bot = self.bot_var.get()
-        if selected_bot == "developer":
-            self.dev_class_frame.place(relx=0.75, rely=0.25, anchor="center")
+        
+    def on_enter_pressed(self, event):
+        #if shift is not pressed, send message
+        if not event.state & 0x1:
+            self.send_message()
+            return "break"
         else:
-            self.dev_class_frame.place_forget()
-    
+            self.message_entry.insert(tk.END, "")
+
     def send_message(self):
         # get user typing and requested user response
         user, bot, message = self.get_ubm()
+        if message:
 
-        if message.strip() == "":
-            return
-        # remove new line character from message
-        message = message.replace('\n', ' ')
+            # get chat history
+            self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
 
-        # change cursor to a spinning cursor
-        self.master.config(cursor="wait")
-        self.loading_label.pack(side=tk.LEFT, padx=(10, 0), pady=5)
+            # clear input entry and insert user message
+            self.clear_input()
+            self.display_message(user, message)
+            
+            # get response from selected bot
+            response = self.controller.send_message(user, bot, message)
 
-        # get chat history
-        self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
-
-        # clear input entry and insert user message
-        self.clear_input()
-        self.display_message(user, message)
-
-        # get response from selected bot
-        response = self.controller.send_message(user, bot, message)
-
-        # display response in chat history
-        self.display_response(response)
-
-        # change cursor back to the default cursor
-        self.update_cursor()
-        self.loading_label.pack_forget()
+            # display response in chat history
+            self.display_response(response)
 
     def get_ubm(self):
         user = self.user_var.get()
         bot = self.bot_var.get()
-        message = self.input_entry.get()
+        message = self.message_entry.get("1.0", tk.END)
         return user, bot, message
     
     def display_message(self, user, message):
@@ -216,7 +159,7 @@ class ChatGUI(BaseGUI):
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
         self.chat_history.yview_moveto(1.0)
-        
+     
     def set_controller(self, controller):
         self.controller = controller
         self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method
@@ -233,58 +176,63 @@ class ChatGUI(BaseGUI):
             
         self.update_class_selection()
         
-    def show_preferences(self):
-        print("Show preferences window")  # You can replace this with your implementation for a preferences window
+    # Remove default text when user clicks on entry
+    def remove_default_text(self,event):
+        if self.message_entry.get("1.0", tk.END).strip() == "Type here to chat":
+            self.message_entry.delete("1.0", tk.END)
+            self.message_entry.config(fg=self.text_color)
 
+    # Add default text back if user leaves entry blank
+    def add_default_text(self,event):
+        if self.message_entry.get("1.0", tk.END).strip() == "":
+            self.message_entry.insert("1.0", "Type here to chat")
+            self.message_entry.config(fg=self.tertiary_color)
+            
+    def reset_chat(self):
+        # Clear chat history text widget
+        self.chat_history.config(state=tk.NORMAL)
+        self.chat_history.delete('1.0', tk.END)
+        self.chat_history.config(state=tk.DISABLED)
 
-    def create_dropdown(self, parent, label_text, options, variable):
-        # create dropdown menu with label
-        label = tk.Label(parent, text=label_text, font=("Arial", 13), bg=self.tertiary_color, fg=self.primary_color )
-        label.pack(side=tk.LEFT, padx=(0, 10), pady=5)
+        # Clear chat_history_list
+        self.chat_history_list = []
 
-        dropdown = ttk.Combobox(parent, textvariable=variable, values=options, state="readonly", width=10) 
-        dropdown.bind("<<ComboboxSelected>>", self.developer_mode)
-
-        dropdown.pack(side=tk.LEFT, pady=5)
-
-    def update_class_selection(self):
-        self.selected_classes = [var.get() for var in self.class_var if var.get() != ""]
-        print("Selected classes:", self.selected_classes)  # You can remove this line if you don't need to print the selected classes
-
+    def developer_mode(self, *args):
+        selected_bot = self.bot_var.get()
+        if selected_bot == "developer":
+            self.dev_class_frame.place(relx=0.75, rely=0.25, anchor="center")
+        else:
+            self.dev_class_frame.place_forget()
+    
     def set_tags(self):
         # configure tags for chat history
         self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color, spacing1=5, spacing3=5)  # CHANGES: 9
         self.chat_history.tag_config("bot_message", foreground=self.tertiary_color, spacing1=5, spacing3=5) 
         self.chat_history.tag_config("newline", foreground=self.primary_color)
         
-    
+    def update_class_selection(self):
+        self.selected_classes = [var.get() for var in self.class_var if var.get() != ""]
+        #print("Selected classes:", self.selected_classes)  
+        
     def get_selected_classes(self):
         return self.selected_classes
     
-    # Remove default text when user clicks on entry
-    def remove_default_text(self,event):
-        if self.input_entry.get() == 'Type here to chat':
-            self.input_entry.delete(0, tk.END)
-    
-    # Add default text back if user leaves entry blank
-    def add_default_text(self,event):
-        if not self.input_entry.get():
-            self.input_entry.insert(0, 'Type here to chat')
-
-    def update_cursor(self):
-        self.master.config(cursor="")
-        
     def get_chat_history(self):
         return self.chat_history_list
     
     def clear_input(self):
-        self.input_entry.delete(0, tk.END)
+        self.message_entry.delete("1.0", tk.END)
         
-    def close_app(self):
-        self.controller.close_app()
-        self.master.destroy()
-    
     def run(self):
-        self.set_tags()
-        #self.master.protocol("WM_DELETE_WINDOW", self.close_app)
+        #self.set_tags()
         super().run()
+        
+if __name__ == "__main__":
+    # Example usage
+    class DummyController:
+        def send_message(self, message):
+            print(f"User: {message}")
+
+    dummy_controller = DummyController()
+    discord_gui = DiscordGUI(dummy_controller)
+    discord_gui.mainloop()

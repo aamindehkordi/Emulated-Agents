@@ -18,8 +18,8 @@ embeddings = OpenAIEmbeddings()
 
 # initialize pinecone
 pinecone.init(
-    api_key="3ad35bc4-f126-413d-8e1c-7b9c6344fab4",  # find at app.pinecone.io
-    environment="us-west4-gcp"  # next to api key in console
+    api_key="",  # find at app.pinecone.io
+    environment=""  # next to api key in console
 )
 
 index_name = "ai-langchain"

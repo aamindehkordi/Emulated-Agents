@@ -2,7 +2,6 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
 from langchain.document_loaders import TextLoader
-
 from langchain.document_loaders import TextLoader
 import pinecone
 import openai
@@ -16,10 +15,14 @@ docs = text_splitter.split_documents(documents)
 
 embeddings = OpenAIEmbeddings()
 
+# Read the API key and environment from file lines 1 and 2
+with open('./key_pinecone.txt') as f:
+    api_key = f.readline().strip()
+    environment = f.readline().strip()
 # initialize pinecone
 pinecone.init(
-    api_key="",  # find at app.pinecone.io
-    environment=""  # next to api key in console
+    api_key=api_key,  # find at app.pinecone.io
+    environment=environment  # next to api key in console
 )
 
 index_name = "ai-langchain"

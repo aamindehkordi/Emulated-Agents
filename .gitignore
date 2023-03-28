@@ -1,4 +1,5 @@
 key_openai.txt
+key_pinecone.txt
 *.mov
 */.idea
 */.vscode

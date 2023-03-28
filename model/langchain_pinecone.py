@@ -16,9 +16,10 @@ docs = text_splitter.split_documents(documents)
 embeddings = OpenAIEmbeddings()
 
 # Read the API key and environment from file lines 1 and 2
-with open('./key_pinecone.txt') as f:
+"""with open('./key_pinecone.txt') as f:
     api_key = f.readline().strip()
-    environment = f.readline().strip()
+    environment = f.readline().strip()"""
+
 # initialize pinecone
 pinecone.init(
     api_key=api_key,  # find at app.pinecone.io
@@ -48,7 +49,7 @@ agent_prompt = 'model/prompts/nathan_prompt.txt'
 msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
        *agent_history, 
        { "role": "user", "content": 
-        f"""You are currently talking to Kyle. Maintain your Nathan person as if you are currently talking to him. 
+        f"""You are currently talking to Kyle. Maintain your Nathan persona as if you are currently talking to him. 
         Here is what he said [{query}]\n The following is some information that could help you.
         Use this for knowledge rather than speaking style or response generation.
         If it doesn't seem related enough to the current conversation then don't use it.\n\n{relevant_doc}""" }]

@@ -31,7 +31,7 @@ class BaseModel:
         """
         if str(agent.name) == "developer":
             debug = True
-            agent.model = "gpt-4"
+            agent.model = "gpt-3.5-turbo-0301"
             agent.max_tokens = 810
             print("debug mode")
 

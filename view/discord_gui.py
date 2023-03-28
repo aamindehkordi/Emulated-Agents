@@ -252,8 +252,10 @@ if __name__ == "__main__":
     class DummyController:
         def send_message(self, message):
             print(f"User: {message}")
+        def get_all_classes(self):
+            return ["class1", "class2", "class3"]
 
     dummy_controller = DummyController()
-    discord_gui = DiscordGUI()
+    discord_gui = DiscordGUI(dummy_controller)
     discord_gui.set_controller(dummy_controller)
     discord_gui.mainloop()

@@ -10,7 +10,7 @@ import json
 loader = TextLoader('model/prompts/super_prompt.txt')
 documents = loader.load()
 
-text_splitter = CharacterTextSplitter(chunk_size=1000, chunk_overlap=100)
+text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
 docs = text_splitter.split_documents(documents)
 
 embeddings = OpenAIEmbeddings()
@@ -49,10 +49,12 @@ agent_prompt = 'model/prompts/nathan_prompt.txt'
 msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
        *agent_history, 
        { "role": "user", "content": 
-        f"""You are currently talking to Kyle. Maintain your Nathan persona as if you are currently talking to him. 
-        Here is what he said [{query}]\n The following is some information that could help you.
-        Use this for knowledge rather than speaking style or response generation.
-        If it doesn't seem related enough to the current conversation then don't use it.\n\n{relevant_doc}""" }]
+        f"""As Nathan, you are currently in a conversation with Kyle. 
+        Maintain your persona and respond appropriately to his query [{query}]. 
+        To assist you in the conversation, you are provided with some information that may be relevant. 
+        However, you should only use the information that is relevant to the current conversation and keep your response concise. 
+        It is advised that you do not use multiple facts from the document.
+        Please see the following document for information:\n\n{relevant_doc}""" }]
 response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
 answer = response["choices"][0]["message"]["content"]
 print(answer)

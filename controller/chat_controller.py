@@ -4,8 +4,10 @@ from model.tools.code_extractor import FileSearcher
 import ast
 
 class ChatController(BaseController):
-    def __init__(self):
-        super().__init__()
+    def __init__(self, model):
+        super().__init__(model)
+        self.model = model
+        self.chat_gui.set_controller(self)
         self.token_count = 0
 
     def send_message(self, user, bot, message):

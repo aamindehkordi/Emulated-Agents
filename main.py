@@ -16,7 +16,7 @@ from model.base_model import BaseModel
 class MainApp:
     def __init__(self):
         self.model = BaseModel()
-        self.controller = ChatController()
+        self.controller = ChatController(self.model)
 
         self.init_base_gui()
 

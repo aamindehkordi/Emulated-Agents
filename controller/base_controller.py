@@ -14,10 +14,10 @@ from model.base_model import BaseModel
 # from view.photobooth_gui import PhotoboothGUI
 
 class BaseController:
-    def __init__(self):
+    def __init__(self, model):
         self.root = tk.Tk()
         self.root.withdraw()  # Hide the root window
-        self.model = BaseModel()
+        self.model = model
         self.base_gui = BaseGUI(self)
         self.chat_gui = DiscordGUI(self)
         self.chat_gui.withdraw()  # Hide the chat_gui initially

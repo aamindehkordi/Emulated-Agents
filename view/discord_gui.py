@@ -59,29 +59,34 @@ class DiscordGUI(BaseGUI):
         self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "developer"]
         self.bot_var = tk.StringVar(value="Nathan")
         self.bot_options = ["Nathan", "Ali", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "developer", "All"]
-        self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
-        self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
+        self.user_dropdown = self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
+        self.bot_dropdown = self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
+
+
         
         self.create_developer_frame()
         
-    def create_dropdown(self, parent, label_text, options, default):
+    def create_dropdown(self, parent, label_text, options, default_value):
         # create dropdown menu with label
         label = tk.Label(parent, text=label_text, font=self.font, bg=self.secondary_color, fg=self.text_color)
         label.pack(side=tk.LEFT, padx=(self.padx, 0), pady=self.pady)
         
         # create dropdown menu with options (ComboBox)
-        dropdown = ttk.Combobox(parent, textvariable=default, values=options, state="readonly")
-        dropdown.bind("<<ComboboxSelected>>", self.on_dropdown_selected)
+        dropdown = ttk.Combobox(parent, textvariable=default_value, values=options, state="readonly")
+        dropdown.bind("<<ComboboxSelected>>", self.update_user_bot)
         dropdown.pack(side=tk.LEFT, padx=(0, self.padx), pady=self.pady)
         
         # Set default value
         dropdown.current(0)
-        
-    def on_dropdown_selected(self, event):
-        if self.user_var.get() == "developer":
-            self.dev_class_frame.pack(side=tk.RIGHT, padx=self.padx, pady=self.pady)
-        else:
-            self.dev_class_frame.pack_forget()
+
+        return dropdown
+
+    def update_user_bot(self, event):
+        # Update user_var and bot_var based on the new selection
+        self.user_var.set(self.user_dropdown.get())
+        self.bot_var.set(self.bot_dropdown.get())
+        self.developer_mode()
+
         
     def create_developer_frame(self):
         self.selected_classes = []
@@ -104,6 +109,7 @@ class DiscordGUI(BaseGUI):
         self.scrollbar = ttk.Scrollbar(self.checkboxes_frame, orient="vertical", command=self.checkbox_canvas.yview)
         self.checkboxes_scrollable_frame = ttk.Frame(self.checkbox_canvas)
 
+        # Add checkboxes for each class
         self.checkboxes_scrollable_frame.bind("<Configure>", lambda e: self.checkbox_canvas.configure(scrollregion=self.checkbox_canvas.bbox("all")))
         self.checkbox_canvas.create_window((0, 0), window=self.checkboxes_scrollable_frame, anchor="nw")
         self.checkbox_canvas.configure(yscrollcommand=self.scrollbar.set)
@@ -141,12 +147,15 @@ class DiscordGUI(BaseGUI):
             self.display_response(response)
 
     def get_ubm(self):
+        # get user typing and requested user response
         user = self.user_var.get()
         bot = self.bot_var.get()
+        # get message from input entry
         message = self.message_entry.get("1.0", tk.END)
         return user, bot, message
     
     def display_message(self, user, message):
+        # display user message in chat history
         tag = f"user_message"
         self.chat_history.config(state=tk.NORMAL)
         self.chat_history.insert(tk.END, "{}: {}\n".format(user, message), tag)
@@ -155,6 +164,7 @@ class DiscordGUI(BaseGUI):
         self.chat_history.yview_moveto(1.0)
 
     def display_response(self, response):
+        # display bot response in chat history
         tag = f"bot_message"
         self.chat_history.config(state=tk.NORMAL)
         self.chat_history.insert(tk.END, "{}\n".format(response), tag)
@@ -163,6 +173,7 @@ class DiscordGUI(BaseGUI):
         self.chat_history.yview_moveto(1.0)
      
     def set_controller(self, controller):
+        # Set the controller
         self.controller = controller
         self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method
         
@@ -175,17 +186,18 @@ class DiscordGUI(BaseGUI):
             cb = ttk.Checkbutton(self.checkboxes_scrollable_frame, text=class_name, variable=self.class_var[i], onvalue=class_name, offvalue="", command=self.update_class_selection)
             cb.pack(side=tk.TOP, padx=(0, 10), pady=5)
             self.check_boxes.append(cb)
-            
+        
+        # Update the class selection
         self.update_class_selection()
         
-    # Remove default text when user clicks on entry
     def remove_default_text(self,event):
+        # Remove default text when user clicks on entry
         if self.message_entry.get("1.0", tk.END).strip() == "Type here to chat":
             self.message_entry.delete("1.0", tk.END)
             self.message_entry.config(fg=self.text_color)
 
-    # Add default text back if user leaves entry blank
-    def add_default_text(self,event):
+    def add_default_text(self,event): 
+        # Add default text back if user leaves entry blank
         if self.message_entry.get("1.0", tk.END).strip() == "":
             self.message_entry.insert("1.0", "Type here to chat")
             self.message_entry.config(fg=self.tertiary_color)
@@ -200,6 +212,7 @@ class DiscordGUI(BaseGUI):
         self.chat_history_list = []
 
     def developer_mode(self, *args):
+        # Show developer class selection frame if developer is selected
         selected_bot = self.bot_var.get()
         if selected_bot == "developer":
             self.dev_class_frame.place(relx=0.75, rely=0.25, anchor="center")
@@ -208,25 +221,30 @@ class DiscordGUI(BaseGUI):
     
     def set_tags(self):
         # configure tags for chat history
-        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color, spacing1=5, spacing3=5)  # CHANGES: 9
+        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color, spacing1=5, spacing3=5)
         self.chat_history.tag_config("bot_message", foreground=self.tertiary_color, spacing1=5, spacing3=5) 
         self.chat_history.tag_config("newline", foreground=self.primary_color)
         
     def update_class_selection(self):
+        # Update the selected classes
         self.selected_classes = [var.get() for var in self.class_var if var.get() != ""]
         #print("Selected classes:", self.selected_classes)  
         
     def get_selected_classes(self):
+        # Return the selected classes
         return self.selected_classes
     
     def get_chat_history(self):
+        # Return the chat history
         return self.chat_history_list
     
     def clear_input(self):
+        # Clear the input entry
         self.message_entry.delete("1.0", tk.END)
         
     def run(self):
-        #self.set_tags()
+        # Run the GUI
+        self.set_tags()
         super().run()
         
 if __name__ == "__main__":
@@ -236,5 +254,6 @@ if __name__ == "__main__":
             print(f"User: {message}")
 
     dummy_controller = DummyController()
-    discord_gui = DiscordGUI(dummy_controller)
+    discord_gui = DiscordGUI()
+    discord_gui.set_controller(dummy_controller)
     discord_gui.mainloop()

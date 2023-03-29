@@ -3,6 +3,15 @@ import openai
 import whisper
 import json
 from model.agent import Agent
+from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain.text_splitter import CharacterTextSplitter
+from langchain.vectorstores import Pinecone
+from langchain.document_loaders import TextLoader
+from langchain.document_loaders import TextLoader
+from langchain.llms import OpenAI
+import pinecone
+
+
 class BaseModel:
     def __init__(self):
         self.agents = {}
@@ -37,16 +46,17 @@ class BaseModel:
 
         agent_prompt = agent.get_prompt()
         agent_history = [x for x in agent.get_history()] + history #Long term History TODO
-        general_knowledge_file = "model/prompts/general_knowledge.txt"
-        
-        with open(general_knowledge_file, encoding='utf-8') as f:
-            general_knowledge = f.read()
-        
+        query = agent_history.pop()['content']
+
+        general_knowledge_file = "model/prompts/super_prompt.txt"
+
         if not debug:
+            
             agent.msgs = [
-                {'role':'system', 'content': f'{agent_prompt}\nGeneral information: \n{general_knowledge}'},
+                {'role':'system', 'content': f'{agent_prompt}\n'},
                 *agent_history
             ]
+
         else:
             agent.msgs = [
                 {'role':'system', 'content': f'{agent_prompt}'},
@@ -54,7 +64,7 @@ class BaseModel:
                 *agent_history
             ]
         
-        return self.generate(agent, model=agent.model, debug=debug, max_tokens=agent.max_tokens)
+        return self.generate_response(query, agent.msgs, agent_prompt)
 
     def generate(self, agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry = 2):
         """
@@ -130,7 +140,51 @@ class BaseModel:
                     exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
+
+    def generate_response(self, query, agent_history, agent_prompt):
+        # Add the code here, using the input parameters instead of hard-coded values
+        loader = TextLoader('model/prompts/super_prompt.txt')
+        documents = loader.load()
+
+        text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
+        docs = text_splitter.split_documents(documents)
         
+        key = "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"
+        embeddings = OpenAIEmbeddings(openai_api_key=key)
+
+        # Read the API key and environment from file lines 1 and 2
+        """with open('./key_pinecone.txt') as f:
+            api_key = f.readline().strip()
+            environment = f.readline().strip()"""
+        api_key = "3ad35bc4-f126-413d-8e1c-7b9c6344fab4"
+        environment = "us-west4-gcp"
+        # initialize pinecone
+        pinecone.init(
+            api_key=api_key,  # find at app.pinecone.io
+            environment=environment  # next to api key in console
+        )
+        
+        index_name = "ai-langchain"
+
+        docsearch = Pinecone.from_documents(docs, embeddings, index_name=index_name)
+        docs = docsearch.similarity_search(query)
+
+        relevant_doc = docs[0].page_content
+
+        msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
+            *agent_history, 
+            { "role": "user", "content": 
+                f"""As Nathan, you are currently in a conversation with Kyle. 
+                Maintain your persona and respond appropriately to his query [{query}]. 
+                To assist you in the conversation, you may be provided with some information. 
+                However, you should only use the information that is relevant to the current conversation and keep your response concise. 
+                Do not use multiple lines of information from the document.
+                Please see the following document for information:\n\n{relevant_doc}""" }]
+        response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
+        answer = response["choices"][0]["message"]["content"]
+
+        tokens = (response['usage']['total_tokens'],)
+        return answer, tokens
     
     def transcribe_video(self, fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
         """ Transcribes a video file and returns the transcript.

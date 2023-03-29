@@ -149,7 +149,7 @@ class BaseModel:
         text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
         docs = text_splitter.split_documents(documents)
         
-        key = "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"
+        key = "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"
         embeddings = OpenAIEmbeddings(openai_api_key=key)
 
         # Read the API key and environment from file lines 1 and 2
@@ -170,7 +170,7 @@ class BaseModel:
         docs = docsearch.similarity_search(query)
 
         relevant_doc = docs[0].page_content
-
+        print(f'relevant doc:\n{relevant_doc}')
         msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
             *agent_history, 
             { "role": "user", "content": 
@@ -184,6 +184,8 @@ class BaseModel:
         answer = response["choices"][0]["message"]["content"]
 
         tokens = (response['usage']['total_tokens'],)
+
+        print(answer, tokens)
         return answer, tokens
     
     def transcribe_video(self, fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):

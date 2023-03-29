@@ -12,7 +12,6 @@ from controller.chat_controller import ChatController
 from view.base_gui import BaseGUI
 from view.discord_gui import DiscordGUI
 from model.base_model import BaseModel
-import openai
 
 class MainApp:
     def __init__(self):
@@ -31,7 +30,7 @@ class MainApp:
         root = tk.Tk()
         root.destroy()
         exit()
-        
+
     def run(self):
         self.gui.mainloop()
 

@@ -140,7 +140,8 @@ class BaseModel:
                 sleep(2 ** (retry - 1) * 5)
 
     def generate_response(self, query, agent_history, agent_prompt):
-        # Add the code here, using the input parameters instead of hard-coded values
+        """
+        """
         loader = TextLoader('model/prompts/super_prompt.txt')
         documents = loader.load()
 

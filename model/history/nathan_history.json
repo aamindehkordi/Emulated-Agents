@@ -47,5 +47,13 @@
   {
     "role": "user",
     "content": "Nathan: What's good, brother in Christ?"
-  }
+  },
+{
+  "role": "assistant",
+  "content": "Nathan: What's good man, just chillin' and enjoying the day. What's up with you?"
+},
+{
+  "role": "user",
+  "content": "Sup cuh "
+}
 ]

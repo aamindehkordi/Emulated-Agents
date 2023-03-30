@@ -40,6 +40,40 @@ class ChatController(BaseController):
 
         return response
 
+    def append_response_to_json_file(self, message, is_assistant, file_path):
+        is_assistant = bool(is_assistant)
+        if is_assistant == 0:
+            entry = {
+                "role": "user",
+                "content": message
+            }
+        else:
+            entry = {
+                "role": "assistant",
+                "content": message
+            }
+
+        # Check if the file exists and create it if it doesn't
+        if not os.path.exists(file_path):
+            with open(file_path, 'w') as f:
+                f.write('[\n')
+
+        # Read the existing content of the file
+        with open(file_path, 'r') as f:
+            data = f.readlines()
+
+        # If there is already content in the file, add a comma after the last JSON object
+        if len(data) > 1:
+            file_size = os.path.getsize(file_path)
+            with open(file_path, 'r+') as f:
+                f.seek(file_size - 2)
+                f.write(',\n')
+
+        # Append the entry as a JSON string followed by a newline character
+        with open(file_path, 'a') as f:
+            json_entry = json.dumps(entry, indent=2)
+            f.write(json_entry + "\n]")
+
     #TODO
     def get_response_all(self,history):
         """

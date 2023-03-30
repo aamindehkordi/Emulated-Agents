@@ -48,8 +48,6 @@ class BaseModel:
         agent_history = [x for x in agent.get_history()] + history #Long term History TODO
         query = agent_history.pop()['content']
 
-        general_knowledge_file = "model/prompts/super_prompt.txt"
-
         if not debug:
             
             agent.msgs = [
@@ -149,15 +147,15 @@ class BaseModel:
         text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
         docs = text_splitter.split_documents(documents)
         
-        key = "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"
+
+        with open('./key_openai.txt') as f:
+            key = f.readline().strip()
         embeddings = OpenAIEmbeddings(openai_api_key=key)
 
         # Read the API key and environment from file lines 1 and 2
-        """with open('./key_pinecone.txt') as f:
+        with open('./key_pinecone.txt') as f:
             api_key = f.readline().strip()
-            environment = f.readline().strip()"""
-        api_key = "3ad35bc4-f126-413d-8e1c-7b9c6344fab4"
-        environment = "us-west4-gcp"
+            environment = f.readline().strip()
         # initialize pinecone
         pinecone.init(
             api_key=api_key,  # find at app.pinecone.io
@@ -179,7 +177,7 @@ class BaseModel:
                 To assist you in the conversation, you may be provided with some information. 
                 Only use information from the following information, if the user refers to it.
                 Do not use multiple lines of information from the document.
-                Information:\n\n{relevant_doc}""" }]
+                Information:\n\n{relevant_doc}"""}]
         
         response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
         answer = response["choices"][0]["message"]["content"]

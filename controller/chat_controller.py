@@ -23,6 +23,8 @@ class ChatController(BaseController):
 
         # Pass the selected_classes from the GUI to the get_bot_response method
         response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
+
+        self.append_response_to_json_file(message = message, is_assistant= 0, file_path="./model/history/nathan_history.json")
         return response
 
     def get_bot_response(self, bot, chat_history, class_list=None):

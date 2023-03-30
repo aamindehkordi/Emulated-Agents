@@ -35,12 +35,12 @@ class DiscordGUI(BaseGUI):
         self.input_frame.pack(fill=tk.X, padx=self.padx, pady=self.pady)
 
         # create input field
-        self.message_entry = tk.Text(self.input_frame, wrap=tk.WORD, font=self.font, height=3, bg=self.secondary_color, fg=self.text_color)
+        self.message_entry = tk.Text(self.input_frame, wrap=tk.WORD, font=self.font, height=3, bg=self.tertiary_color, fg=self.text_color)
         self.message_entry.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(self.padx, 0), pady=self.pady)
         self.message_entry.bind("<Return>", self.on_enter_pressed)
 
         # Set default text for input entry
-        self.message_entry.config(fg=self.tertiary_color)
+        self.message_entry.config(fg=self.text_color)
 
         self.message_entry.bind("<FocusIn>", self.remove_default_text)
 

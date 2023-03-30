@@ -43,7 +43,7 @@ class BaseModel:
         agent = Agent(name, prompt_path, history_path)
         self.agents[name] = agent
 
-    def get_response(self, agent, history, debug=False):
+    def get_response(self, agent, history):
         """
             Gets appropriate user chat response based off the chat history.
             
@@ -100,6 +100,7 @@ class BaseModel:
             response: a string containing the chat response
             token_count: an int containing the number of tokens used
         """
+
         retry = 0
         while True:
             try:
@@ -138,11 +139,6 @@ class BaseModel:
                     tokens = (response['usage']['total_tokens'],)  # type: ignore
                     print(f"token cost for last response: {tokens[0] / 1000 * 0.002}")
 
-                if debug:
-                    # write response to history file ./model/agents/{user}/{user}_history.json
-                    agent.save_history(answer)
-                    # TODO add permanent history
-
                 return answer, tokens
 
             except Exception as oops:
@@ -154,7 +150,7 @@ class BaseModel:
                 retry += 1
                 if retry >= max_retry:
                     print(f"Exiting due to an error in ChatGPT: {oops}")
-                    exit(1)
+                    sys.exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
 

@@ -147,10 +147,14 @@ class BaseModel:
         text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
         docs = text_splitter.split_documents(documents)
         
+<<<<<<< HEAD
 
         with open('./key_openai.txt') as f:
             key = f.readline().strip()
         embeddings = OpenAIEmbeddings(openai_api_key=key)
+=======
+        embeddings = OpenAIEmbeddings()
+>>>>>>> 9bbad436c07b35ef86d827502e6c7c18076f7ea3
 
         # Read the API key and environment from file lines 1 and 2
         with open('./key_pinecone.txt') as f:

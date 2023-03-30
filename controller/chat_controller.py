@@ -23,22 +23,24 @@ class ChatController(BaseController):
         response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
         return response
 
-    def get_bot_response(self, bot, chat_history, class_list=[]):
+    def get_bot_response(self, bot, chat_history, class_list=None):
 
+        if class_list is None:
+            class_list = []
         agent = self.model.agents.get(bot.lower())
         
         if bot == "All":
             response, chat_history = self.get_response_all(chat_history)
 
         elif bot == "developer":
-            relevantCode = "\n"
+            relevant_code = "\n"
             for path, data in self.file_dict.items():
                 content = data['content']
                 for class_name in class_list:
                     if class_name in content:
-                        relevantCode += f"```{path[1:]}\n{data['code']}\n```\n"
+                        relevant_code += f"```{path[1:]}\n{data['code']}\n```\n"
             
-            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevantCode}"})
+            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevant_code}"})
             response, tokens = self.get_response_developer(agent, chat_history)
             self.token_count = self.token_count + tokens[0]
             chat_history.append({'role': 'assistant', 'content': f"{response}"})

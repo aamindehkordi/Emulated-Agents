@@ -250,9 +250,11 @@ class DiscordGUI(BaseGUI):
 if __name__ == "__main__":
     # Example usage
     class DummyController:
-        def send_message(self, message):
+        @staticmethod
+        def send_message(message):
             print(f"User: {message}")
-        def get_all_classes(self):
+        @staticmethod
+        def get_all_classes():
             return ["class1", "class2", "class3"]
 
     dummy_controller = DummyController()

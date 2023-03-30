@@ -42,5 +42,3 @@ class PhotoboothController(base_controller.BaseController):
         Handles the exit event for the application.
         """
         photobooth_gui.video_capture.release()
-        root.destroy()
-        root.protocol("WM_DELETE_WINDOW", on_exit)

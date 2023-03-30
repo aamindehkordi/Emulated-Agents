@@ -37,7 +37,8 @@ class PhotoboothGUI(gui.BaseGUI):
         self.live_feed.image = image
         self.master.after(10, self.update_live_feed)
 
-    def play_audio(self, user, audio):
+    @staticmethod
+    def play_audio(user, audio):
         """
         Plays the audio for the specified user.
         

@@ -8,10 +8,11 @@ Functions in this module include:
 """
 
 import tkinter as tk
+
 from controller.chat_controller import ChatController
-from view.base_gui import BaseGUI
-from view.discord_gui import DiscordGUI
 from model.base_model import BaseModel
+from view.base_gui import BaseGUI
+
 
 class MainApp:
     def __init__(self):

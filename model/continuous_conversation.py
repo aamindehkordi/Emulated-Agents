@@ -7,11 +7,13 @@ Functions in this module include:
 EVERYTHING BELOW IS TEMPORARY for now
 """
 
+
 def start_conversation(self):
     """
     Begins the continuous conversation mode.
     """
     pass
+
 
 def stop_conversation(self):
     """

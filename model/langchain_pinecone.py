@@ -1,11 +1,11 @@
+import json
+
+import openai
+import pinecone
+from langchain.document_loaders import TextLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
-from langchain.document_loaders import TextLoader
-from langchain.document_loaders import TextLoader
-import pinecone
-import openai
-import json
 
 loader = TextLoader('model/prompts/super_prompt.txt')
 documents = loader.load()

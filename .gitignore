@@ -8,7 +8,6 @@ key_pinecone.txt
 */*.pyc
 *.cpython-38.pyc
 */*.cpython-38.pyc
-*/*.pyc
 .DS_Store
 .vscode
 .idea

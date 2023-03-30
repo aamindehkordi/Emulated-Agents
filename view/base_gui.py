@@ -9,6 +9,7 @@ import tkinter as tk
 from tkinter import ttk
 from ttkthemes import ThemedTk
 
+
 class BaseGUI(ThemedTk):
     def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
         super().__init__()
@@ -18,7 +19,7 @@ class BaseGUI(ThemedTk):
         self.font = font
         self.padx = padx
         self.pady = pady
-        
+
         self.primary_color = "#FFFFFF"  # white
         self.text_color = "#003049"  # black
         self.secondary_color = "#669bbc"  # blue
@@ -78,7 +79,8 @@ class BaseGUI(ThemedTk):
         zoom_button = ttk.Button(main_frame, text="Zoom Mode", command=self.controller.switch_to_zoom_mode)
         zoom_button.pack(pady=self.pady, ipadx=50, ipady=20)
 
-        photobooth_button = ttk.Button(main_frame, text="Photobooth Mode", command=self.controller.switch_to_photobooth_mode)
+        photobooth_button = ttk.Button(main_frame, text="Photobooth Mode",
+                                       command=self.controller.switch_to_photobooth_mode)
         photobooth_button.pack(pady=self.pady, ipadx=50, ipady=20)
 
         bottom_frame = ttk.Frame(main_frame)
@@ -98,21 +100,26 @@ class BaseGUI(ThemedTk):
         help_text = "To be implemented"
         help_label = ttk.Label(help_window, text=help_text, wraplength=350)
         help_label.pack(padx=self.padx, pady=self.pady)
-        
+
     def run(self):
         self.mainloop()
+
 
 if __name__ == "__main__":
     # Example usage
     class DummyController:
-        def switch_to_chat_mode(self):
+        @staticmethod
+        def switch_to_chat_mode():
             print("Switching to chat mode")
 
-        def switch_to_zoom_mode(self):
+        @staticmethod
+        def switch_to_zoom_mode():
             print("Switching to zoom mode")
 
-        def switch_to_photobooth_mode(self):
+        @staticmethod
+        def switch_to_photobooth_mode():
             print("Switching to photobooth mode")
+
 
     dummy_controller = DummyController()
     base_gui = BaseGUI(dummy_controller)

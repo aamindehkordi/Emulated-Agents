@@ -10,14 +10,15 @@ Functions in this module include:
 filter_unnecessary_content(message): filters out unnecessary content from a message
 """
 
-import csv
-import re
-from better_profanity import profanity
-import pandas as pd
 import os
-import ffmpeg
+import re
 
-def compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec='aac', 
+import ffmpeg
+import pandas as pd
+from better_profanity import profanity
+
+
+def compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec='aac',
                        crf=23, preset='fast', audio_bitrate='128k'):
     """Compresses all .mov files in the input directory using ffmpeg and saves them in the output directory.
 
@@ -47,7 +48,6 @@ def compress_mov_files(input_dir, output_dir, video_codec='libx264', audio_codec
     print('Finished compressing videos.')
 
 
-
 def extract_messages_csv(filename):
     """
     Extracts messages and usernames from a discord history csv file, creating a separate file for each user and their messages.
@@ -71,6 +71,7 @@ def extract_messages_csv(filename):
         user_dfs.append(user_df)
     return user_dfs
 
+
 def save_messages_csv(user_dfs):
     """
     Saves only the messages for each user into a separate file.
@@ -90,10 +91,11 @@ def save_messages_csv(user_dfs):
         with open(f"./data/processed/{username}.txt", "w") as f:
             for message in messages:
                 f.write(f"{message}\n")
-                
-    
+
+
 def filter_profanity(message):
     return not profanity.contains_profanity(message)
+
 
 def filter_unnecessary_content(message):
     # Check for URLs

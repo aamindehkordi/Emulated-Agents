@@ -11,9 +11,10 @@ Functions in this module include:
 """
 
 import json
-import ffmpeg
 import os
-from model.openai_api import transcribe_video as whisper
+
+from model.base_model import BaseModel as base
+
 
 def read_file_lines(filename):
     """
@@ -41,6 +42,7 @@ def transcribe_updates(video_path, output_path):
     """
     Transcribes update videos from folder path and save transcripts to output path.
     """
+    whisper = base
     with open("api/agents/general_knowledge.txt", "r") as f:
         general = f.read()
     for filename in os.listdir(video_path):

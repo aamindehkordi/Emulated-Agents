@@ -1,5 +1,6 @@
 import json
 
+
 class Agent:
     def __init__(self, name, prompt_path, history_path):
         self.name = name
@@ -24,5 +25,5 @@ class Agent:
             return []
 
     def save_history(self, history):
-        #TODO
+        # TODO
         pass

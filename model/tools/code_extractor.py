@@ -2,6 +2,7 @@ import os
 import astor
 import ast
 
+
 class CodeExtractor(ast.NodeVisitor):
 
     def __init__(self, include_strings=False):
@@ -26,6 +27,7 @@ class CodeExtractor(ast.NodeVisitor):
                 self.relevant_code += astor.to_source(child_node) + "\n"
             else:
                 self.relevant_code += "\n"
+
 
 class FileSearcher:
     def __init__(self, exclude=None, min_lines=25):
@@ -62,11 +64,13 @@ class FileSearcher:
                             py_files[file_path] = file_path
         return py_files
 
-    def read_file_content(self, file_path):
+    @staticmethod
+    def read_file_content(file_path):
         with open(file_path, 'r') as file:
             return file.read()
 
-    def extract_relevant_code(self, file_content):
+    @staticmethod
+    def extract_relevant_code(file_content):
         tree = ast.parse(file_content)
         extractor = CodeExtractor()
         extractor.visit(tree)

@@ -78,6 +78,7 @@ class BaseModel:
 
         return self.generate_response(query, agent.msgs, agent_prompt)
 
+    #Deprecated
     @staticmethod
     def generate(agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry=2):
@@ -103,15 +104,12 @@ class BaseModel:
         while True:
             try:
                 response = openai.ChatCompletion.create(
-                    model=model,  # the name of the model to use
+                    model=model,
                     messages=agent.msgs,
                     temperature=temperature,
-                    # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
                     top_p=top_p,
-                    # An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-                    n=n,  # How many chat completion choices to generate for each input_msg message.
+                    n=n,
                     stream=stream,
-                    # If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
                     stop=stop,
                     max_tokens=max_tokens,
                     presence_penalty=presence_penalty,

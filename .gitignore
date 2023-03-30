@@ -16,3 +16,4 @@ key_pinecone.txt
 /__pycache__
 model/__pycache__/openai_api.cpython-38.pyc
 */.idea/*
+*.idea/*

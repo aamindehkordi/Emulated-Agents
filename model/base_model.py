@@ -149,7 +149,7 @@ class BaseModel:
         text_splitter = CharacterTextSplitter(chunk_size=300, chunk_overlap=100)
         docs = text_splitter.split_documents(documents)
         
-        key = "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"
+        key = "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"
         embeddings = OpenAIEmbeddings(openai_api_key=key)
 
         # Read the API key and environment from file lines 1 and 2
@@ -174,12 +174,13 @@ class BaseModel:
         msg = [{'role':'system', 'content': f'{agent_prompt}'}, 
             *agent_history, 
             { "role": "user", "content": 
-                f"""As Nathan, you are currently in a conversation with Kyle. 
-                Maintain your persona and respond appropriately to his query [{query}]. 
+                f"""
+                Maintain your persona and respond appropriately to this message [{query}]
                 To assist you in the conversation, you may be provided with some information. 
-                However, you should only use the information that is relevant to the current conversation and keep your response concise. 
+                Only use information from the following information, if the user refers to it.
                 Do not use multiple lines of information from the document.
-                Please see the following document for information:\n\n{relevant_doc}""" }]
+                Information:\n\n{relevant_doc}""" }]
+        
         response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
         answer = response["choices"][0]["message"]["content"]
 

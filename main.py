@@ -22,7 +22,7 @@ class MainApp:
 
     def init_base_gui(self):
         self.gui = BaseGUI(self.controller)
-        self.gui.protocol("WM_DELETE_WINDOW", self.on_closing)
+        #self.gui.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def on_closing(self):
         # Perform cleanup and close the application

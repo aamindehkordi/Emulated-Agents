@@ -15,3 +15,4 @@ key_pinecone.txt
 /videos
 /__pycache__
 model/__pycache__/openai_api.cpython-38.pyc
+*/.idea/*

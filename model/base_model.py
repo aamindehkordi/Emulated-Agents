@@ -151,7 +151,7 @@ class BaseModel:
 
         with open('./key_openai.txt') as f:
             key = f.readline().strip()
-        embeddings = OpenAIEmbeddings(openai_api_key=key)
+        embeddings = OpenAIEmbeddings(openai_api_key=key) # type: ignore
 
         # Read the API key and environment from file lines 1 and 2
         with open('./key_pinecone.txt') as f:
@@ -181,9 +181,9 @@ class BaseModel:
                 Information:\n\n{relevant_doc}"""}]
         
         response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop= "null", max_tokens=350, presence_penalty=0, frequency_penalty=0)
-        answer = response["choices"][0]["message"]["content"]
+        answer = response["choices"][0]["message"]["content"] # type: ignore
 
-        tokens = (response['usage']['total_tokens'],)
+        tokens = (response['usage']['total_tokens'],) # type: ignore
 
         print(answer, tokens)
         return answer, tokens

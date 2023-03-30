@@ -7,7 +7,7 @@ from langchain.document_loaders import TextLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
-
+import sys
 from model.agent import Agent
 
 
@@ -43,7 +43,7 @@ class BaseModel:
         agent = Agent(name, prompt_path, history_path)
         self.agents[name] = agent
 
-    def get_response(self, agent, history, debug=False):
+    def get_response(self, agent, history):
         """
             Gets appropriate user chat response based off the chat history.
             
@@ -52,34 +52,38 @@ class BaseModel:
             history: list of chat history
             debug: boolean for debug mode (developer)
         """
-        if str(agent.name) == "developer":
-            debug = True
-            agent.model = "gpt-3.5-turbo-0301"
-            agent.max_tokens = 810
-            print("debug mode")
-
         agent_prompt = agent.get_prompt()
-        agent_history = [x for x in agent.get_history()] + history  # Long term History TODO
-        query = agent_history.pop()['content']
+        agent_chat_history = [x for x in agent.get_history()] + history  # Long term History TODO
+        query = agent_chat_history.pop()['content']
 
-        if not debug:
+        loader = TextLoader('model/prompts/super_prompt.txt')
+        documents = loader.load()
 
-            agent.msgs = [
-                {'role': 'system', 'content': f'{agent_prompt}\n'},
-                *agent_history
-            ]
+        text_splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=50)
+        docs = text_splitter.split_documents(documents)
 
-        else:
-            agent.msgs = [
-                {'role': 'system', 'content': f'{agent_prompt}'},
-                {'role': 'user', 'content': f'{agent_prompt}'},
-                *agent_history
-            ]
+        embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])  # type: ignore
 
-        return self.generate_response(query, agent.msgs, agent_prompt)
+        docsearch = Pinecone.from_documents(docs, embeddings, index_name=self.pine_index)
+        docs = docsearch.similarity_search(query)
+        relevant_doc = docs[0].page_content
 
-    @staticmethod
-    def generate(agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
+        agent.msgs = [
+            {'role': 'system', 'content': f'{agent_prompt}'},
+            {'role': 'user', 'content': f'{agent_prompt}'},
+            {"role": "user", "content": f"""
+            Maintain your persona and respond appropriately in the following discord conversation.
+            To assist you in the conversation, you may be provided with some information. 
+            Only use information from the following information, if the user refers to it.
+            Do not use multiple lines of information from the document.
+            Information:\n\n{relevant_doc}\n\n Discord Conversation Hisotry:\n"""},
+            *agent_chat_history,
+            {"role": "user", "content": f"{query}"}
+                    ]
+
+        return self.generate(agent)
+
+    def generate(self, agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry=2):
         """
             Generates a response from the OpenAI API.
@@ -99,19 +103,17 @@ class BaseModel:
             response: a string containing the chat response
             token_count: an int containing the number of tokens used
         """
+
         retry = 0
         while True:
             try:
                 response = openai.ChatCompletion.create(
-                    model=model,  # the name of the model to use
+                    model=model,
                     messages=agent.msgs,
                     temperature=temperature,
-                    # What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. We generally recommend altering this or top_p but not both.
                     top_p=top_p,
-                    # An alternative to sampling with temperature, called nucleus sampling, where the model considers the results of the tokens with top_p probability mass. So 0.1 means only the tokens comprising the top 10% probability mass are considered.
-                    n=n,  # How many chat completion choices to generate for each input_msg message.
+                    n=n,
                     stream=stream,
-                    # If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available, with the stream terminated by a data: [DONE] message.
                     stop=stop,
                     max_tokens=max_tokens,
                     presence_penalty=presence_penalty,
@@ -140,11 +142,6 @@ class BaseModel:
                     tokens = (response['usage']['total_tokens'],)  # type: ignore
                     print(f"token cost for last response: {tokens[0] / 1000 * 0.002}")
 
-                if debug:
-                    # write response to history file ./model/agents/{user}/{user}_history.json
-                    agent.save_history(answer)
-                    # TODO add permanent history
-
                 return answer, tokens
 
             except Exception as oops:
@@ -156,44 +153,9 @@ class BaseModel:
                 retry += 1
                 if retry >= max_retry:
                     print(f"Exiting due to an error in ChatGPT: {oops}")
-                    exit(1)
+                    sys.exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
-
-    def generate_response(self, query, agent_msgs, agent_prompt):
-        """
-        """
-        loader = TextLoader('model/prompts/super_prompt.txt')
-        documents = loader.load()
-
-        text_splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=50)
-        docs = text_splitter.split_documents(documents)
-
-        embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])  # type: ignore
-
-        docsearch = Pinecone.from_documents(docs, embeddings, index_name=self.pine_index)
-        docs = docsearch.similarity_search(query)
-        relevant_doc = docs[0].page_content
-        msg = [
-            {"role": "user", "content": f"""
-                Maintain your persona and respond appropriately in the following discord conversation.
-                To assist you in the conversation, you may be provided with some information. 
-                Only use information from the following information, if the user refers to it.
-                Do not use multiple lines of information from the document.
-                Information:\n\n{relevant_doc}\n\n Discord Conversation Hisotry:\n"""},
-            *agent_msgs,
-            {"role": "user", "content": f"{query}"}
-        ]
-
-        response = openai.ChatCompletion.create(messages=msg, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1,
-                                                stream=False, stop="null", max_tokens=350, presence_penalty=0,
-                                                frequency_penalty=0)
-        answer = response["choices"][0]["message"]["content"]  # type: ignore
-
-        tokens = (response['usage']['total_tokens'],)  # type: ignore
-
-        print(msg, answer, tokens)
-        return answer, tokens
 
     @staticmethod
     def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
@@ -203,7 +165,7 @@ class BaseModel:
             model_size: The size of the model to use. Options are "tiny, "small", "base", "medium", and "large".
             prompt: The prompt to use for the model.
             language: The language to use for the model.
-            fp16: Whether or not to use fp16 for the model.
+            fp16: Whether to use fp16 for the model.
         *returns:
             The transcript of the video.
         """

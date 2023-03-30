@@ -1,7 +1,5 @@
 # ./controller/chat_controller.py
 from .base_controller import BaseController
-from model.tools.code_extractor import FileSearcher
-import ast
 import json
 import os
 
@@ -22,33 +20,17 @@ class ChatController(BaseController):
         chat_history = self.chat_gui.get_chat_history()
 
         # Pass the selected_classes from the GUI to the get_bot_response method
-        response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
+        response = self.get_bot_response(bot, chat_history)
 
         self.append_response_to_json_file(message = message, is_assistant= 0, file_path="./model/history/nathan_history.json")
         return response
 
-    def get_bot_response(self, bot, chat_history, class_list=None):
+    def get_bot_response(self, bot, chat_history):
 
-        if class_list is None:
-            class_list = []
         agent = self.model.agents.get(bot.lower())
         
         if bot == "All":
             response, chat_history = self.get_response_all(chat_history)
-
-        elif bot == "developer":
-            relevant_code = "\n"
-            for path, data in self.file_dict.items():
-                content = data['content']
-                for class_name in class_list:
-                    if class_name in content:
-                        relevant_code += f"```{path[1:]}\n{data['code']}\n```\n"
-            
-            chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevant_code}"})
-            response, tokens = self.get_response_developer(agent, chat_history)
-            self.token_count = self.token_count + tokens[0]
-            chat_history.append({'role': 'assistant', 'content': f"{response}"})
-            return response
         
         response, tokens = self.model.get_response(agent, chat_history)
         self.token_count = self.token_count + tokens[0]
@@ -57,57 +39,6 @@ class ChatController(BaseController):
         self.append_response_to_json_file(message =response, is_assistant= 1, file_path = './model/history/nathan_history.json')
 
         return response
-
-    
-    def get_response_developer(self, agent, history):
-    # Create a dictionary of filename and file contents
-      fs = FileSearcher(exclude=[
-      '*/.git/*',
-      '*/__pycache__/*',
-      '*/.DS_Store',
-      '*/data/*',
-      '*/.idea/*',
-      '*/*.mov',
-      '*/.vscode/*',
-      '*/videos/*',
-      '.idea',
-      '.vscode',
-      'data',
-      'videos',
-      '.git',
-      '.DS_Store',
-      '__pycache__',
-      '*.pyc'
-      ])
-      # generate a string of file paths
-      file_paths = '\n'.join([path for path in fs.search()])
-    
-      msgs=[
-          {'role':'user', 'content':f"Let me start by showing you the project structure: \n``` \n. = \"/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project\" \n{file_paths} \n``` \n"}
-          ]
-      
-      
-      msgs += history # type: ignore
-
-      answer, tokens = self.model.get_response(agent, msgs) # type: ignore
-      return answer, tokens
-  
-  
-    def get_all_classes(self):
-        self.file_dict = {}
-        fs = FileSearcher()
-        name_dict = fs.find_py_files(".")
-        for name, path in name_dict.items():
-            file_content = fs.read_file_content(path)
-            relevant_code = fs.extract_relevant_code(file_content)
-            self.file_dict[path] = {'content': file_content, 'code': relevant_code}
-        all_classes = []
-        for data in self.file_dict.values():
-            code = data['code']
-            parsed_ast = ast.parse(code)  # Parse the code string into an AST
-            classes = [node.name for node in ast.walk(parsed_ast) if isinstance(node, ast.ClassDef)]  # Extract class names from the AST
-            all_classes.extend(classes)
-        return all_classes
 
     def append_response_to_json_file(self, message, is_assistant, file_path):
         is_assistant = bool(is_assistant)
@@ -175,4 +106,3 @@ class ChatController(BaseController):
         #called from the gui
         #self.model.save_history()
         self.on_exit()
-

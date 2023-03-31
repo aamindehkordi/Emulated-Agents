@@ -1,6 +1,4 @@
-from time import sleep
-
-import openai
+from time import sleep, time
 import pinecone
 import whisper
 from langchain.document_loaders import TextLoader
@@ -9,13 +7,15 @@ from langchain.text_splitter import CharacterTextSplitter
 from langchain.vectorstores import Pinecone
 import sys
 from model.agent import Agent
-
+from model.tools.david import *
+import pandas as pd
 
 class BaseModel:
     def __init__(self):
         self.agents = {}
         self.initialize_agents()
         self.key = []
+        self.superprompt_path = "model/prompts/super_prompt.txt"
         with open('./key_openai.txt') as f:
             self.key.append(f.readline().strip())
 
@@ -29,8 +29,16 @@ class BaseModel:
             api_key=self.key[1],  # find at app.pinecone.io
             environment=self.environment  # next to api key in console
         )
+        self.pine_index = "new-ai-langchain"
+        self.vdb = pinecone.Index(self.pine_index)
+        self.add_superprompt_to_pinecone()
 
-        self.pine_index = "ai-langchain"
+    def add_superprompt_to_pinecone(self):
+        superprompt_id = "superprompt"
+        loader = TextLoader(self.superprompt_path)
+        superprompt_content = loader.load
+        superprompt_vector = gpt3_embedding(superprompt_content)  # You need to adjust this line to use your embeddings function
+        self.vdb.upsert([(superprompt_id, superprompt_vector)])
 
     def initialize_agents(self):
         agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake', 'developer']
@@ -43,7 +51,7 @@ class BaseModel:
         agent = Agent(name, prompt_path, history_path)
         self.agents[name] = agent
 
-    def get_response(self, agent, history):
+    def get_response(self, agent, history, convo_length=30):
         """
             Gets appropriate user chat response based off the chat history.
             
@@ -53,20 +61,30 @@ class BaseModel:
             debug: boolean for debug mode (developer)
         """
         agent_prompt = agent.get_prompt()
-        agent_chat_history = [x for x in agent.get_history()] + history  # Long term History TODO
+        agent_chat_history = [x for x in agent.get_history()] + history
         query = agent_chat_history.pop()['content']
 
         loader = TextLoader('model/prompts/super_prompt.txt')
         documents = loader.load()
 
-        text_splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=50)
-        docs = text_splitter.split_documents(documents)
 
         embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])  # type: ignore
 
         docsearch = Pinecone.from_documents(docs, embeddings, index_name=self.pine_index)
         docs = docsearch.similarity_search(query)
         relevant_doc = docs[0].page_content
+
+        timestamp = time()
+        timestring = timestamp_to_datetime(timestamp)
+
+        # Get the vector for the user's input message
+        input_vector = gpt3_embedding(query)  # You need to adjust this line to use your embeddings function
+
+        # Search for relevant messages using Pinecone
+        results = self.vdb.query(vector=input_vector, top_k=convo_length)
+
+        # Load the conversation history from JSON files
+        conversation = self.load_conversation(agent, results)
 
         agent.msgs = [
             {'role': 'system', 'content': f'{agent_prompt}'},
@@ -79,9 +97,38 @@ class BaseModel:
             Information:\n\n{relevant_doc}\n\n Discord Conversation Hisotry:\n"""},
             *agent_chat_history,
             {"role": "user", "content": f"{query}"}
-                    ]
+        ]
 
-        return self.generate(agent)
+        output = self.generate(agent)
+
+        # Save the user message metadata and update Pinecone
+        user_message_metadata = {
+            'speaker': 'USER',
+            'time': timestamp,
+            'message': query,
+            'timestring': timestring,
+            'uuid': str(uuid4())
+        }
+        agent.save_message_metadata(user_message_metadata)
+        self.vdb.upsert([(user_message_metadata['uuid'], input_vector)])
+
+        # Update the time
+        timestamp = time()
+        timestring = timestamp_to_datetime(timestamp)
+
+        # Save the AI-generated message metadata and update Pinecone
+        ai_message_metadata = {
+            'speaker': 'AI',
+            'time': timestamp,
+            'message': output,
+            'timestring': timestring,
+            'uuid': str(uuid4())
+        }
+        agent.save_message_metadata(ai_message_metadata)
+        ai_vector = gpt3_embedding(output)  # You need to adjust this line to use your embeddings function
+        self.vdb.upsert([(ai_message_metadata['uuid'], ai_vector)])
+
+        return output
 
     def generate(self, agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry=2):
@@ -156,6 +203,17 @@ class BaseModel:
                     sys.exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
+
+    def load_conversation(self, agent, results):
+        result = []
+        for m in results['matches']:
+            with open(f'{agent.history_path}/{m["id"]}.json', 'r', encoding='utf-8') as f:
+                info = json.load(f)
+                result.append(info)
+        ordered = sorted(result, key=lambda d: d['time'], reverse=False)
+        messages = [i['message'] for i in ordered]
+        return '\n'.join(messages).strip()
+
 
     @staticmethod
     def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):

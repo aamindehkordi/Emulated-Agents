@@ -11,9 +11,13 @@ class Agent:
         self.max_tokens = 350
 
     def get_prompt(self):
-        with open(self.prompt_path, 'r', encoding='utf-8') as f:
-            self.prompt = f.read()
-            return self.prompt
+        try:
+            with open(self.prompt_path, 'r', encoding='utf-8') as f:
+                self.prompt = f.read()
+                return self.prompt
+        except Exception as e:
+            print(e)
+            return ''
 
     def get_history(self):
         try:
@@ -23,6 +27,11 @@ class Agent:
         except Exception as e:
             print(e)
             return []
+
+    def save_message_metadata(self, metadata):
+        unique_id = metadata['uuid']
+        with open(f'{self.history_path}/nexus/{unique_id}.json', 'w', encoding='utf-8') as f:
+            json.dump(metadata, f, ensure_ascii=False, sort_keys=True, indent=2)
 
     def save_history(self, history):
         # TODO

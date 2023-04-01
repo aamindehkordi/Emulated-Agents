@@ -79,7 +79,11 @@ class DiscordGUI(BaseGUI):
         return dropdown
 
     def update_user_bot(self):
-        # get user typing and requested user response
+        # Update user_var and bot_var based on the new selection
+        self.user_var.set(self.user_dropdown.get())
+        self.bot_var.set(self.bot_dropdown.get())
+
+        # Return the new values
         user = self.user_var.get()
         bot = self.bot_var.get()
         message = self.message_entry.get("1.0", tk.END)

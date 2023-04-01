@@ -30,7 +30,9 @@ class ChatController(BaseController):
         agent = self.model.agents.get(bot.lower())
         
         if bot == "All":
-            response, chat_history = self.get_response_all(chat_history)
+            pass
+            #response, chat_history = self.get_response_all(chat_history)
+            #Todo
         
         response, tokens = self.model.get_response(agent, chat_history)
         self.token_count = self.token_count + tokens[0]
@@ -85,22 +87,7 @@ class ChatController(BaseController):
             *returns:
             updated history in this format {'role':'user', 'content':f"{user}: {message}"}
         """
-        user_list = ['nathan', 'ali', 'jett', 'kate', 'robby', 'cat'] #add more users here
-        responses = []
-        #Get responses from all agents
-        for user in user_list:
-            response, tokens = self.model.get_response(user, history)
-            self.token_count += tokens # type: ignore
-            history.append({'role':'assistant', 'content':f"{user}: {response}"})
-            
-        #Update history
-        history = [*history, *responses]
-        
-        # Clean up responses for display
-        for response in responses:
-            response['content'] = response['content'].replace('{user}:', '')
-        
-        return responses, history
+        #TODO
 
     def close_app(self):
         #called from the gui

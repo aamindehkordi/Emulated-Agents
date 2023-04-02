@@ -1,0 +1,50 @@
+[
+    {
+        "id": "f1f7d741-cf99-46be-a1d0-d0caf7a5b9d9",
+        "timestamp": "2023-01-26,11:14:03",
+        "user": "nathan",
+        "message": "How about 12:30"
+    },
+    {
+        "id": "596d78ff-c393-4534-823d-5c80acdf8751",
+        "timestamp": "2023-01-26,12:29:05",
+        "user": "kyle",
+        "message": "yea"
+    },
+    {
+        "id": "b6cbc915-e9dc-493d-809a-78d3fbe99799",
+        "timestamp": "2023-01-26,12:30:41",
+        "user": "jake",
+        "message": "Y’all on your way?"
+    },
+    {
+        "id": "feb111cc-4759-41f3-9266-24bb41f32b67",
+        "timestamp": "2023-01-26,12:30:49",
+        "user": "nathan",
+        "message": "I’m here"
+    },
+    {
+        "id": "852b3924-633d-4272-b710-f12a3b9e0431",
+        "timestamp": "2023-01-26,13:20:33",
+        "user": "ali",
+        "message": "The ps5 working perfectly fine at my house, I didn’t even have to tweak anything, j working immediately"
+    },
+    {
+        "id": "3bef298a-33ce-4a3b-81ab-ce28a8a167fa",
+        "timestamp": "2023-01-26,13:20:57",
+        "user": "nathan",
+        "message": "Bro gabby was in the caf"
+    },
+    {
+        "id": "542943d9-1dea-4131-bfef-b946b42932f6",
+        "timestamp": "2023-01-26,13:21:39",
+        "user": "nathan",
+        "message": "Also did you go back to your house rn?"
+    },
+    {
+        "id": "393cfedd-3a04-4d7c-9946-2a01d0652945",
+        "timestamp": "2023-01-26,13:42:16",
+        "user": "ali",
+        "message": "Yea I’m taking snow out"
+    }
+]

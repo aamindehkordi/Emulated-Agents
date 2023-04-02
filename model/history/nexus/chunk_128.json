@@ -1,0 +1,50 @@
+[
+    {
+        "id": "5d72af6f-7244-4190-b359-414b1db2946f",
+        "timestamp": "2022-11-09,20:15:53",
+        "user": "kate",
+        "message": "I looked"
+    },
+    {
+        "id": "bd898c4b-5576-4ae8-99f7-5b94ce8d2e7c",
+        "timestamp": "2022-11-09,20:28:51",
+        "user": "robby",
+        "message": "This is you"
+    },
+    {
+        "id": "8484784a-6b2e-4572-826c-ada1e088dc59",
+        "timestamp": "2022-11-09,21:10:05",
+        "user": "kate",
+        "message": "WHAT"
+    },
+    {
+        "id": "bcd34db0-f54b-487e-8040-cc3d0e82ed28",
+        "timestamp": "2022-11-09,21:10:30",
+        "user": "robby",
+        "message": "Goomba ahhhhhhh"
+    },
+    {
+        "id": "9c30ba5d-7a77-493a-a3b4-5c6948caba2a",
+        "timestamp": "2022-11-09,21:10:58",
+        "user": "robby",
+        "message": "Go to Arrowhead to be ungoombafied"
+    },
+    {
+        "id": "30fa844e-5a0f-448e-aecf-12f352cf59ba",
+        "timestamp": "2022-11-09,21:13:44",
+        "user": "jett",
+        "message": "Hey she’s not a goomba don’t say that"
+    },
+    {
+        "id": "7b78a817-c1a7-4f88-bef9-815e4fc7870c",
+        "timestamp": "2022-11-09,21:14:06",
+        "user": "jett",
+        "message": "🐺"
+    },
+    {
+        "id": "9f643b0d-675b-4710-b462-b7c0f686114f",
+        "timestamp": "2022-11-09,21:15:29",
+        "user": "robby",
+        "message": "The goomba antidote is a closely held Tallman family secret. We can cure her"
+    }
+]

@@ -1,0 +1,50 @@
+[
+    {
+        "id": "29713c1c-021e-45bc-8ca8-f27f5e1ba6a5",
+        "timestamp": "2022-11-09,20:05:36",
+        "user": "kate",
+        "message": "🤨"
+    },
+    {
+        "id": "7be0a98c-b404-4ab0-bcfb-6de1fbecc390",
+        "timestamp": "2022-11-09,20:05:42",
+        "user": "kate",
+        "message": "🤔🤔🤔"
+    },
+    {
+        "id": "c3b00dda-410b-4422-b7ad-41e973de1f01",
+        "timestamp": "2022-11-09,20:11:16",
+        "user": "robby",
+        "message": "Kate..."
+    },
+    {
+        "id": "100842a3-5ac7-441a-a184-b33e3709d552",
+        "timestamp": "2022-11-09,20:11:24",
+        "user": "kate",
+        "message": "yes robby"
+    },
+    {
+        "id": "1ef12cb1-bff3-4279-ae93-3741229031ad",
+        "timestamp": "2022-11-09,20:11:36",
+        "user": "robby",
+        "message": "Why wouldn't you go if you already RSVP'd"
+    },
+    {
+        "id": "6b7cc50f-a7a7-4fab-a3ba-b21c7d7cf1f5",
+        "timestamp": "2022-11-09,20:11:53",
+        "user": "kate",
+        "message": "i didn’t 😡"
+    },
+    {
+        "id": "26ed22c5-9b96-443c-a29a-55046e1729a3",
+        "timestamp": "2022-11-09,20:12:12",
+        "user": "robby",
+        "message": "The sign up sheet says you did, so now u have to go"
+    },
+    {
+        "id": "1c1ea828-26d7-4af9-b55b-176c39f461bc",
+        "timestamp": "2022-11-09,20:15:49",
+        "user": "kate",
+        "message": "No it doesn’t"
+    }
+]

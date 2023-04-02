@@ -1,0 +1,56 @@
+[
+    {
+        "id": "9e4db4ed-74e5-49ae-9eda-d3802aa0294e",
+        "timestamp": "2023-02-01,15:30:06",
+        "user": "robby",
+        "message": "I just woke up from nap. Want me to send you hw"
+    },
+    {
+        "id": "d6f5a014-83ef-4e10-8d0b-e7bf4de3082e",
+        "timestamp": "2023-02-01,16:02:13",
+        "user": "kyle",
+        "message": "yeah and book"
+    },
+    {
+        "id": "ee5aaf16-b414-43ab-bc6e-35bd8e158364",
+        "timestamp": "2023-02-01,16:02:22",
+        "user": "kyle",
+        "message": "i havent turned in anything yet"
+    },
+    {
+        "id": "5ddf302d-d894-4ef0-88e9-06bdb85266e8",
+        "timestamp": "2023-02-01,16:02:53",
+        "user": "robby",
+        "message": "start with the video reviews, those are ez"
+    },
+    {
+        "id": "faba8fe7-b330-427b-954f-e3726356d277",
+        "timestamp": "2023-02-01,16:03:30",
+        "user": "robby",
+        "message": "ill be heading back to school in like 20 mins"
+    },
+    {
+        "id": "975bffdf-d0a5-4073-8b27-f29f0858efc0",
+        "timestamp": "2023-02-01,16:25:43",
+        "user": "robby",
+        "message": "I'm heading back to school"
+    },
+    {
+        "id": "67bc34db-9099-43a3-9054-428ecef8ff79",
+        "timestamp": "2023-02-01,21:41:06",
+        "user": "kate",
+        "message": "first all nighter of the year boys"
+    },
+    {
+        "id": "1489640d-b021-42a9-9d12-8fb192bdfb70",
+        "timestamp": "2023-02-01,21:41:10",
+        "user": "kate",
+        "message": "wish me luck"
+    },
+    {
+        "id": "246bb330-d94b-49c0-a901-b0f0415bb5a1",
+        "timestamp": "2023-02-01,21:47:25",
+        "user": "nathan",
+        "message": "Good luck Kate!!"
+    }
+]

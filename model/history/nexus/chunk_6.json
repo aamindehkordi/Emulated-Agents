@@ -1,0 +1,44 @@
+[
+    {
+        "id": "abca1a1a-c336-4e5a-986f-baa3532e3362",
+        "timestamp": "2022-09-27,16:24:03",
+        "user": "kate",
+        "message": "Um"
+    },
+    {
+        "id": "6e45d07c-bc73-45b8-b9c3-d82df6b9a8be",
+        "timestamp": "2022-09-27,16:24:07",
+        "user": "kate",
+        "message": "I lost an earring"
+    },
+    {
+        "id": "5c6e7c8d-fc62-4d4b-b39a-ffe8b2fe6020",
+        "timestamp": "2022-09-27,16:24:16",
+        "user": "kate",
+        "message": "I have one side"
+    },
+    {
+        "id": "eb4d5eb8-8c4d-413e-95eb-144982d4d07b",
+        "timestamp": "2022-09-27,16:24:19",
+        "user": "kate",
+        "message": "But not the other"
+    },
+    {
+        "id": "73226863-a851-4d27-a5d1-0c4313f73621",
+        "timestamp": "2022-09-27,16:24:24",
+        "user": "robby",
+        "message": "L"
+    },
+    {
+        "id": "13c32771-2a50-4bb3-8b96-d0be23cea732",
+        "timestamp": "2022-09-27,16:24:28",
+        "user": "nathan",
+        "message": "Kyle be stealing everything"
+    },
+    {
+        "id": "534a7176-a011-4ee0-a8b9-a22733a83a30",
+        "timestamp": "2022-09-27,16:24:28",
+        "user": "kate",
+        "message": "Potentially at ur dorm"
+    }
+]

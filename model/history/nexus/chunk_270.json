@@ -1,0 +1,56 @@
+[
+    {
+        "id": "0054b11a-3f20-4d18-9625-63640e1cc8ca",
+        "timestamp": "2022-11-26,10:19:31",
+        "user": "kate",
+        "message": "wait"
+    },
+    {
+        "id": "cb05ecac-aa5c-45e0-bd3c-1d44884ddd06",
+        "timestamp": "2022-11-26,10:19:32",
+        "user": "kate",
+        "message": "no"
+    },
+    {
+        "id": "d8d5322c-8986-445d-b2ab-1e662646d16c",
+        "timestamp": "2022-11-26,10:19:39",
+        "user": "kate",
+        "message": "Jett asked me if I’m busy that day"
+    },
+    {
+        "id": "d8148c02-900b-4285-9255-063f255f055e",
+        "timestamp": "2022-11-26,10:54:05",
+        "user": "robby",
+        "message": "Uhhhh yeah"
+    },
+    {
+        "id": "d12b125d-40cb-4950-91cb-bd30e1c01b12",
+        "timestamp": "2022-11-26,10:54:12",
+        "user": "robby",
+        "message": "He was asking about the Christmas party"
+    },
+    {
+        "id": "96d7f3c2-3c00-49c9-99a9-1070aab49f9c",
+        "timestamp": "2022-11-26,11:10:12",
+        "user": "robby",
+        "message": "Right?"
+    },
+    {
+        "id": "f84972eb-f1f4-416d-ba49-bbab9709f2fa",
+        "timestamp": "2022-11-26,11:23:59",
+        "user": "kate",
+        "message": "Okiiii wanna play white elephant"
+    },
+    {
+        "id": "6e534cc3-4901-4474-9990-3dd2710c0ecf",
+        "timestamp": "2022-11-26,11:24:14",
+        "user": "kate",
+        "message": "Like the one where u bring funky gifts and steal them"
+    },
+    {
+        "id": "14cf84ff-0459-4088-939b-b067e3988eda",
+        "timestamp": "2022-11-26,11:24:41",
+        "user": "jett",
+        "message": "Yessir"
+    }
+]

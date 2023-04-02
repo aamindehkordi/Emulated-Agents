@@ -1,0 +1,44 @@
+[
+    {
+        "id": "bbc5ca2d-a4ef-43b3-ae52-1346c6273a54",
+        "timestamp": "2022-10-03,16:47:41",
+        "user": "nathan",
+        "message": "Caf at 5 something?"
+    },
+    {
+        "id": "94327db3-5681-4910-a2e3-1c7bfa9b99a1",
+        "timestamp": "2022-10-03,16:47:49",
+        "user": "kyle",
+        "message": "5:30"
+    },
+    {
+        "id": "475fb5cc-92d8-46d9-abfa-db9164bf2036",
+        "timestamp": "2022-10-05,21:12:04",
+        "user": "kate",
+        "message": "anyone wanna play among us"
+    },
+    {
+        "id": "5fcf6b74-4a98-4764-a010-5b4b3193ecd5",
+        "timestamp": "2022-10-05,21:12:56",
+        "user": "kate",
+        "message": "also"
+    },
+    {
+        "id": "77ab695b-99bb-4bc8-989c-b84b9d38896b",
+        "timestamp": "2022-10-05,21:13:10",
+        "user": "kate",
+        "message": "my computer makes loud noises and it heats up really fast but isnt even that old"
+    },
+    {
+        "id": "1a1df8e1-a75b-48d5-bd41-bf731c320a76",
+        "timestamp": "2022-10-05,21:13:46",
+        "user": "kate",
+        "message": "PLZZZZZ"
+    },
+    {
+        "id": "b8c5da99-58eb-4f1b-bfed-152309eeed54",
+        "timestamp": "2022-10-06,06:04:21",
+        "user": "robby",
+        "message": "Next time we hang bring computer"
+    }
+]

@@ -1,0 +1,56 @@
+[
+    {
+        "id": "ac381f4d-317f-4e38-8159-5d37ccaaf595",
+        "timestamp": "2022-12-31,19:35:56",
+        "user": "kate",
+        "message": "R u coming los Feliz ?"
+    },
+    {
+        "id": "7f19ce1e-029e-480a-978d-329a955adf25",
+        "timestamp": "2022-12-31,19:40:48",
+        "user": "robby",
+        "message": "Yeah I think so"
+    },
+    {
+        "id": "e29ce7cd-edfb-46ef-87d3-2c47d725b8e2",
+        "timestamp": "2022-12-31,19:56:04",
+        "user": "kate",
+        "message": "Please do"
+    },
+    {
+        "id": "61790a46-2b80-4c94-8469-bee1d5014583",
+        "timestamp": "2022-12-31,19:56:09",
+        "user": "kate",
+        "message": "I’ll bring it"
+    },
+    {
+        "id": "9d2afe67-af32-419d-969e-b31f3b249a2c",
+        "timestamp": "2022-12-31,20:26:07",
+        "user": "kyle",
+        "message": "wanna play ark?"
+    },
+    {
+        "id": "267ba822-fb3b-45bc-a395-3f0d628bf816",
+        "timestamp": "2022-12-31,20:26:26",
+        "user": "robby",
+        "message": "I can't I'm dog sitting rn"
+    },
+    {
+        "id": "18eaa9d6-61b6-4fa5-9d79-f2d2f5141c1e",
+        "timestamp": "2022-12-31,20:26:42",
+        "user": "kyle",
+        "message": "me too"
+    },
+    {
+        "id": "44ee2e16-0370-42a1-b27a-13b26d3c58b2",
+        "timestamp": "2023-01-01,00:14:33",
+        "user": "nathan",
+        "message": "Happy new years group!"
+    },
+    {
+        "id": "f86dadc1-191a-4efc-8467-7575c3f87eda",
+        "timestamp": "2023-01-01,00:15:53",
+        "user": "nathan",
+        "message": "I love y’all"
+    }
+]

@@ -1,0 +1,50 @@
+[
+    {
+        "id": "7e8f04a6-eb0f-44e9-9097-fb58247b128e",
+        "timestamp": "2022-11-30,00:57:45",
+        "user": "nathan",
+        "message": "Ohhhh"
+    },
+    {
+        "id": "45f560f4-951f-42d1-a1f7-9a2c06b79245",
+        "timestamp": "2022-11-30,00:57:50",
+        "user": "nathan",
+        "message": "Only the first half"
+    },
+    {
+        "id": "5f65b4b1-892e-437c-a0c3-ef5cbbb786f8",
+        "timestamp": "2022-11-30,00:57:52",
+        "user": "nathan",
+        "message": "Smart"
+    },
+    {
+        "id": "95331eed-e36c-40de-8451-572c274f8891",
+        "timestamp": "2022-11-30,01:45:31",
+        "user": "kyle",
+        "message": "it's corvette123"
+    },
+    {
+        "id": "6f324e42-73e5-4f2d-85a4-d19581f17015",
+        "timestamp": "2022-11-30,01:45:54",
+        "user": "nathan",
+        "message": "I like how he put them at the front"
+    },
+    {
+        "id": "06cb1794-18b1-428b-913d-db7d3cf56b5e",
+        "timestamp": "2022-11-30,01:46:37",
+        "user": "kyle",
+        "message": "basically once i knew it was corvette i split it so it's |corvett| then e on it's own. I used python's itertools to iterate over every combination of 3 numbers and added to the end of 'e' until it got the hash"
+    },
+    {
+        "id": "9ca7a489-5c4e-4a23-849d-bb1d45d20ae8",
+        "timestamp": "2022-11-30,01:47:12",
+        "user": "nathan",
+        "message": "Nice"
+    },
+    {
+        "id": "05e558ed-9e85-4c62-807d-df03e34e1b14",
+        "timestamp": "2022-11-30,09:12:31",
+        "user": "robby",
+        "message": "yes i do"
+    }
+]

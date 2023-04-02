@@ -1,0 +1,44 @@
+[
+    {
+        "id": "bca239d4-e5dc-4f7c-9275-84a9e3f4200f",
+        "timestamp": "2023-01-30,19:31:21",
+        "user": "kyle",
+        "message": "they ate the ooga ooga and booga booga fruit today i swear"
+    },
+    {
+        "id": "4afdd409-2f53-4dd9-b49c-420f9b087126",
+        "timestamp": "2023-01-30,22:13:07",
+        "user": "nathan",
+        "message": "ROBERT"
+    },
+    {
+        "id": "2aa6b8d1-db19-4762-96ba-763efa4efa46",
+        "timestamp": "2023-01-30,22:22:46",
+        "user": "kyle",
+        "message": "what did i say"
+    },
+    {
+        "id": "863c7b87-d156-4b8f-8650-d045d9f6f29f",
+        "timestamp": "2023-01-31,09:24:46",
+        "user": "kate",
+        "message": "Guys i think I just did like worlds greatest sin"
+    },
+    {
+        "id": "65681796-dda1-4ccd-885d-b08b034669d9",
+        "timestamp": "2023-01-31,09:24:56",
+        "user": "nathan",
+        "message": "Worse than keying?"
+    },
+    {
+        "id": "a65e69fc-d6c5-4e6c-8f94-166adf7acc2c",
+        "timestamp": "2023-01-31,09:25:05",
+        "user": "kate",
+        "message": "Potentially"
+    },
+    {
+        "id": "ca23951b-62e9-462b-9ec4-669230a8e26a",
+        "timestamp": "2023-01-31,09:25:12",
+        "user": "nathan",
+        "message": "Elaborate"
+    }
+]

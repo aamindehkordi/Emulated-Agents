@@ -1,0 +1,38 @@
+[
+    {
+        "id": "f1d9b2a4-57fa-4b7d-bab0-205c9600e99f",
+        "timestamp": "2023-02-15,15:16:07",
+        "user": "kate",
+        "message": "Yup"
+    },
+    {
+        "id": "3d257ea4-a6c1-4d64-b297-de8cb4431f1b",
+        "timestamp": "2023-02-15,15:16:09",
+        "user": "kate",
+        "message": "Timmy"
+    },
+    {
+        "id": "50602eb3-e2e3-4038-abd8-6883b30f3b81",
+        "timestamp": "2023-02-15,15:16:25",
+        "user": "nathan",
+        "message": "He’s my old manager"
+    },
+    {
+        "id": "bed9ce82-dd2f-4f28-a04c-dd2ed845473e",
+        "timestamp": "2023-02-15,15:16:26",
+        "user": "nathan",
+        "message": "He’s cool"
+    },
+    {
+        "id": "a9720647-1fd9-4579-b640-1b4f7e3bc093",
+        "timestamp": "2023-02-15,17:38:03",
+        "user": "kate",
+        "message": "Nobody panic"
+    },
+    {
+        "id": "e1c26a85-b0aa-4e49-96a2-3a6b943acf37",
+        "timestamp": "2023-02-15,17:38:32",
+        "user": "kate",
+        "message": "BAHAHAHHAHAHA"
+    }
+]

@@ -1,0 +1,32 @@
+[
+    {
+        "id": "e2d3e71b-d931-43ca-a9d7-c12179887c48",
+        "timestamp": "2023-01-18,13:27:45",
+        "user": "ali",
+        "message": "2023 right hand side"
+    },
+    {
+        "id": "3279891b-55a1-404a-9336-cb1884239f68",
+        "timestamp": "2023-01-18,13:31:46",
+        "user": "ali",
+        "message": "computing power"
+    },
+    {
+        "id": "a7d75405-b5a3-4c96-9572-beb6a948397e",
+        "timestamp": "2023-01-18,13:31:50",
+        "user": "ali",
+        "message": "i guess lol"
+    },
+    {
+        "id": "b90cdecf-ea02-4594-9977-65ed556203db",
+        "timestamp": "2023-01-18,13:32:00",
+        "user": "kyle",
+        "message": "yeah but what's the metric"
+    },
+    {
+        "id": "6535ba9f-7200-4637-8dd9-1dc2e692175b",
+        "timestamp": "2023-01-18,13:32:40",
+        "user": "ali",
+        "message": "billions of floating point operations i think"
+    }
+]

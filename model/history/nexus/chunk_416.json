@@ -1,0 +1,50 @@
+[
+    {
+        "id": "79b0db8d-fdce-4ac9-bca8-9175c29725b6",
+        "timestamp": "2022-12-21,19:57:25",
+        "user": "kyle",
+        "message": "project stgill isn't graded for me in oop rooby"
+    },
+    {
+        "id": "2841e8fa-7d6b-42ba-8f40-f804479b4cf5",
+        "timestamp": "2022-12-21,20:07:05",
+        "user": "robby",
+        "message": "WAIT"
+    },
+    {
+        "id": "6007bd8c-c7af-41dd-aaf4-5d863c22a7ad",
+        "timestamp": "2022-12-21,20:07:10",
+        "user": "robby",
+        "message": "mine isn't either"
+    },
+    {
+        "id": "e3c39ad8-e4d3-42a2-b3ba-24762267e2ce",
+        "timestamp": "2022-12-21,20:07:20",
+        "user": "robby",
+        "message": "is it lumped into the 'final' grade?"
+    },
+    {
+        "id": "20d88900-3b75-4501-afe9-02abfd664361",
+        "timestamp": "2022-12-21,20:21:10",
+        "user": "nathan",
+        "message": "Final and project should be 500"
+    },
+    {
+        "id": "e7993560-6f8f-4092-9075-0e98f3a9a91a",
+        "timestamp": "2022-12-21,20:21:34",
+        "user": "robby",
+        "message": "weird"
+    },
+    {
+        "id": "fd144d3c-cdff-4aeb-b1f9-e39b9cad0bf4",
+        "timestamp": "2022-12-21,20:21:50",
+        "user": "robby",
+        "message": "i look in the final grades tab in my records, and it says b-"
+    },
+    {
+        "id": "1945ba82-9cc8-43c3-91f8-0cec8ef8f65f",
+        "timestamp": "2022-12-21,20:22:00",
+        "user": "robby",
+        "message": "so i guess thats my final grade in the class"
+    }
+]

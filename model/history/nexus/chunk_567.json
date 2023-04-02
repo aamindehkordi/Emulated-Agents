@@ -1,0 +1,44 @@
+[
+    {
+        "id": "01c45cd1-63a4-4530-9a3a-26927b96abc8",
+        "timestamp": "2023-01-12,17:00:40",
+        "user": "kyle",
+        "message": "me hungry"
+    },
+    {
+        "id": "aa75aa21-decd-4f24-905d-28b9ddbefc3c",
+        "timestamp": "2023-01-12,17:00:53",
+        "user": "kate",
+        "message": "oh ur asking the boys when dinner"
+    },
+    {
+        "id": "9e3eef0e-62f5-4005-b3d6-95d3b4f16cd3",
+        "timestamp": "2023-01-12,17:00:54",
+        "user": "kate",
+        "message": "haha"
+    },
+    {
+        "id": "600faed4-cec0-4c3b-a804-560984f79a4f",
+        "timestamp": "2023-01-12,17:00:57",
+        "user": "kate",
+        "message": "I was confused"
+    },
+    {
+        "id": "b39c2283-a500-4da6-9952-b21b88ea0195",
+        "timestamp": "2023-01-12,17:02:20",
+        "user": "kyle",
+        "message": "여자, 이 음식을 지금 바로 만들어라"
+    },
+    {
+        "id": "eb9756f8-5097-4050-b4ad-fbd596ab4224",
+        "timestamp": "2023-01-12,17:02:37",
+        "user": "kyle",
+        "message": "‼️‼️‼️"
+    },
+    {
+        "id": "94fb132c-fc76-401b-8ce2-49b3b730f067",
+        "timestamp": "2023-01-12,17:06:14",
+        "user": "kate",
+        "message": "미친놈아 너 누구한테 \"여자\" 그레고 있어?! 말조심해 😒"
+    }
+]

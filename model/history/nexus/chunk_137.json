@@ -1,0 +1,32 @@
+[
+    {
+        "id": "088ccfb2-c302-459b-8aef-842aed0128d8",
+        "timestamp": "2022-11-11,17:30:21",
+        "user": "jett",
+        "message": "Dave’s?"
+    },
+    {
+        "id": "c52c5f1e-f2af-442a-b9f5-4b1c449369be",
+        "timestamp": "2022-11-11,17:30:50",
+        "user": "ali",
+        "message": "After?"
+    },
+    {
+        "id": "229d3859-1576-4acd-9e49-50f674cb8666",
+        "timestamp": "2022-11-11,17:35:40",
+        "user": "jett",
+        "message": "Whenever"
+    },
+    {
+        "id": "0ee8495b-b23f-4244-8bd4-537a3aeb13e9",
+        "timestamp": "2022-11-12,23:35:30",
+        "user": "kate",
+        "message": "Ali?"
+    },
+    {
+        "id": "6ef189ca-7d92-49bc-b98e-0358c4c39d59",
+        "timestamp": "2022-11-12,23:43:25",
+        "user": "ali",
+        "message": "Nani?"
+    }
+]

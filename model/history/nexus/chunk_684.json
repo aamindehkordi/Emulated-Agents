@@ -1,0 +1,56 @@
+[
+    {
+        "id": "1b46b8f3-5af2-46de-be57-77f961dd449a",
+        "timestamp": "2023-01-21,00:29:15",
+        "user": "nathan",
+        "message": "So"
+    },
+    {
+        "id": "6d78dd14-1a58-43a3-a772-1f99cba7ead7",
+        "timestamp": "2023-01-21,06:57:17",
+        "user": "ali",
+        "message": "Yea Kyle and Isaac r alone at the dorm"
+    },
+    {
+        "id": "b18e357c-8de9-46ff-9300-07b09e537313",
+        "timestamp": "2023-01-21,06:57:29",
+        "user": "ali",
+        "message": "Who’s waking them up"
+    },
+    {
+        "id": "7fc840d3-8810-4588-b4f1-045cdaa42b16",
+        "timestamp": "2023-01-21,08:45:15",
+        "user": "ali",
+        "message": "Kyle has not answered his phone"
+    },
+    {
+        "id": "20122dd5-f765-4bd6-8d9a-1789eaa5bb70",
+        "timestamp": "2023-01-21,08:54:19",
+        "user": "jett",
+        "message": "Where are y’all"
+    },
+    {
+        "id": "b647f858-806c-484f-9aae-5d3d1b26de6b",
+        "timestamp": "2023-01-21,08:54:36",
+        "user": "nathan",
+        "message": "Yeah close"
+    },
+    {
+        "id": "9485bc36-165e-4f37-bba5-8779c7bbcbdc",
+        "timestamp": "2023-01-21,08:54:43",
+        "user": "nathan",
+        "message": "We close *"
+    },
+    {
+        "id": "74250143-df79-4b98-82fd-9db7920100d1",
+        "timestamp": "2023-01-21,08:55:04",
+        "user": "jett",
+        "message": "We’re in BMC 154"
+    },
+    {
+        "id": "4835de1a-6da4-4ef2-a695-c55478f4437b",
+        "timestamp": "2023-01-21,08:55:33",
+        "user": "robby",
+        "message": "I'm omw"
+    }
+]

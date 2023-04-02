@@ -1,4 +1,5 @@
 from time import sleep, time
+import os
 import pinecone
 import whisper
 from langchain.document_loaders import TextLoader
@@ -9,39 +10,48 @@ import sys
 from model.agent import Agent
 from model.tools.david import *
 import pandas as pd
+from glob import glob
 
 class BaseModel:
     def __init__(self):
         self.agents = {}
         self.initialize_agents()
         self.key = []
-        self.superprompt_path = "model/prompts/super_prompt.txt"
+        self.nexus_path = "./model/history/nexus"
         with open('./key_openai.txt') as f:
             self.key.append(f.readline().strip())
 
-        # Read the API key and environment from file lines 1 and 2
         with open('./key_pinecone.txt') as f:
             self.key.append(f.readline().strip())
             self.environment = f.readline().strip()
 
-        # initialize pinecone
-        pinecone.init(
-            api_key=self.key[1],  # find at app.pinecone.io
-            environment=self.environment  # next to api key in console
-        )
-        self.pine_index = "new-ai-langchain"
-        self.vdb = pinecone.Index(self.pine_index)
-        self.add_superprompt_to_pinecone()
+        pinecone.init(api_key=self.key[1], environment=self.environment)
+        self.pine_index = "ai-langchain"
+        self.vdb = pinecone.Index(index_name=self.pine_index)
+        #self.add_superprompt_to_pinecone()
+        self.load_nexus_data()
 
     def add_superprompt_to_pinecone(self):
-        superprompt_id = "superprompt"
-        loader = TextLoader(self.superprompt_path)
-        superprompt_content = loader.load
-        superprompt_vector = gpt3_embedding(superprompt_content)  # You need to adjust this line to use your embeddings function
-        self.vdb.upsert([(superprompt_id, superprompt_vector)])
+        for json_file in glob(os.path.join(self.nexus_path, "*.json")):
+            with open(json_file, "r") as f:
+                chunks = json.load(f)
+
+            for chunk in chunks:
+                uuid = chunk["id"]
+                message = chunk["message"]
+                embedding = gpt3_embedding(message)
+                self.vdb.upsert([(uuid, embedding)])
+
+    def load_nexus_data(self):
+        self.nexus_data = {}
+        for json_file in glob(os.path.join(self.nexus_path, "*.json")):
+            with open(json_file, "r") as f:
+                chunk_data = json.load(f)
+            for entry in chunk_data:
+                self.nexus_data[entry["id"]] = entry
 
     def initialize_agents(self):
-        agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake', 'developer']
+        agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake']
         for name in agent_names:
             prompt_path = f"model/prompts/{name}_prompt.txt"
             history_path = f"model/history/{name}_history.json"
@@ -51,57 +61,46 @@ class BaseModel:
         agent = Agent(name, prompt_path, history_path)
         self.agents[name] = agent
 
-    def get_response(self, agent, history, convo_length=30):
-        """
-            Gets appropriate user chat response based off the chat history.
-            
-            **args:
-            agent: agent object
-            history: list of chat history
-            debug: boolean for debug mode (developer)
-        """
+    def get_response(self, agent, history, convo_length=10):
         agent_prompt = agent.get_prompt()
         agent_chat_history = [x for x in agent.get_history()] + history
-        query = agent_chat_history.pop()['content']
-
-        loader = TextLoader('model/prompts/super_prompt.txt')
-        documents = loader.load()
-
-
-        embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])  # type: ignore
-
-        docsearch = Pinecone.from_documents(docs, embeddings, index_name=self.pine_index)
-        docs = docsearch.similarity_search(query)
-        relevant_doc = docs[0].page_content
 
         timestamp = time()
         timestring = timestamp_to_datetime(timestamp)
 
-        # Get the vector for the user's input message
-        input_vector = gpt3_embedding(query)  # You need to adjust this line to use your embeddings function
+        query = agent_chat_history.pop()['content']
+        input_vector = gpt3_embedding(query)
 
-        # Search for relevant messages using Pinecone
-        results = self.vdb.query(vector=input_vector, top_k=convo_length)
+        # Get the closest vectors for the most similar messages in the Pinecone index
+        query_response = self.vdb.query(queries=[input_vector], top_k=convo_length)
+        nearest_ids, nearest_dists = query_response.fetch()
 
-        # Load the conversation history from JSON files
-        conversation = self.load_conversation(agent, results)
+        # From the most similar messages, filter the messages from the appropriate agent
+        relevant_msgs = [
+            self.nexus_data[vector_id]
+            for vector_id in nearest_ids[0]
+            if self.nexus_data[vector_id]["user"] == agent.name
+        ]
 
+        # Concatenate the messages into a single string
+        concatenated_messages = " ".join([msg["message"] for msg in relevant_msgs])
+
+        # Add the concatenated messages to the agent's prompt
         agent.msgs = [
             {'role': 'system', 'content': f'{agent_prompt}'},
             {'role': 'user', 'content': f'{agent_prompt}'},
             {"role": "user", "content": f"""
-            Maintain your persona and respond appropriately in the following discord conversation.
-            To assist you in the conversation, you may be provided with some information. 
-            Only use information from the following information, if the user refers to it.
-            Do not use multiple lines of information from the document.
-            Information:\n\n{relevant_doc}\n\n Discord Conversation Hisotry:\n"""},
+Maintain your persona and respond appropriately in the following discord conversation.
+To assist you in the conversation, you may be provided with some information.
+Only use information from the following information, if the user refers to it.
+Do not use multiple lines of information from the document.
+Information:\n\n{concatenated_messages}\n\n Discord Conversation Hisotry:\n"""},
             *agent_chat_history,
             {"role": "user", "content": f"{query}"}
         ]
 
         output = self.generate(agent)
 
-        # Save the user message metadata and update Pinecone
         user_message_metadata = {
             'speaker': 'USER',
             'time': timestamp,
@@ -112,11 +111,9 @@ class BaseModel:
         agent.save_message_metadata(user_message_metadata)
         self.vdb.upsert([(user_message_metadata['uuid'], input_vector)])
 
-        # Update the time
         timestamp = time()
         timestring = timestamp_to_datetime(timestamp)
 
-        # Save the AI-generated message metadata and update Pinecone
         ai_message_metadata = {
             'speaker': 'AI',
             'time': timestamp,
@@ -125,10 +122,14 @@ class BaseModel:
             'uuid': str(uuid4())
         }
         agent.save_message_metadata(ai_message_metadata)
-        ai_vector = gpt3_embedding(output)  # You need to adjust this line to use your embeddings function
+        ai_vector = gpt3_embedding(output)
         self.vdb.upsert([(ai_message_metadata['uuid'], ai_vector)])
 
         return output
+
+    def __del__(self):
+        self.vdb.delete()
+        pinecone.deinit()
 
     def generate(self, agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry=2):
@@ -203,17 +204,6 @@ class BaseModel:
                     sys.exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
-
-    def load_conversation(self, agent, results):
-        result = []
-        for m in results['matches']:
-            with open(f'{agent.history_path}/{m["id"]}.json', 'r', encoding='utf-8') as f:
-                info = json.load(f)
-                result.append(info)
-        ordered = sorted(result, key=lambda d: d['time'], reverse=False)
-        messages = [i['message'] for i in ordered]
-        return '\n'.join(messages).strip()
-
 
     @staticmethod
     def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):

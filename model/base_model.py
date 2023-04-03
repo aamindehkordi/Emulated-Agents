@@ -205,26 +205,3 @@ Information:\n\n{concatenated_messages}\n\n Discord Conversation Hisotry:\n"""},
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
 
-    @staticmethod
-    def transcribe_video(fn_in, model="medium", prompt="", language="en", fp16=False, temperature=0):
-        """ Transcribes a video file and returns the transcript.
-        *args:
-            fn_in: Input filename of the video to transcribe.
-            model_size: The size of the model to use. Options are "tiny, "small", "base", "medium", and "large".
-            prompt: The prompt to use for the model.
-            language: The language to use for the model.
-            fp16: Whether to use fp16 for the model.
-        *returns:
-            The transcript of the video.
-        """
-        # Load the model
-        model = whisper.load_model(model)
-
-        # Load the audio
-        audio = whisper.load_audio(fn_in)
-
-        # Transcribe the audio
-        result = model.transcribe(audio, prompt=prompt, language=language, fp16=fp16, temperature=temperature)
-
-        # Return the result
-        return result["text"]

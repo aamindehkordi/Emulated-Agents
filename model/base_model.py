@@ -31,6 +31,16 @@ class BaseModel:
         )
 
         self.pine_index = "ai-langchain"
+        ##############Langchain/Pinecone##################
+        loader = TextLoader('model/prompts/super_prompt.txt')
+        documents = loader.load()
+
+        text_splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=50)
+
+        self.docs = text_splitter.split_documents(documents)
+
+        self.embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])
+    ############################################################
 
     def initialize_agents(self):
         agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake', 'developer']
@@ -56,15 +66,7 @@ class BaseModel:
         agent_chat_history = [x for x in agent.get_history()] + history  # Long term History TODO
         query = agent_chat_history.pop()['content']
 
-        loader = TextLoader('model/prompts/super_prompt.txt')
-        documents = loader.load()
-
-        text_splitter = CharacterTextSplitter(chunk_size=200, chunk_overlap=50)
-        docs = text_splitter.split_documents(documents)
-
-        embeddings = OpenAIEmbeddings(openai_api_key=self.key[0])  # type: ignore
-
-        docsearch = Pinecone.from_documents(docs, embeddings, index_name=self.pine_index)
+        docsearch = Pinecone.from_documents(self.docs, self.embeddings, index_name=self.pine_index)
         docs = docsearch.similarity_search(query)
         relevant_doc = docs[0].page_content
 

@@ -12,6 +12,61 @@ This project is a chatbot application built using the OpenAI GPT-3.5-turbo model
 
 3. **Photobooth-style Live Webcam**: In this mode, a live webcam detects the user in front of the computer and selects their AI and voice synthesis. The user speaks, and the AI version of themselves talks back to them through their mirrored webcam feed.
 
+## File Structure
+```
+./key_pinecone.txt
+./controller
+./controller/chat_controller.py
+./controller/zoom_controller.py
+./controller/photobooth_controller.py
+./controller/__pycache__
+./controller/base_controller.py
+./README.md
+./key_openai.txt
+./.gitignore
+./model
+./model/tools
+./model/tools/transcribe_yt.py
+./model/tools/cleanup.py
+./model/tools/david.py
+./model/tools/model
+./model/tools/model/history
+./model/tools/model/history/local_nexus
+./model/tools/process.py
+./model/base_model.py
+./model/user_selection.py
+./model/deepfake
+./model/deepfake/lip_sync.py
+./model/deepfake/voice_synthesis.py
+./model/deepfake/user_recognition.py
+./model/history
+./model/history/kyle_history.json
+./model/history/developer_history.json
+./model/history/nexus
+./model/history/nathan_history.json
+./model/agent.py
+./model/prompts
+./model/prompts/ali_prompt.txt
+./model/prompts/DAN_prompt.txt
+./model/prompts/jett_prompt.txt
+./model/prompts/nathan_prompt.txt
+./model/prompts/kate_prompt.txt
+./model/prompts/robby_prompt.txt
+./model/prompts/cat_prompt.txt
+./model/prompts/nathan_prompt copy.txt
+./model/prompts/kyle_prompt.txt
+./model/prompts/super_prompt.txt
+./model/prompts/general_knowledge.txt
+./model/continuous_conversation.py
+./view
+./view/base_gui.py
+./view/discord_gui.py
+./view/__pycache__
+./view/zoom_gui.py
+./view/photobooth_gui.py
+./main.py
+```
+
 ## Project Structure
 
 The project follows the Model-View-Controller (MVC) architecture:

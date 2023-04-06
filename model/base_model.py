@@ -1,3 +1,4 @@
+from datetime import timedelta
 from time import sleep, time
 import sys
 import json
@@ -48,9 +49,9 @@ class BaseModel:
         with open('./model/history/embeddings.json', "r") as f:
             embeddings = json.load(f)
         for i, (uuid, embedding) in enumerate(embeddings.items()):
-            if i >= 5:
+            if i >= 3:
                 break
-            print(f"{uuid}: {embedding}")
+            print(f"{uuid}: {embedding[0:5]}")
 
         # Get the agent's prompt
         agent_prompt, general_prompt = agent.get_prompt()
@@ -71,7 +72,7 @@ class BaseModel:
             "message": str(query)
         }
         print(f"Query: {query}")
-        print(f"Input vector: {input_vector}")
+        print(f"Input vector: {input_vector[0:5]}")
 
         # Form the agent prompt
         agent.msgs = [
@@ -89,27 +90,48 @@ class BaseModel:
         #3. Get the relevant messages from the nexus
         relevant_msgs = []
         i = 0
-        while i < len(nearest_ids):
+        while i < len(nearest_ids) and len(relevant_msgs) < 5:
+            # Get the message for the nearest ID
             id = nearest_ids[i]
             msg = self.pinecone_handler.get_message(id)
             print(f"Message for ID {id}: {msg}")
+
+            # If the message is None, continue to the next ID
             if msg == None:
                 i += 1
                 continue
+            # If the message is from the agent, add it to the list of relevant messages
             if msg['user'] == agent.name:
                 relevant_msgs.append(msg['message'])
-                break
             else:
+                # for each message after the similar message
                 for j in range(i + 1, len(nearest_ids)):
+                    # Get the next message
                     msg = self.pinecone_handler.get_message(nearest_ids[j])
+                    # If the message is None, continue to the next ID
                     if msg == None:
                         i += 1
                         continue
+                    # If the message is from the agent, add it to the list of relevant messages
+                    if msg['user'] == agent.name:
+                        relevant_msgs.append(msg['message'])
+                        continue
+                    # If the message is from the user
                     if msg['user'] == user_name:
+                        # Get the next message
                         next_msg = self.pinecone_handler.get_next_message(msg['timestamp'], nearest_ids[j])
+                        # If the next message is None, continue to the next ID
+                        if next_msg == None:
+                            i += 1
+                            continue
+                        # If the next message is from the agent, add it to the list of relevant messages
                         if next_msg['user'] == agent.name:
                             relevant_msgs.append(next_msg['message'])
-                            break
+                            continue
+                        # if the next message is close in proximity to time to the original message, add it to the list of relevant messages
+                        if abs(timestamp_to_datetime(msg['timestamp']) - timestamp_to_datetime(next_msg['timestamp'])) < timedelta(minutes=5):
+                            relevant_msgs.append(next_msg['message'])
+                            continue
                 i += 1
 
         print(relevant_msgs)

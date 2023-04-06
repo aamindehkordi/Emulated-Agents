@@ -1,0 +1,38 @@
+[
+    {
+        "id": "c42a9c69-ffee-4bbf-9f4e-b8c0c55d36ea",
+        "timestamp": "2023-02-18,18:11:11",
+        "user": "robby",
+        "message": "Pop"
+    },
+    {
+        "id": "ee472c79-2c79-49ce-889b-461f7c04df8e",
+        "timestamp": "2023-02-18,23:32:36",
+        "user": "nathan",
+        "message": "Cat asked me to put this here"
+    },
+    {
+        "id": "1a7c5fea-42eb-4dce-832a-9341c2539797",
+        "timestamp": "2023-02-19,10:48:58",
+        "user": "kate",
+        "message": "natto with a egg yolk cracked in just changed my life"
+    },
+    {
+        "id": "9b084281-b0d6-4747-af8d-8d51ce28dc07",
+        "timestamp": "2023-02-19,10:49:03",
+        "user": "kate",
+        "message": "it’s soooo good like that"
+    },
+    {
+        "id": "889908f4-21b5-4ad4-8067-48d3f789e252",
+        "timestamp": "2023-02-19,13:29:26",
+        "user": "ali",
+        "message": "Deep cut"
+    },
+    {
+        "id": "f3e224b6-ef50-44fb-9ef8-3ef11f8ddb99",
+        "timestamp": "2023-02-19,14:50:50",
+        "user": "nathan",
+        "message": "It is 3pm"
+    }
+]

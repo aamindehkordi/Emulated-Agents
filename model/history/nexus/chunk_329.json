@@ -1,0 +1,38 @@
+[
+    {
+        "id": "ee6f65e3-7134-4ba8-a192-ae9a51b7fc4d",
+        "timestamp": "2022-12-04,16:22:51",
+        "user": "kate",
+        "message": "Dub"
+    },
+    {
+        "id": "1fcae03e-d55d-4a24-8fce-d90abab7d987",
+        "timestamp": "2022-12-04,16:25:16",
+        "user": "kate",
+        "message": "Then show up next time in this"
+    },
+    {
+        "id": "90379659-9910-4b1e-838d-686eaae316ef",
+        "timestamp": "2022-12-05,08:33:22",
+        "user": "nathan",
+        "message": "Uh oh kyle"
+    },
+    {
+        "id": "1d8be060-c4f4-4d2a-8a4b-b8e595b69f68",
+        "timestamp": "2022-12-05,08:33:26",
+        "user": "nathan",
+        "message": "Are you scared"
+    },
+    {
+        "id": "0148490b-849e-43a8-975d-a739f0e72f19",
+        "timestamp": "2022-12-05,08:37:56",
+        "user": "nathan",
+        "message": "They really have to change something"
+    },
+    {
+        "id": "94bc1b81-bff4-45a5-b409-c0a2992d0e01",
+        "timestamp": "2022-12-05,08:54:39",
+        "user": "kyle",
+        "message": "I woke up knowing this game would go to extra time"
+    }
+]

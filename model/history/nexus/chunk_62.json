@@ -1,0 +1,50 @@
+[
+    {
+        "id": "030ea24f-4d9d-49bc-bdcd-f742b04cdc6a",
+        "timestamp": "2022-10-12,21:58:19",
+        "user": "nathan",
+        "message": "Where are you at"
+    },
+    {
+        "id": "aebd9b3e-bf95-4c6b-aeba-5d9c31d2bb24",
+        "timestamp": "2022-10-12,22:01:37",
+        "user": "kyle",
+        "message": "heading back"
+    },
+    {
+        "id": "549b895b-0a4e-4730-96b9-5f8b1f313ec4",
+        "timestamp": "2022-10-14,23:36:29",
+        "user": "kate",
+        "message": "do u have a Halloween costume"
+    },
+    {
+        "id": "0a8bb2f4-cf48-4a73-b09b-f64fb9f29fd8",
+        "timestamp": "2022-10-14,23:36:51",
+        "user": "robby",
+        "message": "i have a backup but not a main yet"
+    },
+    {
+        "id": "c5cd0d40-928a-4766-bc17-3ddee0ce6f23",
+        "timestamp": "2022-10-14,23:37:01",
+        "user": "kate",
+        "message": "Do u want to borrow a costume"
+    },
+    {
+        "id": "ce0b12f5-89b8-4c94-8791-f2fbc3377e4e",
+        "timestamp": "2022-10-14,23:37:05",
+        "user": "kate",
+        "message": "I got a really good idea"
+    },
+    {
+        "id": "dc72da05-d9ac-4fd4-aa39-9c4e2351a055",
+        "timestamp": "2022-10-14,23:37:12",
+        "user": "kate",
+        "message": "u be misa"
+    },
+    {
+        "id": "a0a3866c-a322-4828-a3cd-4139533529b6",
+        "timestamp": "2022-10-14,23:37:24",
+        "user": "kate",
+        "message": "goes as light"
+    }
+]

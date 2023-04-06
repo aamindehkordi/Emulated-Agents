@@ -1,0 +1,44 @@
+[
+    {
+        "id": "aeb888b9-ef2a-40ce-9da1-645705b455af",
+        "timestamp": "2023-01-19,21:58:16",
+        "user": "kate",
+        "message": "She’s Filipino"
+    },
+    {
+        "id": "50dc9294-b9b9-4f54-bdff-c8f6d6a1db62",
+        "timestamp": "2023-01-19,21:58:33",
+        "user": "nathan",
+        "message": "*nathan has entered the chat*"
+    },
+    {
+        "id": "865ec658-ee74-4705-a8f5-3f92501d5c0e",
+        "timestamp": "2023-01-19,21:58:45",
+        "user": "kyle",
+        "message": "what does the ex look like"
+    },
+    {
+        "id": "57dbb8df-92b8-4939-a34a-b553e5756183",
+        "timestamp": "2023-01-19,21:58:48",
+        "user": "robby",
+        "message": "does she like beastars?"
+    },
+    {
+        "id": "ea3ad62f-d48e-4cd1-9676-2ef155926411",
+        "timestamp": "2023-01-19,21:59:04",
+        "user": "kate",
+        "message": "And a baker"
+    },
+    {
+        "id": "96836008-25a9-4cef-9eed-fbcdf154b6ec",
+        "timestamp": "2023-01-19,21:59:10",
+        "user": "nathan",
+        "message": "Do she like beaners"
+    },
+    {
+        "id": "9a2e5245-d285-4cb6-a062-e75dfa68a527",
+        "timestamp": "2023-01-19,21:59:15",
+        "user": "kyle",
+        "message": "yeah but like what does he look like"
+    }
+]

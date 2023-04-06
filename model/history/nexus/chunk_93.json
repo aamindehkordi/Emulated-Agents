@@ -1,0 +1,56 @@
+[
+    {
+        "id": "5aba75d9-cca4-4aa5-9037-ca9e6889a0bb",
+        "timestamp": "2022-10-30,13:19:34",
+        "user": "robby",
+        "message": "On my way"
+    },
+    {
+        "id": "fc3a0356-ad54-4b6a-a03e-cec30a7faa32",
+        "timestamp": "2022-10-30,13:27:27",
+        "user": "kate",
+        "message": "Oki !!"
+    },
+    {
+        "id": "c49f5ac5-1d9d-4f8c-8bee-fff370c4c35a",
+        "timestamp": "2022-10-30,13:27:32",
+        "user": "kate",
+        "message": "Us toooo"
+    },
+    {
+        "id": "8b055c18-3237-40db-b957-ff428987e6ee",
+        "timestamp": "2022-10-30,13:40:47",
+        "user": "kate",
+        "message": "Parking"
+    },
+    {
+        "id": "e4b2ceef-7efd-4838-9c0b-ec7f2ec6e041",
+        "timestamp": "2022-10-30,13:42:49",
+        "user": "robby",
+        "message": "Cool I'm here"
+    },
+    {
+        "id": "07d9542c-4ce7-4c25-9d29-cbf2256bc935",
+        "timestamp": "2022-10-30,13:47:26",
+        "user": "robby",
+        "message": "Where did you park"
+    },
+    {
+        "id": "299d7763-c150-4003-9d87-18dfdc4cc559",
+        "timestamp": "2022-10-30,13:50:47",
+        "user": "kate",
+        "message": "Still parking"
+    },
+    {
+        "id": "ae0a5132-4c17-495e-bbd2-899f0c011fe8",
+        "timestamp": "2022-10-30,13:50:51",
+        "user": "kate",
+        "message": "The structure"
+    },
+    {
+        "id": "cd6e6686-2a73-4dff-a96d-d69bef243982",
+        "timestamp": "2022-10-30,13:50:55",
+        "user": "kate",
+        "message": "Lot was packed"
+    }
+]

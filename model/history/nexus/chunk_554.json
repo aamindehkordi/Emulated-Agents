@@ -1,0 +1,92 @@
+[
+    {
+        "id": "28f1dc7b-3dbd-4f47-9ac4-6d64dd347a31",
+        "timestamp": "2023-01-11,17:52:54",
+        "user": "kyle",
+        "message": "💀"
+    },
+    {
+        "id": "a0cdef54-d7ff-485b-9b33-340129f71a1c",
+        "timestamp": "2023-01-11,18:12:44",
+        "user": "kate",
+        "message": "What is ChatGPT"
+    },
+    {
+        "id": "0b4781b4-a775-435f-92da-b4ab863b2c6c",
+        "timestamp": "2023-01-11,18:15:36",
+        "user": "ali",
+        "message": "안녕하세요! 나는 인공지능(AI)입니다. 인공지능은 컴퓨터를 이용해 인간이 하는 것과 비슷한 일을 처리하는 기술입니다. 예를 들어, 인공지능은 음성 인식, 언어 번역, 이미지 인식 등을 할 수 있어요. \"스마트한 봇\" 이라고 생각하세요!"
+    },
+    {
+        "id": "5ab33d90-c565-43fe-ab3a-d1806fa69b50",
+        "timestamp": "2023-01-11,18:45:42",
+        "user": "kyle",
+        "message": "7pm"
+    },
+    {
+        "id": "8165c910-53ce-49c5-8f56-b5ad28bba0f9",
+        "timestamp": "2023-01-11,18:45:55",
+        "user": "kyle",
+        "message": "7pm"
+    },
+    {
+        "id": "521ee49e-62de-4ce8-9fa3-8ee93710ec35",
+        "timestamp": "2023-01-11,19:06:35",
+        "user": "nathan",
+        "message": "Are y’all here"
+    },
+    {
+        "id": "1097586f-66aa-4264-99b3-c6f93d09a892",
+        "timestamp": "2023-01-11,19:07:07",
+        "user": "jett",
+        "message": "I’m not going"
+    },
+    {
+        "id": "6ec29dd6-ec73-4c1f-a630-5c90deebf376",
+        "timestamp": "2023-01-11,19:07:22",
+        "user": "jett",
+        "message": "I’m too comfy on my couch"
+    },
+    {
+        "id": "cb2cdffd-0d3b-4ec2-a19e-7f322719eb11",
+        "timestamp": "2023-01-11,19:14:13",
+        "user": "ali",
+        "message": "Bruhhhhhhh"
+    },
+    {
+        "id": "93167088-c0b1-49be-8b31-609b6715ab1f",
+        "timestamp": "2023-01-11,19:14:22",
+        "user": "ali",
+        "message": "Robby wya"
+    },
+    {
+        "id": "41bca531-f283-4622-8d6f-4db6655d9f41",
+        "timestamp": "2023-01-11,20:36:56",
+        "user": "kate",
+        "message": "Woah"
+    },
+    {
+        "id": "54649ac9-c343-46d4-a608-471d49f49dd5",
+        "timestamp": "2023-01-11,20:37:00",
+        "user": "kate",
+        "message": "that’s actually good"
+    },
+    {
+        "id": "8cd3dac6-6593-4c16-9d21-67bdb1913ddb",
+        "timestamp": "2023-01-11,20:37:04",
+        "user": "kate",
+        "message": "Grammar is good"
+    },
+    {
+        "id": "0c47fc96-02be-434c-b111-dcceef28d6c9",
+        "timestamp": "2023-01-11,20:37:09",
+        "user": "kate",
+        "message": "Spelling is good"
+    },
+    {
+        "id": "7ade2208-deb7-41e2-94f4-f2def9b8705b",
+        "timestamp": "2023-01-11,20:37:16",
+        "user": "kate",
+        "message": "Slightly formal but it’s good"
+    }
+]

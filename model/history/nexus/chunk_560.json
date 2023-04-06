@@ -1,0 +1,56 @@
+[
+    {
+        "id": "17c148c5-d3e1-4436-a00f-e6beff273dc7",
+        "timestamp": "2023-01-12,09:14:13",
+        "user": "nathan",
+        "message": "Well I’m out of class at 12:30"
+    },
+    {
+        "id": "e4e4adac-83e1-4410-9a82-de536cb84066",
+        "timestamp": "2023-01-12,09:14:24",
+        "user": "nathan",
+        "message": "But you could us for lunch at that time"
+    },
+    {
+        "id": "29de6349-e83a-4a75-9485-2ea388a7abf1",
+        "timestamp": "2023-01-12,09:24:44",
+        "user": "robby",
+        "message": "come hang w/ us you demolition derby legend"
+    },
+    {
+        "id": "a930fc94-6d5e-4e60-81fe-bb8c3dae4d31",
+        "timestamp": "2023-01-12,09:32:49",
+        "user": "kyle",
+        "message": "was it ethan"
+    },
+    {
+        "id": "249223a5-5168-4fa8-a6c9-dbc4ef16f2a0",
+        "timestamp": "2023-01-12,09:33:02",
+        "user": "robby",
+        "message": "karna"
+    },
+    {
+        "id": "2ff459db-0a99-4d99-a374-5922418982eb",
+        "timestamp": "2023-01-12,09:33:08",
+        "user": "kyle",
+        "message": "oh"
+    },
+    {
+        "id": "be45d56f-a392-4278-90df-168b7dc82b2d",
+        "timestamp": "2023-01-12,09:33:17",
+        "user": "robby",
+        "message": "idk if someone died he just said family emergency"
+    },
+    {
+        "id": "8e75c9af-c61e-42cf-abb8-60537db08da7",
+        "timestamp": "2023-01-12,09:36:35",
+        "user": "kyle",
+        "message": "Robert are you writing all of the code?"
+    },
+    {
+        "id": "8c2cb387-bf8c-4235-ab22-838de3c4d4b6",
+        "timestamp": "2023-01-12,09:37:06",
+        "user": "robby",
+        "message": "yea"
+    }
+]

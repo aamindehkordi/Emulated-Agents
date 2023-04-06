@@ -1,0 +1,44 @@
+[
+    {
+        "id": "a789e424-915c-478b-bb05-ec7cac220e86",
+        "timestamp": "2023-01-16,14:40:19",
+        "user": "ali",
+        "message": "I posted it on my story"
+    },
+    {
+        "id": "c5901704-f04e-451b-bec6-3a79e2366814",
+        "timestamp": "2023-01-16,14:40:29",
+        "user": "ali",
+        "message": "Actual gold I’m still laughing"
+    },
+    {
+        "id": "7f455062-094b-47f4-9b29-71498e83cc42",
+        "timestamp": "2023-01-16,14:41:19",
+        "user": "kyle",
+        "message": "ali rn"
+    },
+    {
+        "id": "3b562aaa-ed3d-49eb-8502-00954d760a67",
+        "timestamp": "2023-01-16,15:18:39",
+        "user": "ali",
+        "message": "Lololol"
+    },
+    {
+        "id": "fc231f3b-e2aa-4806-94f3-6225098d73a1",
+        "timestamp": "2023-01-16,15:53:20",
+        "user": "robby",
+        "message": "We should meet with jp today"
+    },
+    {
+        "id": "500a5a56-3641-44cd-baba-ae6ccb601f54",
+        "timestamp": "2023-01-16,15:53:29",
+        "user": "kyle",
+        "message": "u got the email"
+    },
+    {
+        "id": "63cb114b-856d-49c1-b6c3-67a83e6c601c",
+        "timestamp": "2023-01-16,15:53:57",
+        "user": "robby",
+        "message": "Yeah"
+    }
+]

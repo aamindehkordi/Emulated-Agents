@@ -1,0 +1,50 @@
+[
+    {
+        "id": "6ae7820f-884e-48e6-b56a-13682c48fd92",
+        "timestamp": "2022-11-09,12:29:34",
+        "user": "nathan",
+        "message": "Might be a good idea"
+    },
+    {
+        "id": "328a2cd4-761d-4eaf-9cc9-0745c14b20fc",
+        "timestamp": "2022-11-09,12:39:07",
+        "user": "kate",
+        "message": "Oki"
+    },
+    {
+        "id": "b2572839-4de4-410a-bf15-ed2b6f1747b7",
+        "timestamp": "2022-11-09,12:39:10",
+        "user": "kate",
+        "message": "Vote on one"
+    },
+    {
+        "id": "b80fd32b-d6e9-47e3-90f5-67827bbb0755",
+        "timestamp": "2022-11-09,12:39:26",
+        "user": "kate",
+        "message": "1. Stick to OG plan and watch movie"
+    },
+    {
+        "id": "5ad803a0-50cd-4e7c-964b-4b60f717070b",
+        "timestamp": "2022-11-09,12:39:40",
+        "user": "kate",
+        "message": "2. Hang at Jett’s and just chill"
+    },
+    {
+        "id": "05ca439c-016a-47bf-ae90-5065b034115d",
+        "timestamp": "2022-11-09,12:39:51",
+        "user": "kate",
+        "message": "3. Do our own thing for today"
+    },
+    {
+        "id": "71648e8f-a877-4fdc-97c4-8064bb4a082a",
+        "timestamp": "2022-11-09,13:09:30",
+        "user": "ali",
+        "message": "4. Come over"
+    },
+    {
+        "id": "4c6f14f7-90b3-47f9-bead-d1c34655c0fa",
+        "timestamp": "2022-11-09,13:23:03",
+        "user": "kate",
+        "message": "Jk this out of the table"
+    }
+]

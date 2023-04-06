@@ -137,4 +137,5 @@ The Controller directory contains the logic to connect the Model and the View.
 
 1. Clone the repository to your local machine.
 2. Install the required packages by running `pip install -r requirements.txt`.
+3. Precompute the embeddings by running `python ./model/precompute_embeddings.py`
 3. Run `python main.py` to start the application.

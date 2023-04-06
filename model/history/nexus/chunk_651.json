@@ -1,0 +1,56 @@
+[
+    {
+        "id": "0498ee2e-ae9a-4b15-9654-5f0f6ead7607",
+        "timestamp": "2023-01-18,10:50:28",
+        "user": "nathan",
+        "message": "Caf?"
+    },
+    {
+        "id": "c529fca5-be22-46f3-bcfb-6a0d6d55699f",
+        "timestamp": "2023-01-18,11:03:26",
+        "user": "jett",
+        "message": "Yup"
+    },
+    {
+        "id": "5f301ca0-bfb9-4598-8bb7-1424e9f946d4",
+        "timestamp": "2023-01-18,11:03:32",
+        "user": "jett",
+        "message": "Are you there already?"
+    },
+    {
+        "id": "b69fdf80-b59f-42f0-911a-aaa5db31a4b3",
+        "timestamp": "2023-01-18,11:03:41",
+        "user": "kyle",
+        "message": "heading there"
+    },
+    {
+        "id": "0fd0c4a0-aeec-4629-96cd-8d9dffa42652",
+        "timestamp": "2023-01-18,11:03:44",
+        "user": "kyle",
+        "message": "parking"
+    },
+    {
+        "id": "ecb069e0-6a05-487f-8a0f-fa914dd5b1cb",
+        "timestamp": "2023-01-18,11:11:54",
+        "user": "jake",
+        "message": "L bozo"
+    },
+    {
+        "id": "b0c037a7-e23f-452b-93e3-45d54ad1b1a5",
+        "timestamp": "2023-01-18,12:28:26",
+        "user": "ali",
+        "message": "True actually"
+    },
+    {
+        "id": "8254e6d4-b0a6-49ce-a1fb-172b7f43a3e6",
+        "timestamp": "2023-01-18,12:28:42",
+        "user": "ali",
+        "message": "I have to get gas and I’m the reason it’s so expensive"
+    },
+    {
+        "id": "64559c55-42af-4830-943d-520a0aa19c04",
+        "timestamp": "2023-01-18,12:28:50",
+        "user": "ali",
+        "message": "L bozo"
+    }
+]

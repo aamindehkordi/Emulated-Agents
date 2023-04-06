@@ -16,3 +16,5 @@ key_pinecone.txt
 model/__pycache__/openai_api.cpython-38.pyc
 */.idea/*
 *.idea/*
+*.csv
+/model/history/embeddings.json

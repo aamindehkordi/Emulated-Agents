@@ -1,0 +1,38 @@
+[
+    {
+        "id": "dd40c61c-e98e-4146-845b-9525415556d3",
+        "timestamp": "2022-10-31,12:19:12",
+        "user": "kyle",
+        "message": "bruh"
+    },
+    {
+        "id": "d58b4a41-4fba-42ca-87a8-e120803c3729",
+        "timestamp": "2022-10-31,12:41:30",
+        "user": "kate",
+        "message": "Tell them u have to go to ur grandmas birthday"
+    },
+    {
+        "id": "4c253b61-137e-4093-ab4e-fe550e4f0987",
+        "timestamp": "2022-10-31,12:41:38",
+        "user": "kyle",
+        "message": "fr"
+    },
+    {
+        "id": "fc532b6c-4b13-491a-b331-6f65bae5c68e",
+        "timestamp": "2022-10-31,12:55:34",
+        "user": "nathan",
+        "message": "That is 5 dollars in the jar"
+    },
+    {
+        "id": "9853a337-1459-4817-bd09-0a9736c13d3b",
+        "timestamp": "2022-10-31,12:56:07",
+        "user": "nathan",
+        "message": "Robby just show up after"
+    },
+    {
+        "id": "64214078-6006-449e-8de7-434d224ef3c9",
+        "timestamp": "2022-10-31,12:58:47",
+        "user": "robby",
+        "message": "Ok"
+    }
+]

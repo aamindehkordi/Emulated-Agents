@@ -1,0 +1,32 @@
+[
+    {
+        "id": "c7b30c6d-1c0c-48de-9e40-4326b1f40134",
+        "timestamp": "2023-02-17,14:13:10",
+        "user": "nathan",
+        "message": "Yes"
+    },
+    {
+        "id": "dda0f82f-145b-4b0c-808f-1038a376158a",
+        "timestamp": "2023-02-17,20:44:32",
+        "user": "nathan",
+        "message": "That looks lit"
+    },
+    {
+        "id": "7858852d-715b-432b-9d8f-f9061fab0253",
+        "timestamp": "2023-02-17,20:44:35",
+        "user": "nathan",
+        "message": "Should’ve brought me"
+    },
+    {
+        "id": "a99619f6-027a-405b-938a-8025e839f9fe",
+        "timestamp": "2023-02-17,20:53:36",
+        "user": "kyle",
+        "message": "idk what ben's doing"
+    },
+    {
+        "id": "92b4cfef-7c7e-4d15-a65f-5cf32a1370ff",
+        "timestamp": "2023-02-17,21:34:25",
+        "user": "kate",
+        "message": "Who has school Monday"
+    }
+]

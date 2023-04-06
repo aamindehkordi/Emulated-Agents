@@ -1,0 +1,50 @@
+[
+    {
+        "id": "6beb054b-1aad-4121-8760-307cb70a151c",
+        "timestamp": "2023-01-03,17:14:55",
+        "user": "jett",
+        "message": "I can bring things over tomorrow"
+    },
+    {
+        "id": "441e8b64-0695-406c-a9f1-291f015eb4ff",
+        "timestamp": "2023-01-03,17:14:59",
+        "user": "jett",
+        "message": "I should be fine"
+    },
+    {
+        "id": "4b78b26a-e955-4b2b-84d4-044a429ae57e",
+        "timestamp": "2023-01-03,18:09:21",
+        "user": "ali",
+        "message": "Ayo me too"
+    },
+    {
+        "id": "c8e97fe8-63c0-4637-aab0-25369af388e6",
+        "timestamp": "2023-01-04,00:11:26",
+        "user": "nathan",
+        "message": "climbing tomorrow?"
+    },
+    {
+        "id": "a2cbb426-7621-45bf-801a-0630679a5104",
+        "timestamp": "2023-01-04,00:14:14",
+        "user": "jett",
+        "message": "What time"
+    },
+    {
+        "id": "a11bdcb0-8f72-40be-8399-b652afd63487",
+        "timestamp": "2023-01-04,00:16:32",
+        "user": "nathan",
+        "message": "4"
+    },
+    {
+        "id": "35da1259-5a30-4d26-b7fb-9126081d5f06",
+        "timestamp": "2023-01-04,00:16:37",
+        "user": "nathan",
+        "message": "Bring JP"
+    },
+    {
+        "id": "27ad0a94-1824-4cd8-b0fe-82bd72167a1f",
+        "timestamp": "2023-01-04,00:20:54",
+        "user": "jett",
+        "message": "I’m down"
+    }
+]

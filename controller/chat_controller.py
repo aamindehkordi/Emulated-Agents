@@ -8,7 +8,6 @@ class ChatController(BaseController):
         super().__init__(model)
         self.model = model
         self.chat_gui.set_controller(self)
-        self.token_count = 0
 
     def send_message(self, user, bot, message):
         if message.strip() == "":
@@ -34,8 +33,7 @@ class ChatController(BaseController):
             #response, chat_history = self.get_response_all(chat_history)
             #Todo
         
-        response, tokens = self.model.get_response(agent, chat_history)
-        self.token_count = self.token_count + tokens[0]
+        response = self.model.get_response(agent, chat_history)
         chat_history.append({'role': 'assistant', 'content': f"{response}"})
 
         self.append_response_to_json_file(message =response, is_assistant= 1, file_path = './model/history/nathan_history.json')

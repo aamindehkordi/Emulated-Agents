@@ -1,0 +1,56 @@
+[
+    {
+        "id": "2290ebaa-f395-45e9-98a9-5404348ea1f7",
+        "timestamp": "2023-01-14,20:11:27",
+        "user": "kate",
+        "message": "I want to try it"
+    },
+    {
+        "id": "64ea281f-67c3-4002-9ad0-689de366a860",
+        "timestamp": "2023-01-14,20:20:51",
+        "user": "kyle",
+        "message": "i like it"
+    },
+    {
+        "id": "cb74222b-3b53-47bd-9799-9804528333ee",
+        "timestamp": "2023-01-14,20:21:00",
+        "user": "kyle",
+        "message": "definitely weird to people who havent tried it"
+    },
+    {
+        "id": "6ada759f-6ce8-41dc-bf2e-43dc88f6b97c",
+        "timestamp": "2023-01-14,20:23:48",
+        "user": "kate",
+        "message": "I want to try it"
+    },
+    {
+        "id": "1d76e978-2081-415b-9cfe-0fc92198b350",
+        "timestamp": "2023-01-14,20:24:01",
+        "user": "kate",
+        "message": "I’m gonna look for it next time I go to the market"
+    },
+    {
+        "id": "cc2af86f-d1ec-4ad5-8280-505c3835ac43",
+        "timestamp": "2023-01-14,20:24:04",
+        "user": "kyle",
+        "message": "very easy to make"
+    },
+    {
+        "id": "7b674ac3-71bf-476a-baa6-e3672e3826ba",
+        "timestamp": "2023-01-14,20:24:07",
+        "user": "kate",
+        "message": "I’m gonna make  try too"
+    },
+    {
+        "id": "6eb5603e-2330-4f6d-905b-4ef2ec059e24",
+        "timestamp": "2023-01-14,20:24:17",
+        "user": "kyle",
+        "message": "it's very sticky"
+    },
+    {
+        "id": "8795c1a1-24b9-445a-8928-4d0221d4b5d0",
+        "timestamp": "2023-01-14,20:24:17",
+        "user": "kate",
+        "message": "teach me"
+    }
+]

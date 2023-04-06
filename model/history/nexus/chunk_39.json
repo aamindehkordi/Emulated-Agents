@@ -1,0 +1,50 @@
+[
+    {
+        "id": "0fd84271-a388-4b7d-aea4-6274729ffd92",
+        "timestamp": "2022-10-06,10:59:21",
+        "user": "kate",
+        "message": "combat machine"
+    },
+    {
+        "id": "b1979694-95b7-41ad-aed3-79efbbf513e1",
+        "timestamp": "2022-10-06,10:59:30",
+        "user": "robby",
+        "message": "Yeah"
+    },
+    {
+        "id": "0cd3f46e-2c8d-4a20-8758-0ca0404799ae",
+        "timestamp": "2022-10-06,10:59:34",
+        "user": "robby",
+        "message": "Green bag"
+    },
+    {
+        "id": "0c801f37-42ff-4554-b4d1-78455cd9721b",
+        "timestamp": "2022-10-06,11:05:51",
+        "user": "kate",
+        "message": "help me vote on a flavor guys"
+    },
+    {
+        "id": "12cbd431-dfc2-466b-bca9-f8ee2027caa1",
+        "timestamp": "2022-10-06,11:05:58",
+        "user": "kate",
+        "message": "fruity pebbles"
+    },
+    {
+        "id": "06e8fa22-432f-42b8-bed7-046601dc10f2",
+        "timestamp": "2022-10-06,11:06:03",
+        "user": "kate",
+        "message": "chocolate"
+    },
+    {
+        "id": "29112208-629b-42a4-b686-29594b169386",
+        "timestamp": "2022-10-06,11:06:05",
+        "user": "kate",
+        "message": "vaniller"
+    },
+    {
+        "id": "d50b4e66-819f-4486-b613-b72cdb25bb36",
+        "timestamp": "2022-10-06,11:06:23",
+        "user": "kate",
+        "message": "ok im getting fruity pebbles"
+    }
+]

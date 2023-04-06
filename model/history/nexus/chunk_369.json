@@ -1,0 +1,44 @@
+[
+    {
+        "id": "4a496098-bc18-49d4-94ac-03db9c109a7d",
+        "timestamp": "2022-12-12,22:10:24",
+        "user": "kate",
+        "message": "Setup"
+    },
+    {
+        "id": "a884bad8-643e-4b63-810a-2938f072185f",
+        "timestamp": "2022-12-12,22:10:26",
+        "user": "kate",
+        "message": "💀"
+    },
+    {
+        "id": "3c4bb764-72a9-4445-9929-639d93776d67",
+        "timestamp": "2022-12-12,22:10:28",
+        "user": "robby",
+        "message": "garf"
+    },
+    {
+        "id": "4872366c-ba82-4d49-9758-4f4eddfb3c0f",
+        "timestamp": "2022-12-12,22:11:03",
+        "user": "nathan",
+        "message": "garf"
+    },
+    {
+        "id": "b8eb4927-d106-42e0-ac76-15ebf2159498",
+        "timestamp": "2022-12-12,22:22:16",
+        "user": "kate",
+        "message": "I finally changed my fish shirt"
+    },
+    {
+        "id": "936468cb-e143-4294-a91a-58be7ae2e5a1",
+        "timestamp": "2022-12-12,22:22:33",
+        "user": "kyle",
+        "message": "lets go"
+    },
+    {
+        "id": "cfb8221d-3915-4060-afab-791d73dc8e37",
+        "timestamp": "2022-12-12,22:22:39",
+        "user": "nathan",
+        "message": "Jemsus"
+    }
+]

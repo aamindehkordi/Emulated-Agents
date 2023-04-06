@@ -1,23 +1,17 @@
 from time import sleep, time
-import os
-import pinecone
-import whisper
-from langchain.document_loaders import TextLoader
-from langchain.embeddings.openai import OpenAIEmbeddings
-from langchain.text_splitter import CharacterTextSplitter
-from langchain.vectorstores import Pinecone
 import sys
+import json
+from uuid import uuid4
+import openai
 from model.agent import Agent
-from model.tools.david import *
-import pandas as pd
-from glob import glob
+from model.tools.david import timestamp_to_datetime, gpt3_embedding
+from model.pinecone_handler import PineconeHandler
 
 class BaseModel:
     def __init__(self):
         self.agents = {}
         self.initialize_agents()
         self.key = []
-        self.nexus_path = "./model/history/nexus"
         with open('./key_openai.txt') as f:
             self.key.append(f.readline().strip())
 
@@ -25,30 +19,7 @@ class BaseModel:
             self.key.append(f.readline().strip())
             self.environment = f.readline().strip()
 
-        pinecone.init(api_key=self.key[1], environment=self.environment)
-        self.pine_index = "ai-langchain"
-        self.vdb = pinecone.Index(index_name=self.pine_index)
-        #self.add_superprompt_to_pinecone()
-        self.load_nexus_data()
-
-    def add_superprompt_to_pinecone(self):
-        for json_file in glob(os.path.join(self.nexus_path, "*.json")):
-            with open(json_file, "r") as f:
-                chunks = json.load(f)
-
-            for chunk in chunks:
-                uuid = chunk["id"]
-                message = chunk["message"]
-                embedding = gpt3_embedding(message)
-                self.vdb.upsert([(uuid, embedding)])
-
-    def load_nexus_data(self):
-        self.nexus_data = {}
-        for json_file in glob(os.path.join(self.nexus_path, "*.json")):
-            with open(json_file, "r") as f:
-                chunk_data = json.load(f)
-            for entry in chunk_data:
-                self.nexus_data[entry["id"]] = entry
+        self.pinecone_handler = PineconeHandler(self.key[1], self.environment, "ai-langchain")
 
     def initialize_agents(self):
         agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake']
@@ -61,78 +32,130 @@ class BaseModel:
         agent = Agent(name, prompt_path, history_path)
         self.agents[name] = agent
 
-    def get_response(self, agent, history, convo_length=10):
-        agent_prompt = agent.get_prompt()
-        agent_chat_history = [x for x in agent.get_history()] + history
+    def get_response(self, agent, history, k=10):
+        """
+        Format the query to get the best response from the agent.
 
-        timestamp = time()
-        timestring = timestamp_to_datetime(timestamp)
+        *args:
+            agent: Agent object
+            history: list of dictionaries containing the chat history
+            k: number of nearest neighbors to query from the Pinecone index
 
-        query = agent_chat_history.pop()['content']
+        *returns:
+            response: string containing the response from the agent
+        """
+        print("First few entries in Pinecone index:")
+        with open('./model/history/embeddings.json', "r") as f:
+            embeddings = json.load(f)
+        for i, (uuid, embedding) in enumerate(embeddings.items()):
+            if i >= 5:
+                break
+            print(f"{uuid}: {embedding}")
+
+        # Get the agent's prompt
+        agent_prompt, general_prompt = agent.get_prompt()
+
+        # Get the agent's priming and history
+        chat_history_list = agent.get_priming() + history
+
+        # Get the name of the user of the query
+        user_name = chat_history_list[-1]['user']
+
+        # 1. Get the query and convert it to a vector
+        query = chat_history_list.pop()['content']
         input_vector = gpt3_embedding(query)
+        user_message = {
+            "id": str(uuid4()),
+            "timestamp":str (timestamp_to_datetime(time())),
+            "user": str(user_name),
+            "message": str(query)
+        }
+        print(f"Query: {query}")
+        print(f"Input vector: {input_vector}")
 
-        # Get the closest vectors for the most similar messages in the Pinecone index
-        query_response = self.vdb.query(queries=[input_vector], top_k=convo_length)
-        nearest_ids, nearest_dists = query_response.fetch()
-
-        # From the most similar messages, filter the messages from the appropriate agent
-        relevant_msgs = [
-            self.nexus_data[vector_id]
-            for vector_id in nearest_ids[0]
-            if self.nexus_data[vector_id]["user"] == agent.name
+        # Form the agent prompt
+        agent.msgs = [
+            {'role': 'system', 'content': f'{general_prompt}'},
+            {'role': 'user', 'content': f'{agent_prompt}'},
+            *chat_history_list
         ]
 
-        # Concatenate the messages into a single string
-        concatenated_messages = " ".join([msg["message"] for msg in relevant_msgs])
+        # 2. Get the closest vectors for the most similar messages in the Pinecone index
+        query_response = self.pinecone_handler.query(queries=[input_vector], top_k=k)
+        nearest_ids = [match['id'] for match in query_response['results'][0]['matches']]
+        print(f"Query response: {query_response}")
+        print(f"Nearest IDs: {nearest_ids}")
 
-        # Add the concatenated messages to the agent's prompt
-        agent.msgs = [
-            {'role': 'system', 'content': f'{agent_prompt}'},
-            {'role': 'user', 'content': f'{agent_prompt}'},
-            {"role": "user", "content": f"""
-Maintain your persona and respond appropriately in the following discord conversation.
-To assist you in the conversation, you may be provided with some information.
-Only use information from the following information, if the user refers to it.
-Do not use multiple lines of information from the document.
-Information:\n\n{concatenated_messages}\n\n Discord Conversation Hisotry:\n"""},
-            *agent_chat_history,
+        #3. Get the relevant messages from the nexus
+        relevant_msgs = []
+        i = 0
+        while i < len(nearest_ids):
+            id = nearest_ids[i]
+            msg = self.pinecone_handler.get_message(id)
+            print(f"Message for ID {id}: {msg}")
+            if msg == None:
+                i += 1
+                continue
+            if msg['user'] == agent.name:
+                relevant_msgs.append(msg['message'])
+                break
+            else:
+                for j in range(i + 1, len(nearest_ids)):
+                    msg = self.pinecone_handler.get_message(nearest_ids[j])
+                    if msg == None:
+                        i += 1
+                        continue
+                    if msg['user'] == user_name:
+                        next_msg = self.pinecone_handler.get_next_message(msg['timestamp'], nearest_ids[j])
+                        if next_msg['user'] == agent.name:
+                            relevant_msgs.append(next_msg['message'])
+                            break
+                i += 1
+
+        print(relevant_msgs)
+
+        # If the list of relevant messages is empty, append the 3 closest message from the index/nexus
+        if len(relevant_msgs) == 0:
+            for id in nearest_ids[:3]:
+                msg = self.pinecone_handler.get_message(id)
+                if msg == None:
+                    continue
+                relevant_msgs.append(msg['message'])
+        print(relevant_msgs)
+        # 4. Concatenate the relevantmessages into a single string
+        concatenated_messages = '\n'.join([msg for msg in relevant_msgs])
+
+        # Add the concatenated messages to the agent's prompt along with the popped query
+        agent.msgs += [
+            {"role": "user", "content": f"Do not use these verbatim but here are suggestions on how to respond to the next message:{concatenated_messages}"},
             {"role": "user", "content": f"{query}"}
         ]
 
-        output = self.generate(agent)
-
-        user_message_metadata = {
-            'speaker': 'USER',
-            'time': timestamp,
-            'message': query,
-            'timestring': timestring,
-            'uuid': str(uuid4())
+        # 5. Generate the response from the agent
+        output, tokens = self.generate(agent, user=str(user_name))
+        timestring = timestamp_to_datetime(time())
+        print(output)
+        print(agent.msgs)
+        # 6. Save the query and output to the nexus and vector index
+        agent_message = {
+            "id": str(uuid4()),
+            "timestamp": str(timestring),
+            "user": str(agent.name),
+            "message": str(output)
         }
-        agent.save_message_metadata(user_message_metadata)
-        self.vdb.upsert([(user_message_metadata['uuid'], input_vector)])
 
-        timestamp = time()
-        timestring = timestamp_to_datetime(timestamp)
+        self.pinecone_handler.save_message(user_message, input_vector)
+        self.pinecone_handler.save_message(agent_message, gpt3_embedding(output))
 
-        ai_message_metadata = {
-            'speaker': 'AI',
-            'time': timestamp,
-            'message': output,
-            'timestring': timestring,
-            'uuid': str(uuid4())
-        }
-        agent.save_message_metadata(ai_message_metadata)
-        ai_vector = gpt3_embedding(output)
-        self.vdb.upsert([(ai_message_metadata['uuid'], ai_vector)])
-
+        # 7. Return the response
         return output
 
     def __del__(self):
-        self.vdb.delete()
-        pinecone.deinit()
+        # Properly delete the Pinecone index when the class is destroyed
+        self.pinecone_handler.delete_index()
 
-    def generate(self, agent, model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
-                 max_tokens=350, presence_penalty=0, frequency_penalty=0, debug=False, max_retry=2):
+    def generate(self, agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
+                 max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2):
         """
             Generates a response from the OpenAI API.
             
@@ -166,6 +189,7 @@ Information:\n\n{concatenated_messages}\n\n Discord Conversation Hisotry:\n"""},
                     max_tokens=max_tokens,
                     presence_penalty=presence_penalty,
                     frequency_penalty=frequency_penalty,
+                    user=user
                 )
 
                 answer = response["choices"][0]["message"]["content"]  # type: ignore

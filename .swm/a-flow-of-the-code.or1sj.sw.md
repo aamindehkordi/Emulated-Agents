@@ -440,9 +440,16 @@ From here the controller decides who should respond aka which agent should gener
 First the model organizes the order of the prompts, relative info, chat history priming, and querying and then...
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 model/base_model.py
+
 ```python
-46         def get_response(self, agent, history, debug=False):
-47             """
+46
+
+
+def get_response(self, agent, history, debug=False):
+
+
+    47
+"""
 48                 Gets appropriate user chat response based off the chat history.
 49                 
 50                 **args:
@@ -450,31 +457,43 @@ First the model organizes the order of the prompts, relative info, chat history 
 52                 history: list of chat history
 53                 debug: boolean for debug mode (developer)
 54             """
-55             if str(agent.name) == "developer":
-56                 debug = True
-57                 agent.model = "gpt-3.5-turbo-0301"
-58                 agent.max_tokens = 810
-59                 print("debug mode")
-60     
-61             agent_prompt = agent.get_prompt()
-62             agent_history = [x for x in agent.get_history()] + history  # Long term History TODO
-63             query = agent_history.pop()['content']
-64     
-65             if not debug:
-66     
-67                 agent.msgs = [
-68                     {'role': 'system', 'content': f'{agent_prompt}\n'},
-69                     *agent_history
-70                 ]
-71     
-72             else:
-73                 agent.msgs = [
-74                     {'role': 'system', 'content': f'{agent_prompt}'},
-75                     {'role': 'user', 'content': f'{agent_prompt}'},
-76                     *agent_history
-77                 ]
-78     
-79             return self.generate_response(query, agent.msgs, agent_prompt)
+55
+if str(agent.name) == "developer":
+    56
+debug = True
+57
+agent.model = "gpt-3.5-turbo-0301"
+58
+agent.max_tokens = 810
+59
+print("debug mode")
+60
+61
+agent_prompt = agent.get_prompt()
+62
+agent_history = [x for x in agent.get_priming()] + history  # Long term History TODO
+63
+query = agent_history.pop()['content']
+64
+65
+if not debug:
+    66
+67
+agent.msgs = [
+    68                     {'role': 'system', 'content': f'{agent_prompt}\n'},
+    69 * agent_history
+    70]
+71
+72 else:
+73
+agent.msgs = [
+    74                     {'role': 'system', 'content': f'{agent_prompt}'},
+    75                     {'role': 'user', 'content': f'{agent_prompt}'},
+    76 * agent_history
+    77]
+78
+79
+return self.generate_response(query, agent.msgs, agent_prompt)
 ```
 
 <br/>

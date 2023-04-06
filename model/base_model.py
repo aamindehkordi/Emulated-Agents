@@ -115,6 +115,7 @@ class BaseModel:
                     # If the message is from the agent, add it to the list of relevant messages
                     if msg['user'] == agent.name:
                         relevant_msgs.append(msg['message'])
+                        i+=1
                         continue
                     # If the message is from the user
                     if msg['user'] == user_name:
@@ -127,10 +128,12 @@ class BaseModel:
                         # If the next message is from the agent, add it to the list of relevant messages
                         if next_msg['user'] == agent.name:
                             relevant_msgs.append(next_msg['message'])
+                            i+=1
                             continue
                         # if the next message is close in proximity to time to the original message, add it to the list of relevant messages
                         if abs(timestamp_to_datetime(msg['timestamp']) - timestamp_to_datetime(next_msg['timestamp'])) < timedelta(minutes=5):
                             relevant_msgs.append(next_msg['message'])
+                            i+=1
                             continue
                 i += 1
 

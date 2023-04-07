@@ -8,6 +8,7 @@ from model.agent import Agent
 from model.tools.david import timestamp_to_datetime, gpt3_embedding
 from model.pinecone_handler import PineconeHandler
 
+
 class BaseModel:
     def __init__(self):
         self.agents = {}
@@ -27,13 +28,57 @@ class BaseModel:
         for name in agent_names:
             prompt_path = f"model/prompts/{name}_prompt.txt"
             history_path = f"model/history/{name}_history.json"
-            self.add_agent(name, prompt_path, history_path)
+            agent = Agent(name, prompt_path, history_path)
+            self.agents[name] = agent
 
-    def add_agent(self, name, prompt_path, history_path):
-        agent = Agent(name, prompt_path, history_path)
-        self.agents[name] = agent
+    def __del__(self):
+        # Properly delete the Pinecone index when the class is destroyed
+        self.pinecone_handler.delete_index()
 
-    def get_response(self, agent, history, k=10):
+    def get_relevant_messages(self, nearest_ids, agent, user_name):
+        """
+        Get the relevant messages from the nearest IDs
+        """
+        relevant_msgs = []
+
+        def process_message(msg, agent_name):
+            if msg is not None and msg['user'] == agent_name:
+                relevant_msgs.append(msg['message'])
+
+        for ids in nearest_ids:
+            # Get the message for the nearest ID
+            msg = self.pinecone_handler.get_message(ids)
+            print(f"Message for ID {ids}: {msg}")
+
+            # If the message is from the agent, add it to the list of relevant messages
+            process_message(msg, agent.name)
+
+            # If the message is from the user
+            if msg is not None and msg['user'] == user_name:
+                # Get the next message
+                next_msg = self.pinecone_handler.get_next_message(msg['timestamp'], ids)
+
+                # If the next message is from the agent, add it to the list of relevant messages
+                process_message(next_msg, agent.name)
+
+                # if the next message is close in proximity to time to the original message, add it to the list of relevant messages
+                if next_msg is not None and abs(timestamp_to_datetime(int(msg['timestamp'])) - timestamp_to_datetime(int(next_msg['timestamp']))) < timedelta(minutes=10):
+                    relevant_msgs.append(next_msg['message'])
+
+            if len(relevant_msgs) >= 5:
+                break
+
+        # If the list of relevant messages is empty, append the 3 closest message from the index/nexus
+        if len(relevant_msgs) == 0:
+            for ids in nearest_ids[:3]:
+                msg = self.pinecone_handler.get_message(ids)
+                if msg is None:
+                    continue
+                relevant_msgs.append(msg['message'])
+
+        return relevant_msgs
+
+    def get_response(self, agent, history, k=50, similarity_threshold=0.5):
         """
         Format the query to get the best response from the agent.
 
@@ -60,14 +105,14 @@ class BaseModel:
         chat_history_list = agent.get_priming() + history
 
         # Get the name of the user of the query
-        user_name = chat_history_list[-1]['user']
+        user_name = chat_history_list[-1]['content'][0:chat_history_list[-1]['content'].find(':')]
 
         # 1. Get the query and convert it to a vector
         query = chat_history_list.pop()['content']
         input_vector = gpt3_embedding(query)
         user_message = {
             "id": str(uuid4()),
-            "timestamp":str (timestamp_to_datetime(time())),
+            "timestamp": str(timestamp_to_datetime(time())),
             "user": str(user_name),
             "message": str(query)
         }
@@ -87,77 +132,22 @@ class BaseModel:
         print(f"Query response: {query_response}")
         print(f"Nearest IDs: {nearest_ids}")
 
-        #3. Get the relevant messages from the nexus
-        relevant_msgs = []
-        i = 0
-        while i < len(nearest_ids) and len(relevant_msgs) < 5:
-            # Get the message for the nearest ID
-            id = nearest_ids[i]
-            msg = self.pinecone_handler.get_message(id)
-            print(f"Message for ID {id}: {msg}")
+        # 3. Get the relevant messages from the nexus
+        relevant_msgs = self.get_relevant_messages(nearest_ids, agent, user_name)[0:6]
 
-            # If the message is None, continue to the next ID
-            if msg == None:
-                i += 1
-                continue
-            # If the message is from the agent, add it to the list of relevant messages
-            if msg['user'] == agent.name:
-                relevant_msgs.append(msg['message'])
-            else:
-                # for each message after the similar message
-                for j in range(i + 1, len(nearest_ids)):
-                    # Get the next message
-                    msg = self.pinecone_handler.get_message(nearest_ids[j])
-                    # If the message is None, continue to the next ID
-                    if msg == None:
-                        i += 1
-                        continue
-                    # If the message is from the agent, add it to the list of relevant messages
-                    if msg['user'] == agent.name:
-                        relevant_msgs.append(msg['message'])
-                        i+=1
-                        continue
-                    # If the message is from the user
-                    if msg['user'] == user_name:
-                        # Get the next message
-                        next_msg = self.pinecone_handler.get_next_message(msg['timestamp'], nearest_ids[j])
-                        # If the next message is None, continue to the next ID
-                        if next_msg == None:
-                            i += 1
-                            continue
-                        # If the next message is from the agent, add it to the list of relevant messages
-                        if next_msg['user'] == agent.name:
-                            relevant_msgs.append(next_msg['message'])
-                            i+=1
-                            continue
-                        # if the next message is close in proximity to time to the original message, add it to the list of relevant messages
-                        if abs(timestamp_to_datetime(msg['timestamp']) - timestamp_to_datetime(next_msg['timestamp'])) < timedelta(minutes=5):
-                            relevant_msgs.append(next_msg['message'])
-                            i+=1
-                            continue
-                i += 1
-
-        print(relevant_msgs)
-
-        # If the list of relevant messages is empty, append the 3 closest message from the index/nexus
-        if len(relevant_msgs) == 0:
-            for id in nearest_ids[:3]:
-                msg = self.pinecone_handler.get_message(id)
-                if msg == None:
-                    continue
-                relevant_msgs.append(msg['message'])
         print(relevant_msgs)
         # 4. Concatenate the relevantmessages into a single string
         concatenated_messages = '\n'.join([msg for msg in relevant_msgs])
 
         # Add the concatenated messages to the agent's prompt along with the popped query
         agent.msgs += [
-            {"role": "user", "content": f"Do not use these verbatim but here are suggestions on how to respond to the next message:{concatenated_messages}"},
+            {"role": "user",
+             "content": f"Do not use these verbatim but here are suggestions on how to respond to the next message:{concatenated_messages}"},
             {"role": "user", "content": f"{query}"}
         ]
 
         # 5. Generate the response from the agent
-        output, tokens = self.generate(agent, user=str(user_name))
+        output, tokens = self.generate(agent, user=str(user_name), model=agent.model)
         timestring = timestamp_to_datetime(time())
         print(output)
         print(agent.msgs)
@@ -175,11 +165,8 @@ class BaseModel:
         # 7. Return the response
         return output
 
-    def __del__(self):
-        # Properly delete the Pinecone index when the class is destroyed
-        self.pinecone_handler.delete_index()
-
-    def generate(self, agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
+    @staticmethod
+    def generate(agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2):
         """
             Generates a response from the OpenAI API.
@@ -199,12 +186,12 @@ class BaseModel:
             response: a string containing the chat response
             token_count: an int containing the number of tokens used
         """
-
+        #too long
         retry = 0
         while True:
             try:
                 response = openai.ChatCompletion.create(
-                    model=model,
+                    model=agent.model,
                     messages=agent.msgs,
                     temperature=temperature,
                     top_p=top_p,
@@ -227,7 +214,7 @@ class BaseModel:
                     print(
                         f"token cost for last response: {prompt_tokens / 1000 * 0.03 + completion_tokens / 1000 * 0.06}")
 
-                if model == "gpt-4-32k":
+                elif model == "gpt-4-32k":
                     prompt_tokens = response['usage']['prompt_tokens']  # type: ignore
                     completion_tokens = response['usage']['completion_tokens']  # type: ignore
                     total_tokens = response['usage']['total_tokens']  # type: ignore
@@ -253,4 +240,3 @@ class BaseModel:
                     sys.exit(1)
                 print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
-

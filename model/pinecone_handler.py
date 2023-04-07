@@ -1,7 +1,11 @@
 import os
+from glob import glob
 
 import pinecone
 import json
+
+from model.tools.david import gpt3_embedding
+
 
 class PineconeHandler:
     def __init__(self, api_key, environment, index_name):
@@ -9,14 +13,18 @@ class PineconeHandler:
         self.index_name = index_name
         self.vdb = pinecone.Index(index_name=self.index_name)
         self.nexus_path = "./model/history/nexus"
+        self.embeddings_path = "./model/history/embeddings.json"
         self.chunks = self.load_chunks()
-        if self.is_pinecone_index_empty():
+        try:
             self.load_precomputed_embeddings()
+        except Exception as e:
+            print(e)
+            self.precompute_embeddings()
 
     def is_pinecone_index_empty(self):
         try:
             # Try fetching the first item from the precomputed embeddings.
-            with open('./model/history/embeddings.json', "r") as f:
+            with open(self.embeddings_path, "r") as f:
                 embeddings = json.load(f)
             first_key = list(embeddings.keys())[0]
             self.fetch(ids=[first_key])
@@ -24,19 +32,34 @@ class PineconeHandler:
         except Exception as e:
             print(e)
             return True
+    def precompute_embeddings(self):
+        # check if embeddings.json exists
+        if os.path.exists(self.embeddings_path):
+            return
+
+        embeddings = {}
+
+        for json_file in glob(os.path.join(self.nexus_path, "*.json")):
+            with open(json_file, "r") as f:
+                chunks = json.load(f)
+
+            for chunk in chunks:
+                uuid = chunk["id"]
+                message = chunk["message"]
+                embedding = gpt3_embedding(message)
+                embeddings[uuid] = embedding
+
+        with open(self.embeddings_path, "w") as f:
+            json.dump(embeddings, f)
 
     def load_precomputed_embeddings(self):
-        #Check if embeddings.json exists
-        if not os.path.exists('./model/history/embeddings.json'):
-            return
-        else:
-            with open('./model/history/embeddings.json', "r") as f:
-                embeddings = json.load(f)
+        with open('./model/history/embeddings.json', "r") as f:
+            embeddings = json.load(f)
 
-            chunk_size = 250
-            for i in range(0, len(embeddings), chunk_size):
-                chunk_data = [(uuid, embedding) for uuid, embedding in list(embeddings.items())[i:i + chunk_size]]
-                self.upsert(chunk_data)
+        chunk_size = 500
+        for i in range(0, len(embeddings), chunk_size):
+            chunk_data = [(uuid, embedding) for uuid, embedding in list(embeddings.items())[i:i + chunk_size]]
+            self.upsert(chunk_data)
 
     def upsert(self, data):
         self.vdb.upsert(data)
@@ -44,8 +67,8 @@ class PineconeHandler:
     def query(self, queries, top_k):
         return self.vdb.query(queries=queries, top_k=top_k)
 
-    def delete_index(self):
-        self.vdb.delete()
+    def delete_index(self, ids=[]):
+        self.vdb.delete(ids=ids)
 
     def __del__(self):
         self.delete_index()
@@ -60,11 +83,7 @@ class PineconeHandler:
         """
         chunks = []
         with os.scandir(self.nexus_path) as it:
-            for entry in it:
-                if entry.name.endswith(".json"):
-                    with open(entry.path, "r") as f:
-                        chunk = json.load(f)
-                        chunks.append(chunk)
+            chunks = [json.load(open(entry.path, "r")) for entry in it if entry.name.endswith(".json")]
         return chunks
 
     def get_message(self, vec_id):
@@ -77,6 +96,9 @@ class PineconeHandler:
         for chunk in self.chunks:
             for msg in chunk:
                 if msg["id"] == vec_id:
+                    if msg is None:
+                        # If the message is not found in the nexus, remove the vector from the database
+                        self.remove_vector(id)
                     return msg
         return None
 
@@ -105,12 +127,22 @@ class PineconeHandler:
                 return chunk[0]
         return None
 
+    def update_embeddings_file(self, message_id, vector):
+        with open('./model/history/embeddings.json', "r") as f:
+            embeddings = json.load(f)
+
+        embeddings[message_id] = vector
+
+        with open('./model/history/embeddings.json', "w") as f:
+            json.dump(embeddings, f)
 
     def save_message(self, message, vector):
         # Save the message to the Pinecone index
         self.upsert([(message["id"], vector)])
         # Save the message to the nexus
         self.save_message_to_nexus(message)
+        # Update the embeddings.json file
+        self.update_embeddings_file(message["id"], vector)  # Assuming the vector is a numpy array, convert it to a list
 
     def save_message_to_nexus(self, message):
         # Get the timestamp of the message

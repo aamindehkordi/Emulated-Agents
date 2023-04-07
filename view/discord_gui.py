@@ -9,8 +9,10 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import StringVar
 from view.base_gui import BaseGUI
-#Debugging
-#from base_gui import BaseGUI
+
+
+# Debugging
+# from base_gui import BaseGUI
 
 class DiscordGUI(BaseGUI):
     def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
@@ -18,6 +20,11 @@ class DiscordGUI(BaseGUI):
 
         self.geometry("1400x600")
         self.title("AI Friends Chat Mode")
+        self.chat_history_list = []
+        self.user_var = StringVar()
+        self.user_options = []
+        self.bot_var = StringVar()
+        self.bot_options = []
 
     def create_main_frame(self):
         # create main frame
@@ -25,17 +32,17 @@ class DiscordGUI(BaseGUI):
         self.main_frame.pack(expand=True, fill=tk.BOTH, padx=self.padx, pady=self.pady)
 
         # create chat history frame
-        self.chat_history = tk.Text(self.main_frame, wrap=tk.WORD, font=self.font, state=tk.DISABLED, bg=self.primary_color, fg=self.text_color)
+        self.chat_history = tk.Text(self.main_frame, wrap=tk.WORD, font=self.font, state=tk.DISABLED,
+                                    bg=self.primary_color, fg=self.text_color)
         self.chat_history.pack(expand=True, fill=tk.BOTH, padx=self.padx, pady=self.pady)
-
-        self.chat_history_list = []
 
         # create input frame
         self.input_frame = ttk.Frame(self.main_frame)
         self.input_frame.pack(fill=tk.X, padx=self.padx, pady=self.pady)
 
         # create input field
-        self.message_entry = tk.Text(self.input_frame, wrap=tk.WORD, font=self.font, height=3, bg=self.tertiary_color, fg=self.text_color)
+        self.message_entry = tk.Text(self.input_frame, wrap=tk.WORD, font=self.font, height=3, bg=self.tertiary_color,
+                                     fg=self.text_color)
         self.message_entry.pack(side=tk.LEFT, expand=True, fill=tk.X, padx=(self.padx, 0), pady=self.pady)
         self.message_entry.bind("<Return>", self.on_enter_pressed)
 
@@ -60,8 +67,8 @@ class DiscordGUI(BaseGUI):
         self.bot_var = tk.StringVar(value="Nathan")
         self.bot_options = ["Nathan", "Ali", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "All"]
         self.user_dropdown = self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
-        self.bot_dropdown = self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options, self.bot_var)
-
+        self.bot_dropdown = self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options,
+                                                 self.bot_var)
 
     def create_dropdown(self, parent, label_text, options, default_value):
         # create dropdown menu with label
@@ -90,7 +97,7 @@ class DiscordGUI(BaseGUI):
         return user, bot, message
 
     def on_enter_pressed(self, event):
-        #if shift is not pressed, send message
+        # if shift is not pressed, send message
         if not event.state & 0x1:
             self.send_message()
             return "break"
@@ -102,7 +109,7 @@ class DiscordGUI(BaseGUI):
         user, bot, message = self.update_user_bot()
         if message:
             # get chat history
-            self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}", 'user': user})
+            self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
 
             # clear input entry and insert user message
             self.clear_input()
@@ -135,15 +142,16 @@ class DiscordGUI(BaseGUI):
     def set_controller(self, controller):
         # Set the controller
         self.controller = controller
-        self.send_button.config(command=self.send_message) # Update the send button's command with the controller's send_message method
+        self.send_button.config(
+            command=self.send_message)  # Update the send button's command with the controller's send_message method
 
-    def remove_default_text(self,event):
+    def remove_default_text(self, event):
         # Remove default text when user clicks on entry
         if self.message_entry.get("1.0", tk.END).strip() == "Type here to chat":
             self.message_entry.delete("1.0", tk.END)
             self.message_entry.config(fg=self.text_color)
 
-    def add_default_text(self,event):
+    def add_default_text(self, event):
         # Add default text back if user leaves entry blank
         if self.message_entry.get("1.0", tk.END).strip() == "":
             self.message_entry.insert("1.0", "Type here to chat")
@@ -160,7 +168,8 @@ class DiscordGUI(BaseGUI):
 
     def set_tags(self):
         # configure tags for chat history
-        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color, spacing1=5, spacing3=5)
+        self.chat_history.tag_config("user_message", foreground=self.text_color, background=self.secondary_color,
+                                     spacing1=5, spacing3=5)
         self.chat_history.tag_config("bot_message", foreground=self.tertiary_color, spacing1=5, spacing3=5)
         self.chat_history.tag_config("newline", foreground=self.primary_color)
 
@@ -177,12 +186,14 @@ class DiscordGUI(BaseGUI):
         self.set_tags()
         super().run()
 
+
 if __name__ == "__main__":
     # Example usage
     class DummyController:
         @staticmethod
         def send_message(message):
             print(f"User: {message}")
+
 
     dummy_controller = DummyController()
     discord_gui = DiscordGUI(dummy_controller)

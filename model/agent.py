@@ -8,8 +8,11 @@ class Agent:
         self.general_path = "./model/prompts/general_knowledge.txt"
         self.history_path = history_path
         self.msgs = []
-        self.model = "gpt-4"
+        self.model = "gpt-3.5-turbo"
         self.max_tokens = 350
+        self.general = ""
+        self.prompt = ""
+        self.history = []
 
     def get_prompt(self):
         try:
@@ -30,12 +33,3 @@ class Agent:
         except Exception as e:
             print(e)
             return []
-
-    def save_message_metadata(self, metadata):
-        unique_id = metadata['uuid']
-        with open(f'{self.history_path}/nexus/{unique_id}.json', 'w', encoding='utf-8') as f:
-            json.dump(metadata, f, ensure_ascii=False, sort_keys=True, indent=2)
-
-    def save_history(self, history):
-        # TODO
-        pass

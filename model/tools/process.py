@@ -12,11 +12,13 @@ Functions in this module include:
 import csv
 import json
 import os
-from typing import *
-from uuid import uuid4
-from better_profanity import profanity
 import re
-from model.base_model import BaseModel as base
+from uuid import uuid4
+
+from better_profanity import profanity
+
+from model.base_model import BaseModel as Base
+
 
 def read_file_lines(filename):
     """
@@ -24,14 +26,16 @@ def read_file_lines(filename):
     """
     with open(filename, "r") as f:
         return f.readlines()
-    
+
+
 def write_to_file(filename, text):
     """
     Writes the given text to the given file.
     """
     with open(filename, "w") as f:
         f.write(text)
-        
+
+
 def create_jsonl_file(filename, messages):
     """
     Creates a JSONL file from the given list of messages.
@@ -40,21 +44,6 @@ def create_jsonl_file(filename, messages):
         for message in messages:
             f.write(json.dumps(message) + "\n")
 
-def transcribe_updates(video_path, output_path):
-    """
-    Transcribes update videos from folder path and save transcripts to output path.
-    """
-    whisper = base
-    with open("api/agents/general_knowledge.txt", "r") as f:
-        general = f.read()
-    for filename in os.listdir(video_path):
-        if filename.endswith('.mov'):
-            transcript = whisper.transcribe_video(os.path.join(video_path, filename), model="large", prompt=str(general+"\n\n The following is a video update a friend group doing a road trip and talking about their experiences: \n"))
-            write_to_file(os.path.join(output_path, filename[:-4] + ".txt"), transcript)
-            
-        print(f'Transcribed {filename}')
-    print('Finished transcribing videos.')
-
 def is_link(message: str) -> bool:
     url_pattern = re.compile(
         r'((http|ftp|https)://[-\w@:%.+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_+.~#?&/=]*))|'  # General URLs
@@ -62,6 +51,7 @@ def is_link(message: str) -> bool:
         r'(\S+cdn\.discordapp\.com\S+)'  # Discord CDN links
     )
     return bool(url_pattern.search(message))
+
 
 def csv_to_local_nexus_chunks_filtered(csv_file: str, output_directory: str, chunk_size: int) -> None:
     """Convert a CSV file of Discord chat logs to a local nexus with filtered message chunks.
@@ -109,11 +99,15 @@ def csv_to_local_nexus_chunks_filtered(csv_file: str, output_directory: str, chu
                     json.dump(chat_history, jsonfile, ensure_ascii=False, indent=4)
                 chat_history = []
 
+
 def main():
     # Example usage:
-    csv_to_local_nexus_chunks_filtered('/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/'+\
-                              'School/Senior Project/model/history/backup.csv', '/Users/ali/Library/CloudStorage'+\
-                              '/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/model/history/nexus', 9)
+    csv_to_local_nexus_chunks_filtered('/Users/ali/Library/CloudStorage/OneDrive-Personal/Desktop/Other/Coding/' + \
+                                       'School/Senior Project/model/history/backup.csv',
+                                       '/Users/ali/Library/CloudStorage' + \
+                                       '/OneDrive-Personal/Desktop/Other/Coding/School/Senior Project/model/history/nexus',
+                                       9)
+
 
 if __name__ == '__main__':
     main()

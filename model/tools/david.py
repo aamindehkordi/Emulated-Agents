@@ -1,7 +1,8 @@
-import openai
-import json
 import datetime
-from uuid import uuid4
+import json
+
+import openai
+
 
 def open_file(filepath):
     with open(filepath, 'r', encoding='utf-8') as infile:

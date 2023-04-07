@@ -1,7 +1,6 @@
 # ./controller/chat_controller.py
 from .base_controller import BaseController
-import json
-import os
+
 
 class ChatController(BaseController):
     def __init__(self, model):

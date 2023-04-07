@@ -18,12 +18,12 @@ class MainApp:
     def __init__(self):
         self.model = BaseModel()
         self.controller = ChatController(self.model)
-
+        #self.gui = None
         self.init_base_gui()
 
     def init_base_gui(self):
         self.gui = BaseGUI(self.controller)
-        #self.gui.protocol("WM_DELETE_WINDOW", self.on_closing)
+        # self.gui.protocol("WM_DELETE_WINDOW", self.on_closing)
 
     def on_closing(self):
         # Perform cleanup and close the application
@@ -35,21 +35,22 @@ class MainApp:
     def run(self):
         self.gui.mainloop()
 
-    
+
 def main():
     """
     Main function.
     """
     # Compress videos
-    #cleanup.compress_mov_files('./data/preprocessed/text/allUpdates', './data/processed/videos/all_updates')
-    #DONE
-    
+    # cleanup.compress_mov_files('./data/preprocessed/text/allUpdates', './data/processed/videos/all_updates')
+    # DONE
+
     # Transcribe videos
-    #process.transcribe_updates("data/processed/videos/all_updates", "data/preprocessed/text/all_updates")
-    #DONE
-    
+    # process.transcribe_updates("data/processed/videos/all_updates", "data/preprocessed/text/all_updates")
+    # DONE
+
     app = MainApp()
     app.run()
-        
+
+
 if __name__ == "__main__":
     main()

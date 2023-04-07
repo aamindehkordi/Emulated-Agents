@@ -2,12 +2,12 @@ from datetime import timedelta
 from time import sleep, time
 import sys
 import json
+from typing import re
 from uuid import uuid4
 import openai
 from model.agent import Agent
 from model.tools.david import timestamp_to_datetime, gpt3_embedding
 from model.pinecone_handler import PineconeHandler
-
 
 class BaseModel:
     def __init__(self):
@@ -110,9 +110,10 @@ class BaseModel:
         # 1. Get the query and convert it to a vector
         query = chat_history_list.pop()['content']
         input_vector = gpt3_embedding(query)
+        timestamp = int(time())
         user_message = {
             "id": str(uuid4()),
-            "timestamp": str(timestamp_to_datetime(time())),
+            "timestamp": str(timestamp),
             "user": str(user_name),
             "message": str(query)
         }
@@ -133,7 +134,7 @@ class BaseModel:
         print(f"Nearest IDs: {nearest_ids}")
 
         # 3. Get the relevant messages from the nexus
-        relevant_msgs = self.get_relevant_messages(nearest_ids, agent, user_name)[0:6]
+        relevant_msgs = self.get_relevant_messages(nearest_ids, agent, user_name)[0:10]
 
         print(relevant_msgs)
         # 4. Concatenate the relevantmessages into a single string
@@ -148,13 +149,14 @@ class BaseModel:
 
         # 5. Generate the response from the agent
         output, tokens = self.generate(agent, user=str(user_name), model=agent.model)
+        timestamp = int(time())
         timestring = timestamp_to_datetime(time())
         print(output)
         print(agent.msgs)
         # 6. Save the query and output to the nexus and vector index
         agent_message = {
             "id": str(uuid4()),
-            "timestamp": str(timestring),
+            "timestamp": str(timestamp),
             "user": str(agent.name),
             "message": str(output)
         }
@@ -165,8 +167,7 @@ class BaseModel:
         # 7. Return the response
         return output
 
-    @staticmethod
-    def generate(agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
+    def generate(self, agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2):
         """
             Generates a response from the OpenAI API.
@@ -229,14 +230,46 @@ class BaseModel:
                 return answer, tokens
 
             except Exception as oops:
+                print(oops)
                 if 'maximum context length' in str(oops):
-                    # TODO better solution
-                    # cut off the first message
+                    # pop the first message
                     agent.msgs = agent.msgs[1:]
-                    continue
+
                 retry += 1
                 if retry >= max_retry:
-                    print(f"Exiting due to an error in ChatGPT: {oops}")
+                    print(f"Exiting due to an error in ChatGPT:\n {oops}")
                     sys.exit(1)
-                print(f'Error communicating with OpenAI: {oops}. Retrying in {2 ** (retry - 1) * 5} seconds...')
+                print(f'Error communicating with OpenAI:\n {oops}.\n\n Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
+
+    def split_into_chunks(self, text):
+        """
+        Splits a text into chunks of 1/3 the relative size of the text and outputs the chunks.
+        Makes sure it chunks at the end of sentences too.
+        *args:
+            text: The text to split.
+        *returns:
+            A list of strings, each of which is a chunk of the text.
+        """
+        # Split this bad boy into sentences
+        sentences = re.split('(?<=[.!?]) +', text)
+
+        len_text = len(text)
+        chunk_size = len_text // 3
+        chunks = []
+        current_chunk = ""
+
+        for sentence in sentences:
+            # If the current_chunk and the sentence are still having a party under the chunk_size limit
+            if len(current_chunk) + len(sentence) < chunk_size:
+                current_chunk += sentence
+            else:
+                # Time to move on, add the current_chunk to the chunks list and reset this sucker
+                chunks.append(current_chunk)
+                current_chunk = sentence
+
+        # Don't forget the last chunk if it's still hanging around
+        if current_chunk:
+            chunks.append(current_chunk)
+
+        return chunks

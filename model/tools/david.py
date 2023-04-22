@@ -25,7 +25,8 @@ def save_json(filepath, payload):
 
 
 def timestamp_to_datetime(unix_time):
-    return datetime.datetime.fromtimestamp(unix_time).strftime("%A, %B %d, %Y at %I:%M%p %Z")
+    # format like so "2022-09-27,10:00:22"
+    return datetime.datetime.fromtimestamp(unix_time).strftime('%Y-%m-%d,%H:%M:%S')
 
 def gpt3_embedding(content, engine='text-embedding-ada-002'):
     content = content.encode(encoding='ASCII',errors='ignore').decode()  # fix any UNICODE errors

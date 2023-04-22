@@ -17,9 +17,12 @@ from view.base_gui import BaseGUI
 class MainApp:
     def __init__(self):
         self.model = BaseModel()
+        print("Model initialized")
         self.controller = ChatController(self.model)
+        print("Controller initialized")
         #self.gui = None
         self.init_base_gui()
+        print("GUI initialized")
 
     def init_base_gui(self):
         self.gui = BaseGUI(self.controller)

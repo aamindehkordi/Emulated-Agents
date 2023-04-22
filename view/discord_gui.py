@@ -107,9 +107,11 @@ class DiscordGUI(BaseGUI):
     def send_message(self):
         # get user typing and requested user response
         user, bot, message = self.update_user_bot()
+        print(f"User: {user}, Bot: {bot}, Message: {message}")
         if message:
             # get chat history
-            self.chat_history_list.append({'role': 'user', 'content': f"{user}: {message}"})
+            msg = {'role': 'user', 'content': f"{user}: {message}"}
+            self.chat_history_list.append(msg)
 
             # clear input entry and insert user message
             self.clear_input()

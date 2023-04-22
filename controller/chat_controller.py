@@ -16,10 +16,10 @@ class ChatController(BaseController):
 
         #Chat History from the gui
         chat_history = self.chat_gui.get_chat_history()
-
+        print(chat_history[-1])
         # Pass the selected_classes from the GUI to the get_bot_response method
         response = self.get_bot_response(bot, chat_history)
-
+        print(response)
         return response
 
     def get_bot_response(self, bot, chat_history):

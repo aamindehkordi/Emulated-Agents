@@ -74,7 +74,24 @@ The project follows the Model-View-Controller (MVC) architecture:
 ### Model
 
 The Model directory contains all the logic related to the chatbot and its interaction with the OpenAI API.
+BaseModel: This class is responsible for handling interactions with both the OpenAI API and Pinecone. It serves as a bridge between the AI and the database, ensuring seamless communication.
 
+Key Features:
+
+Initializes necessary agents and the PineconeHandler.
+Fetches relevant messages from Pinecone based on nearest_ids.
+Generates responses from the agents based on user input.
+Saves the generated response and the user's query in Pinecone.
+PineconeHandler: This class handles all interactions with the Pinecone database. It manages the storage and retrieval of messages and their embeddings, ensuring efficient querying and updating.
+
+Key Features:
+
+Manages the Pinecone index.
+Precomputes embeddings for stored messages and loads them into Pinecone.
+Provides methods for interacting with the Pinecone index, such as inserting, querying, fetching, and deleting.
+Loads all message chunks from the nexus directory into memory.
+Finds and returns messages based on their IDs or timestamps.
+Saves messages to Pinecone and updates the embeddings file.
 - `base_model.py`: Contains the base class for the chatbot model, handling agent initialization and API interaction.
 - `agent.py`: Contains the Agent class, which represents an individual AI friend in the chat.
 - `prompts`: Contains agent-specific prompt files and general knowledge information shared by all agents.

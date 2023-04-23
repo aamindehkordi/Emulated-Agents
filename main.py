@@ -11,14 +11,16 @@ import tkinter as tk
 
 from controller.chat_controller import ChatController
 from model.base_model import BaseModel
+from model.chat_model import ChatModel
 from view.base_gui import BaseGUI
 
 
 class MainApp:
     def __init__(self):
         self.model = BaseModel()
+        self.chat_model = ChatModel()
         print("Model initialized")
-        self.controller = ChatController(self.model)
+        self.controller = ChatController(self.chat_model)
         print("Controller initialized")
         #self.gui = None
         self.init_base_gui()

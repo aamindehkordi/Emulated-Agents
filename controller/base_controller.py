@@ -7,15 +7,19 @@ from view.discord_gui import DiscordGUI
 
 class BaseController:
     def __init__(self, model):
-        self.root = tk.Tk()
-        self.root.withdraw()  # Hide the root window
+        self.continuous_controller = None
         self.model = model
         self.base_gui = BaseGUI(self)
         self.chat_gui = DiscordGUI(self)
         self.chat_gui.withdraw()  # Hide the chat_gui initially
 
-    def run(self):
-        self.root.mainloop()
+    def get_bot_response(self, bot, chat_history):
+        agent = self.model.agents.get(bot.lower())
+        response = self.model.get_chat_response(agent, chat_history)
+        chat_history.append({'role': 'assistant', 'content': f"{response}"})
+
+        return response
+
 
     def switch_to_chat_mode(self):
         self.model.mode = 0

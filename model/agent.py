@@ -6,20 +6,13 @@ import yaml
 class Agent:
     def __init__(self, name):
         self.name = name
-        self.path = f"./model/agents"
         self.msgs = []
         self.model = "gpt-3.5-turbo"
         self.max_tokens = 350
         self.prompt = ""
         self.priming = []
         self.mode = 0
-
-        with open(f"{self.path}/general.yaml", 'r') as f:
-            general = yaml.load(f, Loader=yaml.FullLoader)
-            relationships = general['Relationships']
-            activities = general['Activities']
-            locations = general['Locations']
-            self.general = f"Useful information:\nRelationships: {relationships}\nActivities: {activities}\nLocations: {locations}\n\n"
+        self.path = "./model/Agents"
 
     def initialize(self):
         """

@@ -16,15 +16,15 @@ class BaseModel:
         self.initialize_agents()
 
     def initialize_agents(self):
-        agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle']
-        for name in agent_names:
+        self.agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle']
+        for name in self.agent_names:
             agent = Agent(name)
             self.agents[name] = agent
             agent.initialize()
             agent.set_mode(self.mode)
 
-    def generate(self, agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
-                 max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2):
+    def generate(self, prompt="", user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
+                 max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2, agent=None):
         """
             Generates a response from the OpenAI API.
             
@@ -48,8 +48,8 @@ class BaseModel:
         while True:
             try:
                 response = openai.ChatCompletion.create(
-                    model=agent.model,
-                    messages=agent.msgs,
+                    model=model,
+                    messages=prompt,
                     temperature=temperature,
                     top_p=top_p,
                     n=n,
@@ -87,7 +87,11 @@ class BaseModel:
                 print(oops)
                 if 'maximum context length' in str(oops):
                     # pop the first message
-                    agent.msgs = agent.msgs[1:]
+                    try:
+                        agent.msgs = agent.msgs[1:]
+                    except:
+                        prompt=prompt[1:]
+
 
                 retry += 1
                 if retry >= max_retry:

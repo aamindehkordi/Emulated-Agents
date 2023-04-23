@@ -2,6 +2,8 @@
 ./controller/chat_controller.py
 """
 from .base_controller import BaseController
+from controller.continuous_controller import ContinuousController
+
 
 class ChatController(BaseController):
     def __init__(self, model):
@@ -10,10 +12,6 @@ class ChatController(BaseController):
         self.chat_gui.set_controller(self)
 
     def send_message(self, user, bot, message):
-        if message.strip() == "":
-            return
-
-        message = message.replace('\n', ' ')
 
         #Chat History from the gui
         chat_history = self.chat_gui.get_chat_history()
@@ -21,6 +19,7 @@ class ChatController(BaseController):
         # Pass the selected_classes from the GUI to the get_bot_response method
         response = self.get_bot_response(bot, chat_history)
         print(response)
+
         return response
 
     def get_bot_response(self, bot, chat_history):

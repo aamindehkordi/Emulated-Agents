@@ -1,171 +1,24 @@
-from datetime import timedelta
-from time import sleep, time
+from time import sleep
 import sys
-import json
-from typing import re
-from uuid import uuid4
 import openai
 from model.agent import Agent
-from model.tools.david import timestamp_to_datetime, gpt3_embedding
-from model.pinecone_handler import PineconeHandler
 
 class BaseModel:
     def __init__(self):
+        with open('./key_openai.txt') as f:
+            self.key = f.readline().strip()
+
+        self.mode = 0 # 0 = chat, 1 = mirror, 2 = zoom
         self.agents = {}
         self.initialize_agents()
-        self.key = []
-        with open('./key_openai.txt') as f:
-            self.key.append(f.readline().strip())
-
-        with open('./key_pinecone.txt') as f:
-            self.key.append(f.readline().strip())
-            self.environment = f.readline().strip()
-
-        self.pinecone_handler = PineconeHandler(self.key[1], self.environment, "ai-langchain")
 
     def initialize_agents(self):
-        agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle', 'jake']
+        agent_names = ['ali', 'nathan', 'jett', 'kate', 'robby', 'cat', 'kyle']
         for name in agent_names:
-            prompt_path = f"model/prompts/{name}_prompt.txt"
-            history_path = f"model/history/{name}_history.json"
-            agent = Agent(name, prompt_path, history_path)
+            agent = Agent(name)
             self.agents[name] = agent
-
-    def __del__(self):
-        # Properly delete the Pinecone index when the class is destroyed
-        self.pinecone_handler.delete_index()
-
-    def get_relevant_messages(self, nearest_ids, agent, user_name):
-        """
-        Get the relevant messages from the nearest IDs
-        """
-        relevant_msgs = []
-
-        def process_message(msg, agent_name):
-            if msg is not None and msg['user'] == agent_name:
-                relevant_msgs.append(msg['message'])
-
-        for ids in nearest_ids:
-            # Get the message for the nearest ID
-            msg = self.pinecone_handler.get_message(ids)
-            print(f"Message for ID {ids}: {msg}")
-
-            # If the message is from the agent, add it to the list of relevant messages
-            process_message(msg, agent.name)
-
-            # If the message is from the user
-            if msg is not None and msg['user'] == user_name:
-                # Get the next message
-                next_msg = self.pinecone_handler.get_next_message(msg['timestamp'], ids)
-
-                # If the next message is from the agent, add it to the list of relevant messages
-                process_message(next_msg, agent.name)
-
-                # if the next message is close in proximity to time to the original message, add it to the list of relevant messages
-                if next_msg is not None and abs(timestamp_to_datetime(int(msg['timestamp'])) - timestamp_to_datetime(int(next_msg['timestamp']))) < timedelta(minutes=10):
-                    relevant_msgs.append(next_msg['message'])
-
-            if len(relevant_msgs) >= 5:
-                break
-
-        # If the list of relevant messages is empty, append the 3 closest message from the index/nexus
-        if len(relevant_msgs) == 0:
-            for ids in nearest_ids[:3]:
-                msg = self.pinecone_handler.get_message(ids)
-                if msg is None:
-                    continue
-                relevant_msgs.append(msg['message'])
-
-        return relevant_msgs
-
-    def get_response(self, agent, history, k=50, similarity_threshold=0.5):
-        """
-        Format the query to get the best response from the agent.
-
-        *args:
-            agent: Agent object
-            history: list of dictionaries containing the chat history
-            k: number of nearest neighbors to query from the Pinecone index
-
-        *returns:
-            response: string containing the response from the agent
-        """
-        print("First few entries in Pinecone index:")
-        with open('./model/history/embeddings.json', "r") as f:
-            embeddings = json.load(f)
-        for i, (uuid, embedding) in enumerate(embeddings.items()):
-            if i >= 3:
-                break
-            print(f"{uuid}: {embedding[0:5]}")
-
-        # Get the agent's prompt
-        agent_prompt, general_prompt = agent.get_prompt()
-
-        # Get the agent's priming and history
-        chat_history_list = agent.get_priming() + history
-
-        # Get the name of the user of the query
-        user_name = chat_history_list[-1]['content'][0:chat_history_list[-1]['content'].find(':')]
-
-        # 1. Get the query and convert it to a vector
-        query = chat_history_list.pop()['content']
-        input_vector = gpt3_embedding(query)
-        timestamp = int(time())
-        user_message = {
-            "id": str(uuid4()),
-            "timestamp": str(timestamp),
-            "user": str(user_name),
-            "message": str(query)
-        }
-        print(f"Query: {query}")
-        print(f"Input vector: {input_vector[0:5]}")
-
-        # Form the agent prompt
-        agent.msgs = [
-            {'role': 'system', 'content': f'{general_prompt}'},
-            {'role': 'user', 'content': f'{agent_prompt}'},
-            *chat_history_list
-        ]
-
-        # 2. Get the closest vectors for the most similar messages in the Pinecone index
-        query_response = self.pinecone_handler.query(queries=[input_vector], top_k=k)
-        nearest_ids = [match['id'] for match in query_response['results'][0]['matches']]
-        print(f"Query response: {query_response}")
-        print(f"Nearest IDs: {nearest_ids}")
-
-        # 3. Get the relevant messages from the nexus
-        relevant_msgs = self.get_relevant_messages(nearest_ids, agent, user_name)[0:10]
-
-        print(relevant_msgs)
-        # 4. Concatenate the relevantmessages into a single string
-        concatenated_messages = '\n'.join([msg for msg in relevant_msgs])
-
-        # Add the concatenated messages to the agent's prompt along with the popped query
-        agent.msgs += [
-            {"role": "user",
-             "content": f"Do not use these verbatim but here are suggestions on how to respond to the next message:{concatenated_messages}"},
-            {"role": "user", "content": f"{query}"}
-        ]
-
-        # 5. Generate the response from the agent
-        output, tokens = self.generate(agent, user=str(user_name), model=agent.model)
-        timestamp = int(time())
-        timestring = timestamp_to_datetime(time())
-        print(output)
-        print(agent.msgs)
-        # 6. Save the query and output to the nexus and vector index
-        agent_message = {
-            "id": str(uuid4()),
-            "timestamp": str(timestamp),
-            "user": str(agent.name),
-            "message": str(output)
-        }
-
-        self.pinecone_handler.save_message(user_message, input_vector)
-        self.pinecone_handler.save_message(agent_message, gpt3_embedding(output))
-
-        # 7. Return the response
-        return output
+            agent.initialize()
+            agent.set_mode(self.mode)
 
     def generate(self, agent, user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2):
@@ -214,7 +67,6 @@ class BaseModel:
                     tokens = (total_tokens, prompt_tokens, completion_tokens)
                     print(
                         f"token cost for last response: {prompt_tokens / 1000 * 0.03 + completion_tokens / 1000 * 0.06}")
-
                 elif model == "gpt-4-32k":
                     prompt_tokens = response['usage']['prompt_tokens']  # type: ignore
                     completion_tokens = response['usage']['completion_tokens']  # type: ignore
@@ -222,7 +74,6 @@ class BaseModel:
                     tokens = (total_tokens, prompt_tokens, completion_tokens)
                     print(
                         f"token cost for last response: {prompt_tokens / 1000 * 0.06 + completion_tokens / 1000 * 0.12}")
-
                 else:
                     tokens = (response['usage']['total_tokens'],)  # type: ignore
                     print(f"token cost for last response: {tokens[0] / 1000 * 0.002}")
@@ -242,34 +93,3 @@ class BaseModel:
                 print(f'Error communicating with OpenAI:\n {oops}.\n\n Retrying in {2 ** (retry - 1) * 5} seconds...')
                 sleep(2 ** (retry - 1) * 5)
 
-    def split_into_chunks(self, text):
-        """
-        Splits a text into chunks of 1/3 the relative size of the text and outputs the chunks.
-        Makes sure it chunks at the end of sentences too.
-        *args:
-            text: The text to split.
-        *returns:
-            A list of strings, each of which is a chunk of the text.
-        """
-        # Split this bad boy into sentences
-        sentences = re.split('(?<=[.!?]) +', text)
-
-        len_text = len(text)
-        chunk_size = len_text // 3
-        chunks = []
-        current_chunk = ""
-
-        for sentence in sentences:
-            # If the current_chunk and the sentence are still having a party under the chunk_size limit
-            if len(current_chunk) + len(sentence) < chunk_size:
-                current_chunk += sentence
-            else:
-                # Time to move on, add the current_chunk to the chunks list and reset this sucker
-                chunks.append(current_chunk)
-                current_chunk = sentence
-
-        # Don't forget the last chunk if it's still hanging around
-        if current_chunk:
-            chunks.append(current_chunk)
-
-        return chunks

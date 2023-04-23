@@ -1,15 +1,10 @@
 """
 ./view/discord_gui.py
 """
-
 import tkinter as tk
 from tkinter import ttk
 from tkinter import StringVar
 from view.base_gui import BaseGUI
-
-
-# Debugging
-# from base_gui import BaseGUI
 
 class DiscordGUI(BaseGUI):
     def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
@@ -60,9 +55,9 @@ class DiscordGUI(BaseGUI):
 
         # Create selectors for user typing and requested user response
         self.user_var = tk.StringVar(value="Ali")
-        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake"]
+        self.user_options = ["Ali", "Nathan", "Kyle", "Robby", "Jett", "Kate", "Cat"]
         self.bot_var = tk.StringVar(value="Nathan")
-        self.bot_options = ["Nathan", "Ali", "Kyle", "Robby", "Jett", "Kate", "Cat", "Jake", "All"]
+        self.bot_options = ["Nathan", "Ali", "Kyle", "Robby", "Jett", "Kate", "Cat", "All"]
         self.user_dropdown = self.create_dropdown(self.input_frame, "User typing:", self.user_options, self.user_var)
         self.bot_dropdown = self.create_dropdown(self.input_frame, "Requested user response:", self.bot_options,
                                                  self.bot_var)
@@ -119,6 +114,11 @@ class DiscordGUI(BaseGUI):
 
             # display response in chat history
             self.display_response(response)
+
+    def append_message(self, message):
+        # append message to chat history
+        self.chat_history_list.append(message)
+        self.display_response(message['content'])
 
     def display_message(self, user, message):
         # display user message in chat history

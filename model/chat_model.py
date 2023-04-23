@@ -44,7 +44,6 @@ class ChatModel(Base):
         # Generate the response from the agent
         output, tokens = self.generate(prompt=agent.msgs, user=str(user_name), model=agent.model, agent=agent)
         print(output)
-        print(agent.msgs)
 
         # Return the response
         return output

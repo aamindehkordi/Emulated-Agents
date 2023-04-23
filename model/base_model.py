@@ -23,6 +23,12 @@ class BaseModel:
             agent.initialize()
             agent.set_mode(self.mode)
 
+    def load_agent(self, name):
+        agent = Agent(name)
+        print(agent)
+        agent.set_mode(self.mode)
+        return agent
+
     def generate(self, prompt="", user="", model="gpt-3.5-turbo", temperature=0.91, top_p=1, n=1, stream=False, stop="null",
                  max_tokens=350, presence_penalty=0, frequency_penalty=0, max_retry=2, agent=None):
         """

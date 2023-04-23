@@ -28,6 +28,7 @@ class Agent:
             elif self.mode == 2:
                 self.set_priming(agent['zoom_priming'])
 
+
     def get_priming(self):
         return self.priming
 

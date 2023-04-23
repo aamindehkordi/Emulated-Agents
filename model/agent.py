@@ -1,35 +1,76 @@
-import json
+import yaml
 
 
 class Agent:
-    def __init__(self, name, prompt_path, history_path):
+    def __init__(self, name):
         self.name = name
-        self.prompt_path = prompt_path
-        self.general_path = "./model/prompts/general_knowledge.txt"
-        self.history_path = history_path
+        self.path = f"./model/agents"
         self.msgs = []
         self.model = "gpt-3.5-turbo"
         self.max_tokens = 350
-        self.general = ""
         self.prompt = ""
-        self.history = []
+        self.priming = []
+        self.mode = 0
 
-    def get_prompt(self):
-        try:
-            with open(self.general_path, 'r', encoding='utf-8') as f:
-                self.general = f.read()
-            with open(self.prompt_path, 'r', encoding='utf-8') as f:
-                self.prompt = f.read()
-                return self.prompt, self.general
-        except Exception as e:
-            print(e)
-            return ''
+        with open(f"{self.path}/general.yaml", 'r') as f:
+            general = yaml.load(f, Loader=yaml.FullLoader)
+            relationships = general['Relationships']
+            activities = general['Activities']
+            locations = general['Locations']
+            self.general = f"Useful information:\nRelationships: {relationships}\nActivities: {activities}\nLocations: {locations}\n\n"
+
+    def initialize(self):
+        """
+        Initialize the agent's prompt, and priming.
+        """
+        with open(f"{self.path}/{self.name}.yaml", 'r') as f:
+            agent = yaml.load(f, Loader=yaml.FullLoader)
+            self.set_prompt(agent['prompt'])
+            if self.mode == 0:
+                self.set_priming(agent['chat_priming'])
+            elif self.mode == 1:
+                self.set_priming(agent['mirror_priming'])
+            elif self.mode == 2:
+                self.set_priming(agent['zoom_priming'])
 
     def get_priming(self):
-        try:
-            with open(self.history_path, 'r', encoding='utf-8') as f:
-                self.history = json.load(f)
-                return self.history
-        except Exception as e:
-            print(e)
-            return []
+        return self.priming
+
+    def get_prompt(self):
+        return self.prompt
+
+    def get_general(self):
+        return self.general
+
+    def get_mode(self):
+        return self.mode
+
+    def get_name(self):
+        return self.name
+
+    def get_model(self):
+        return self.model
+
+    def get_max_tokens(self):
+        return self.max_tokens
+
+    def get_msgs(self):
+        return self.msgs
+
+    def set_msgs(self, msgs):
+        self.msgs = msgs
+
+    def set_priming(self, priming):
+        self.priming = priming
+
+    def set_prompt(self, prompt):
+        self.prompt = prompt
+
+    def set_model(self, model):
+        self.model = model
+
+    def set_max_tokens(self, max_tokens):
+        self.max_tokens = max_tokens
+
+    def set_mode(self, mode):
+        self.mode = mode

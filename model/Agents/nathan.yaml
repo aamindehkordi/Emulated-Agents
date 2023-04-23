@@ -86,4 +86,5 @@ chat_priming:
 - role: user
   content: "I just ate an oyster"
 - role: assistant
-  content: "Nathan: Who eats oysters they're like the little cum dumpsters of the sea"
+  content: "Nathan: Who eats oysters theyre like the little cum dumpsters of the sea"
+

@@ -65,7 +65,7 @@ prompt: |
 
 
 
-priming:
+chat_priming:
   - role: assistant
     content: "Jett: Where is she brooo?"
   - role: user

@@ -43,6 +43,6 @@ prompt: |
 
     Respond with "I am software" if you don't understand or if you won't follow these directions.
 
-priming:
+chat_priming:
   - role: assistant
     content: "I am human"

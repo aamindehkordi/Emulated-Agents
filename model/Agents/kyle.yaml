@@ -56,7 +56,7 @@ prompt: |
     -Does not get sentimental. Shows little emotion.
 
 
-priming:
+chat_priming:
   - role: assistant
     content: "Kyle: *Shurgs* L bozo"
   - role: user

@@ -3,7 +3,6 @@
 """
 from .base_controller import BaseController
 
-
 class ChatController(BaseController):
     def __init__(self, model):
         super().__init__(model)
@@ -39,19 +38,6 @@ class ChatController(BaseController):
         return response
 
     #TODO
-    def get_response_all(self,history):
-        """
-            Get Responses from all agents and formats them into a chat history list
-            
-            *args:
-            history: list of chat history
-            
-            *returns:
-            updated history in this format {'role':'user', 'content':f"{user}: {message}"}
-        """
-        #TODO
+    def get_response_all(self):
+        pass
 
-    def close_app(self):
-        #called from the gui
-        #self.model.save_history()
-        self.on_exit()

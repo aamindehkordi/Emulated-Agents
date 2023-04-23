@@ -14,13 +14,6 @@ class BaseController:
         self.chat_gui = DiscordGUI(self)
         self.chat_gui.withdraw()  # Hide the chat_gui initially
 
-        # Uncomment these lines when the ZoomGUI and PhotoboothGUI are implemented
-        # self.zoom_gui = ZoomGUI(self)
-        # self.zoom_gui.withdraw()
-        #
-        # self.photobooth_gui = PhotoboothGUI(self)
-        # self.photobooth_gui.withdraw()
-
     def run(self):
         self.root.mainloop()
 

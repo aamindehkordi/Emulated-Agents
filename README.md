@@ -1,7 +1,6 @@
 # Senior Project
 
-This senior project aims to create an interactive AI chatroom with three distinct modes, simulating a conversation with an AI version of friends in a group. The project includes a text-based chat GUI, a zoom call simulation, and a photobooth-style live webcam conversation.
-
+The primary objective of this project is to develop a sophisticated, AI-powered chatbot capable of replicating the speech patterns of individuals with high accuracy. To achieve this, we aim to leverage existing AI technologies and integrate them with a user-friendly chat application for seamless digital conversations. The current version of our project has successfully implemented a graphical user interface (GUI) using TKinter and optimized the AI's response generation by effectively managing token usage from OpenAI's ChatGPT.
 This project is a chatbot application built using the OpenAI GPT-3.5-turbo model. The project is structured using the Model-View-Controller (MVC) pattern to separate the concerns of the application and make it more modular and maintainable.
 
 ## Modes
@@ -12,95 +11,20 @@ This project is a chatbot application built using the OpenAI GPT-3.5-turbo model
 
 3. **Photobooth-style Live Webcam**: In this mode, a live webcam detects the user in front of the computer and selects their AI and voice synthesis. The user speaks, and the AI version of themselves talks back to them through their mirrored webcam feed.
 
-## File Structure
-```
-./key_pinecone.txt
-./controller
-./controller/chat_controller.py
-./controller/zoom_controller.py
-./controller/photobooth_controller.py
-./controller/__pycache__
-./controller/base_controller.py
-./README.md
-./key_openai.txt
-./.gitignore
-./model
-./model/tools
-./model/tools/transcribe_yt.py
-./model/tools/cleanup.py
-./model/tools/david.py
-./model/tools/model
-./model/tools/model/history
-./model/tools/model/history/local_nexus
-./model/tools/process.py
-./model/base_model.py
-./model/user_selection.py
-./model/deepfake
-./model/deepfake/lip_sync.py
-./model/deepfake/voice_synthesis.py
-./model/deepfake/user_recognition.py
-./model/history
-./model/history/kyle_history.json
-./model/history/developer_history.json
-./model/history/nexus
-./model/history/nathan_history.json
-./model/agent.py
-./model/prompts
-./model/prompts/ali_prompt.txt
-./model/prompts/DAN_prompt.txt
-./model/prompts/jett_prompt.txt
-./model/prompts/nathan_prompt.txt
-./model/prompts/kate_prompt.txt
-./model/prompts/robby_prompt.txt
-./model/prompts/cat_prompt.txt
-./model/prompts/nathan_prompt copy.txt
-./model/prompts/kyle_prompt.txt
-./model/prompts/super_prompt.txt
-./model/prompts/general_knowledge.txt
-./model/continuous_conversation.py
-./view
-./view/base_gui.py
-./view/discord_gui.py
-./view/__pycache__
-./view/zoom_gui.py
-./view/photobooth_gui.py
-./main.py
-```
-
 ## Project Structure
 
 The project follows the Model-View-Controller (MVC) architecture:
 
 ### Model
 
-The Model directory contains all the logic related to the chatbot and its interaction with the OpenAI API.
-BaseModel: This class is responsible for handling interactions with both the OpenAI API and Pinecone. It serves as a bridge between the AI and the database, ensuring seamless communication.
+The Model directory contains all the logic for the communication pattern emulation application.
 
-Key Features:
-
-Initializes necessary agents and the PineconeHandler.
-Fetches relevant messages from Pinecone based on nearest_ids.
-Generates responses from the agents based on user input.
-Saves the generated response and the user's query in Pinecone.
-PineconeHandler: This class handles all interactions with the Pinecone database. It manages the storage and retrieval of messages and their embeddings, ensuring efficient querying and updating.
-
-Key Features:
-
-Manages the Pinecone index.
-Precomputes embeddings for stored messages and loads them into Pinecone.
-Provides methods for interacting with the Pinecone index, such as inserting, querying, fetching, and deleting.
-Loads all message chunks from the nexus directory into memory.
-Finds and returns messages based on their IDs or timestamps.
-Saves messages to Pinecone and updates the embeddings file.
-- `base_model.py`: Contains the base class for the chatbot model, handling agent initialization and API interaction.
 - `agent.py`: Contains the Agent class, which represents an individual AI friend in the chat.
-- `prompts`: Contains agent-specific prompt files and general knowledge information shared by all agents.
-  - Each agent has a text file (e.g., `ali_prompt.txt`, `nathan_prompt.txt`) containing the agent's prompt.
-  - `general_knowledge.txt`: Contains general knowledge information shared by all agents.
-- `history`: Contains agent-specific history JSON files.
-  - Each agent has a JSON file (e.g., `ali_history.json`, `nathan_history.json`) containing their chat history.
-- `tools`: Contains helper functions for different aspects of the project.
-- `deepfake` TODO: Currently unused. Will be used to implement the live webcam and zoom modes.
+- `base_model.py`: Contains the base class for models.
+- `chat_model.py`: Contains the model class for the chatbot application. It connects the chatbot model with the GUI view.
+- `TBA`: More not yet developed for verbal communication pattern responses rather than text patterns
+- `/Agents`: Contains agent-specific initialization yaml files.
+- `/tools`: Contains helper functions for different aspects of the project.
 
 ### View
 
@@ -108,8 +32,9 @@ The View directory contains all the user interface components.
 
 - `base_gui.py`: Contains the base class for the GUI.
 - `discord_gui.py`: Contains the Discord-style GUI implementation.
-- `zoom_gui.py`: Contains the Zoom-style GUI implementation.
-- `photobooth_gui.py`: Contains the Photobooth-style GUI implementation.
+- `zoom_gui.py`: Contains the Zoom-style GUI implementation. *unused/empty*
+- `photobooth_gui.py`: Contains the Photobooth-style GUI implementation. *unused/empty*
+- `TBA`
 
 ### Controller
 
@@ -117,42 +42,66 @@ The Controller directory contains the logic to connect the Model and the View.
 
 - `base_controller.py`: Contains the base class for controllers.
 - `chat_controller.py`: Contains the controller class for the chatbot application. It connects the chatbot model with the GUI view.
-- `zoom_controller.py`: Contains the controller class for the Zoom GUI.
-- `photobooth_controller.py`: Contains the controller class for the Photobooth GUI.
+- `zoom_controller.py`: Contains the controller class for the Zoom GUI. *unused/empty*
+- `photobooth_controller.py`: Contains the controller class for the Photobooth GUI. *unused/empty*
+- `TBA`
+
+### File Structure
+```
+.
+./controller
+./controller/chat_controller.py
+./controller/zoom_controller.py
+./controller/photobooth_controller.py
+./controller/__pycache__
+./controller/base_controller.py
+./model
+./model/tools
+./model/tools/__pycache__
+./model/tools/process.py
+./model/Agents
+./model/Agents/general.yaml
+./model/Agents/robby.yaml
+./model/Agents/dan.yaml
+./model/Agents/jett.yaml
+./model/Agents/nathan.yaml
+./model/Agents/cat.yaml
+./model/Agents/ali.yaml
+./model/Agents/kate.yaml
+./model/Agents/kyle.yaml
+./model/__pycache__
+./model/base_model.py
+./model/agent.py
+./model/chat_model.py
+./view
+./view/base_gui.py
+./view/discord_gui.py
+./view/__pycache__
+./view/zoom_gui.py
+./view/photobooth_gui.py
+./README.md
+./key_openai.txt
+./.gitignore
+./.git
+./main.py
+```
 
 ## Next Steps
 
-1. Add a timestamp for each message in the chat.
-2. Implement an autoscroll feature for the chat history.
-3. Make the input text entry box expandable vertically.
-4. Add tooltips for GUI elements to explain their functions.
-5. Improve the appearance of the dropdown menus for user and bot selection.
-6. Add a feature to allow users to customize the appearance of their chat bubbles.
-7. Allow users to change their chatbot's name.
-8. Add a settings menu to let users adjust preferences.
-9. Implement the ability to switch between a light and dark theme.
-10. Implement threading
-11. Add a more visually appealing theme and/or color customization options.
-12. Implement autonomous user selection and continuous conversation functionality perhaps using another OpenAI model.
-13. Update the GUI further, file and options menu perhaps + others
-14. Implement user face and/or voice recognition for the photobooth-style live webcam mode.
-15. Develop the zoom call simulation and photobooth-style live webcam modes, incorporating voice synthesis and lip sync.
-16. Plan and implement speech synthesis for each AI friend.
-
-## Future Enhancements
-
-1. Use pre-processing techniques like spelling correction and text normalization to improve chatbot performance. _(maybe)_
-2. Implement a caching mechanism to store the chatbot's responses to basic questions, reducing the number of calls to the OpenAI API and saving on costs.
-3. Implement context management when interacting with the OpenAI API to manage tokens and avoid exceeding API limits.
-4. Utilize a logging system to monitor the chatbot's performance and user interactions.
-5. Implement a longer external memory system for the agents to remember past conversations and provide more meaningful responses.
-6. Handle different conversation contexts to allow the chatbot to switch between topics and provide more meaningful and engaging conversations. Moods and emotions can also be incorporated into the conversation context.
-7. Improve the conversation flow by creating a more structured dialog system using state machines or decision trees. _(maybe)_
-8. Give our agents consciousness. _(maybe)_
-
-## How to Run
-
-1. Clone the repository to your local machine.
-2. Install the required packages by running `pip install -r requirements.txt`.
-3. Precompute the embeddings by running `python ./model/precompute_embeddings.py`
-3. Run `python main.py` to start the application.
+- [ ] Timestamps - GUI/ Model
+- [ ] Autoscroll - GUI
+- [ ] Entry box expansion - GUI
+- [ ] GUI appearance - GUI
+- [ ] GUI functionality - GUI
+- [ ] Chat bubbles - GUI
+- [ ] Menu bar - GUI
+- [ ] Preferences menus - GUI
+- [ ] Themes - GUI
+- [ ] Threading - GUI/MODEL/CONTROLLER
+- [ ] Continuous Conversation - CONTROLLER
+- [ ] Facetime - CONTROLLER/ GUI
+- [ ] Zoom GUI - CONTROLLER/ GUI
+- [ ] TTS - MODEL
+- [ ] Live Webcam - CONTROLLER/ GUI
+- [ ] Lip Filter - CONTROLLER/ GUI
+- [ ] Prerecorded Zoom clips - CONTROLLER/ GUI

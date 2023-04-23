@@ -26,11 +26,11 @@ class ChatModel(Base):
         # Get the name of the user of the query
         user_name = chat_history_list[-1]['content'][0:chat_history_list[-1]['content'].find(':')]
 
-        # 5. Generate the response from the agent
+        # Generate the response from the agent
         output, tokens = self.generate(agent, user=str(user_name), model=agent.model)
         print(output)
         print(agent.msgs)
 
-        # 7. Return the response
+        # Return the response
         return output
 

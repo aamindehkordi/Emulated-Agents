@@ -391,48 +391,85 @@ From here the controller gets called to send the message.
 From here the controller decides who should respond aka which agent should generate a response
 <!-- NOTE-swimm-snippet: the lines below link your snippet to Swimm -->
 ### 📄 controller/chat_controller.py
+
 ```python
-13         def send_message(self, user, bot, message):
-14             if message.strip() == "":
-15                 return
-16     
-17             message = message.replace('\n', ' ')
-18     
-19             #Chat History from the gui
-20             chat_history = self.chat_gui.get_chat_history()
-21     
-22             # Pass the selected_classes from the GUI to the get_bot_response method
-23             response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
-24             return response
-25     
-26         def get_bot_response(self, bot, chat_history, class_list=None):
-27     
-28             if class_list is None:
-29                 class_list = []
-30             agent = self.model.agents.get(bot.lower())
-31             
-32             if bot == "All":
-33                 response, chat_history = self.get_response_all(chat_history)
-34     
-35             elif bot == "developer":
-36                 relevant_code = "\n"
-37                 for path, data in self.file_dict.items():
-38                     content = data['content']
-39                     for class_name in class_list:
-40                         if class_name in content:
-41                             relevant_code += f"```{path[1:]}\n{data['code']}\n```\n"
-42                 
-43                 chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevant_code}"})
-44                 response, tokens = self.get_response_developer(agent, chat_history)
-45                 self.token_count = self.token_count + tokens[0]
-46                 chat_history.append({'role': 'assistant', 'content': f"{response}"})
-47                 return response
-48             
-49             response, tokens = self.model.get_response(agent, chat_history)
-50             self.token_count = self.token_count + tokens[0]
-51             chat_history.append({'role': 'assistant', 'content': f"{response}"})
-52     
-53             return response    
+13
+
+
+def send_message(self, user, bot, message):
+
+
+    14
+if message.strip() == "":
+    15
+return
+16
+17
+message = message.replace('\n', ' ')
+18
+19  # Chat History from the gui
+20
+chat_history = self.chat_gui.get_chat_history()
+21
+22  # Pass the selected_classes from the GUI to the get_bot_response method
+23
+response = self.get_bot_response(bot, chat_history, self.chat_gui.selected_classes)
+24
+return response
+25
+26
+
+
+def get_bot_response(self, bot, chat_history, class_list=None):
+
+
+    27
+28
+if class_list is None:
+    29
+class_list = []
+30
+agent = self.model.agents.get(bot.lower())
+31
+32
+if bot == "All":
+    33
+response, chat_history = self.get_response_all(chat_history)
+34
+35 elif bot == "developer":
+36
+relevant_code = "\n"
+37
+for path, data in self.file_dict.items():
+    38
+content = data['content']
+39
+for class_name in class_list:
+    40
+if class_name in content:
+    41
+relevant_code += f"```{path[1:]}\n{data['code']}\n```\n"
+42
+43
+chat_history.append({'role': 'user', 'content': f"Here is a relevant code snippet:{relevant_code}"})
+44
+response, tokens = self.get_response_developer(agent, chat_history)
+45
+self.token_count = self.token_count + tokens[0]
+46
+chat_history.append({'role': 'assistant', 'content': f"{response}"})
+47
+return response
+48
+49
+response, tokens = self.model.get_chat_response(agent, chat_history)
+50
+self.token_count = self.token_count + tokens[0]
+51
+chat_history.append({'role': 'assistant', 'content': f"{response}"})
+52
+53
+return response    
 ```
 
 <br/>
@@ -446,9 +483,9 @@ First the model organizes the order of the prompts, relative info, chat history 
 
 
 def get_response(self, agent, history, debug=False):
-
-
     47
+
+
 """
 48                 Gets appropriate user chat response based off the chat history.
 49                 
@@ -469,7 +506,7 @@ agent.max_tokens = 810
 print("debug mode")
 60
 61
-agent_prompt = agent.get_prompt()
+agent_prompt = agent.initialize()
 62
 agent_history = [x for x in agent.get_priming()] + history  # Long term History TODO
 63

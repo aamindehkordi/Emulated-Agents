@@ -31,7 +31,7 @@ class ChatController(BaseController):
             #response, chat_history = self.get_response_all(chat_history)
             #Todo
         
-        response = self.model.get_response(agent, chat_history)
+        response = self.model.get_chat_response(agent, chat_history)
         chat_history.append({'role': 'assistant', 'content': f"{response}"})
 
         return response

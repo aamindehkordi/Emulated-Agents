@@ -1,10 +1,5 @@
 """
-This module provides the PhotoboothGUI class, which displays a Photobooth-style chatbot interface.
-
-Classes in this module include:
-- PhotoboothGUI: Displays a Photobooth-style chatbot interface and handles user input.
-
-EVERYTHING BELOW IS TEMPORARY for now
+./view/photobooth_gui.py
 """
 
 import cv2

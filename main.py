@@ -1,3 +1,6 @@
+"""
+./main.py
+"""
 import tkinter as tk
 from controller.chat_controller import ChatController
 from model.chat_model import ChatModel

@@ -1,10 +1,5 @@
 """
-This module provides the ZoomGUI class, which displays a Zoom-style chatbot interface.
-
-Classes in this module include:
-- ZoomGUI: Displays a Zoom-style chatbot interface and handles user input.
-
-EVERYTHING BELOW IS TEMPORARY for now
+./view/zoom_gui.py
 """
 
 

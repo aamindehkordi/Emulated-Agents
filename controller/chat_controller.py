@@ -1,4 +1,6 @@
-# ./controller/chat_controller.py
+"""
+./controller/chat_controller.py
+"""
 from .base_controller import BaseController
 
 

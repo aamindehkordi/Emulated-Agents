@@ -1,3 +1,6 @@
+"""
+./model/chat_model.py
+"""
 from model.base_model import BaseModel as Base
 
 class ChatModel(Base):

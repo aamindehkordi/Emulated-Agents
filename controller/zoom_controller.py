@@ -1,10 +1,5 @@
 """
-This module provides the ZoomController class, which connects the Zoom-style GUI with the backend functionality.
-
-Classes in this module include:
-- ZoomController: Handles the communication between the Zoom-style GUI and the backend.
-
-EVERYTHING BELOW IS TEMPORARY for now
+./controller/zoom_controller.py
 """
 
 import controller.base_controller as base_controller

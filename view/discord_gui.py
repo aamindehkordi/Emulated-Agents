@@ -1,10 +1,7 @@
 """
 ./view/discord_gui.py
-This module provides the DiscordGUI class, which is a chat interface that inherits from the BaseGUI.
-
-Classes in this module include:
-- DiscordGUI: The chat interface, extending the BaseGUI class.
 """
+
 import tkinter as tk
 from tkinter import ttk
 from tkinter import StringVar

@@ -1,19 +1,6 @@
-"""
-./controller/base_controller.py
-This module provides the BaseController class, a base class for various controllers in the application.
-
-Classes in this module include:
-- BaseController: The base class for other controllers, with common functionality.
-"""
 import tkinter as tk
-
 from view.base_gui import BaseGUI
 from view.discord_gui import DiscordGUI
-
-
-# Import the ZoomGUI and PhotoboothGUI when they are implemented
-# from view.zoom_gui import ZoomGUI
-# from view.photobooth_gui import PhotoboothGUI
 
 class BaseController:
     def __init__(self, model):
@@ -35,6 +22,7 @@ class BaseController:
         self.root.mainloop()
 
     def switch_to_chat_mode(self):
+        self.model.mode = 0
         self.base_gui.withdraw()
         self.chat_gui.deiconify()
 
@@ -43,15 +31,11 @@ class BaseController:
         self.base_gui.deiconify()
 
     def switch_to_zoom_mode(self):
+        self.model.mode = 2
         self.base_gui.withdraw()
         # self.zoom_gui.deiconify()
 
     def switch_to_photobooth_mode(self):
+        self.model.mode = 1
         self.base_gui.withdraw()
         # self.photobooth_gui.deiconify()
-
-    def on_exit(self):
-        """
-        Handles the exit event for the application.
-        """
-        pass

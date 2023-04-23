@@ -19,7 +19,8 @@ class ChatModel(Base):
         """
 
         # Get the agent's priming and history
-        chat_history_list = agent.get_priming() + history
+        chat_history_list = [{'role': 'system', 'content': agent.general}]
+        chat_history_list+= agent.get_priming() + history
         agent.set_msgs(chat_history_list)
 
         # Get the name of the user of the query

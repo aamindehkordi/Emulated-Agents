@@ -3,6 +3,7 @@
 """
 from .base_controller import BaseController
 from controller.continuous_controller import ContinuousController
+from concurrent.futures import ThreadPoolExecutor
 
 
 class ChatController(BaseController):
@@ -18,19 +19,15 @@ class ChatController(BaseController):
         self.continuous_controller.start_autonomous_conversation()
 
     def send_message(self, user, bot, message):
-
-        #Chat History from the gui
         chat_history = self.chat_gui.get_chat_history()
-        print(chat_history[-1])
-
         if bot == "All":
             self.activate_autonomous_mode()
             return
 
-        # Pass the selected_classes from the GUI to the get_bot_response method
         response = self.get_bot_response(bot, chat_history)
         print(response)
-
         return response
+
+
 
 

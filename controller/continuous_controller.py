@@ -12,7 +12,7 @@ class ContinuousController(BaseController):
     def __init__(self, chat_controller):
         super().__init__(chat_controller.model)
         self.chat_controller = chat_controller
-        self.chat_gui = chat_controller.chat_gui
+        self.chat_gui = chat_controller.view
         self.autonomous_mode_active = False
         self.continuous_history = self.chat_gui.get_chat_history()
         self.message_queue = queue.Queue()
@@ -25,7 +25,7 @@ class ContinuousController(BaseController):
     def start_autonomous_conversation(self):
         self.autonomous_mode_active = True
         threading.Thread(target=self.run_autonomous_conversation, daemon=True).start()
-        self.chat_controller.chat_gui.after(100, self.check_message_queue)
+        self.chat_controller.view.after(100, self.check_message_queue)
 
     def run_autonomous_conversation(self):
         while self.autonomous_mode_active:

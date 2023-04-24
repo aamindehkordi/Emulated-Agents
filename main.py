@@ -2,7 +2,7 @@
 ./main.py
 """
 import tkinter as tk
-from controller.chat_controller import ChatController
+from controller.base_controller import BaseController
 from model.chat_model import ChatModel
 from view.base_gui import BaseGUI
 
@@ -11,7 +11,7 @@ class MainApp:
     def __init__(self):
         self.chat_model = ChatModel()
         print("Model initialized")
-        self.controller = ChatController(self.chat_model)
+        self.controller = BaseController(self.chat_model)
         print("Controller initialized")
         self.init_base_gui()
         print("GUI initialized")

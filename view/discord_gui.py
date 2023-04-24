@@ -9,7 +9,6 @@ from view.base_gui import BaseGUI
 class DiscordGUI(BaseGUI):
     def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
         super().__init__(controller, theme, font, padx, pady)
-
         self.geometry("1400x600")
         self.title("AI Friends Chat Mode")
         self.chat_history_list = []
@@ -110,7 +109,7 @@ class DiscordGUI(BaseGUI):
             self.display_message(user, message)
 
             # get response from selected bot
-            response = self.controller.send_message(user, bot, message)
+            response = self.controller.send_message(user, bot, self.get_chat_history())
 
             # display response in chat history
             self.display_response(response)

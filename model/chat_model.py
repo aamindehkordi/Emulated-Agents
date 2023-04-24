@@ -21,7 +21,7 @@ class ChatModel(Base):
             self.locations = data["Locations"]
             self.general = f"Useful information:\nRelationships: {self.relationships}\nActivities: {self.activities}\nLocations: {self.locations}\n\n"
 
-    def get_chat_response(self, agent, history):
+    def get_chat_response(self, agent, history, user_name):
         """
         Format the query to get the best response from the agent.
 
@@ -37,9 +37,6 @@ class ChatModel(Base):
         chat_history_list = [{'role': 'system', 'content': self.general}]
         chat_history_list+= agent.get_priming() + history
         agent.set_msgs(chat_history_list)
-
-        # Get the name of the user of the query
-        user_name = chat_history_list[-1]['content'][0:chat_history_list[-1]['content'].find(':')]
 
         # Generate the response from the agent
         output, tokens = self.generate(prompt=agent.msgs, user=str(user_name), model=agent.model, agent=agent)

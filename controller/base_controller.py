@@ -1,7 +1,6 @@
 """
 ./controller/base_controller.py
 """
-import tkinter as tk
 from view.base_gui import BaseGUI
 from view.discord_gui import DiscordGUI
 

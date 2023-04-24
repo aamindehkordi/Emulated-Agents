@@ -8,7 +8,7 @@ class Agent:
         self.name = name
         self.msgs = []
         self.model = "gpt-3.5-turbo"
-        self.max_tokens = 350
+        self.max_tokens = 75
         self.prompt = ""
         self.priming = []
         self.mode = 0

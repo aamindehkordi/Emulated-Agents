@@ -17,6 +17,50 @@ class DiscordGUI(BaseGUI):
         self.bot_var = StringVar()
         self.bot_options = []
 
+
+    def update_user_bot(self):
+        # Update user_var and bot_var based on the new selection
+        self.user_var.set(self.user_dropdown.get())
+        self.bot_var.set(self.bot_dropdown.get())
+
+        # Return the new values
+        user = self.user_var.get()
+        bot = self.bot_var.get()
+        message = self.message_entry.get("1.0", tk.END)
+        return user, bot, message
+
+    def on_enter_pressed(self, event):
+        # if shift is not pressed, send message
+        if not event.state & 0x1:
+            self.send_message()
+            return "break"
+        else:
+            self.message_entry.insert(tk.END, "")
+
+    def send_message(self):
+        # get user typing and requested user response
+        user, bot, message = self.update_user_bot()
+        print(f"User: {user}, Bot: {bot}, Message: {message}")
+        if message:
+            # get chat history
+            msg = {'role': 'user', 'content': f"{user}: {message}"}
+            self.chat_history_list.append(msg)
+
+            # clear input entry and insert user message
+            self.clear_input()
+            self.display_message(user, message)
+
+            # get response from selected bot
+            response = self.controller.send_message(user, bot, self.get_chat_history())
+
+            # display response in chat history
+            self.display_response(response)
+
+    def append_message(self, message):
+        # append message to chat history
+        self.chat_history_list.append(message)
+        self.display_response(message['content'])
+
     def create_main_frame(self):
         # create main frame
         self.main_frame = ttk.Frame(self)
@@ -75,49 +119,6 @@ class DiscordGUI(BaseGUI):
         dropdown.current(0)
 
         return dropdown
-
-    def update_user_bot(self):
-        # Update user_var and bot_var based on the new selection
-        self.user_var.set(self.user_dropdown.get())
-        self.bot_var.set(self.bot_dropdown.get())
-
-        # Return the new values
-        user = self.user_var.get()
-        bot = self.bot_var.get()
-        message = self.message_entry.get("1.0", tk.END)
-        return user, bot, message
-
-    def on_enter_pressed(self, event):
-        # if shift is not pressed, send message
-        if not event.state & 0x1:
-            self.send_message()
-            return "break"
-        else:
-            self.message_entry.insert(tk.END, "")
-
-    def send_message(self):
-        # get user typing and requested user response
-        user, bot, message = self.update_user_bot()
-        print(f"User: {user}, Bot: {bot}, Message: {message}")
-        if message:
-            # get chat history
-            msg = {'role': 'user', 'content': f"{user}: {message}"}
-            self.chat_history_list.append(msg)
-
-            # clear input entry and insert user message
-            self.clear_input()
-            self.display_message(user, message)
-
-            # get response from selected bot
-            response = self.controller.send_message(user, bot, self.get_chat_history())
-
-            # display response in chat history
-            self.display_response(response)
-
-    def append_message(self, message):
-        # append message to chat history
-        self.chat_history_list.append(message)
-        self.display_response(message['content'])
 
     def display_message(self, user, message):
         # display user message in chat history

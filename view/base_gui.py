@@ -8,7 +8,9 @@ from ttkthemes import ThemedTk
 
 
 class BaseGUI(ThemedTk):
-    def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
+    def __init__(
+        self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10
+    ):
         super().__init__()
 
         self.controller = controller
@@ -53,10 +55,16 @@ class BaseGUI(ThemedTk):
 
         theme_var = tk.StringVar()
         theme_var.set(self.theme)
-        theme_option = ttk.Combobox(settings_window, textvariable=theme_var, values=self.get_themes())
+        theme_option = ttk.Combobox(
+            settings_window, textvariable=theme_var, values=self.get_themes()
+        )
         theme_option.grid(row=0, column=1, sticky=tk.W, padx=self.padx, pady=self.pady)
 
-        apply_button = tk.Button(settings_window, text="Apply", command=lambda: self.apply_settings(theme_var.get()))
+        apply_button = tk.Button(
+            settings_window,
+            text="Apply",
+            command=lambda: self.apply_settings(theme_var.get()),
+        )
         apply_button.grid(row=1, column=1, sticky=tk.E, padx=self.padx, pady=self.pady)
 
     def apply_settings(self, theme):
@@ -70,15 +78,15 @@ class BaseGUI(ThemedTk):
         title = ttk.Label(main_frame, text="AI Friends App", font=("Arial", 24))
         title.pack(pady=(self.pady, 50))
 
-        chat_button = ttk.Button(main_frame, text="Chat Mode", command=self.controller.switch_to_chat_mode)
+        chat_button = ttk.Button(
+            main_frame, text="Chat Mode", command=self.controller.switch_to_chat_mode
+        )
         chat_button.pack(pady=self.pady, ipadx=50, ipady=20)
 
-        zoom_button = ttk.Button(main_frame, text="Zoom Mode", command=self.controller.switch_to_zoom_mode)
+        zoom_button = ttk.Button(
+            main_frame, text="Zoom Mode", command=self.controller.switch_to_zoom_mode
+        )
         zoom_button.pack(pady=self.pady, ipadx=50, ipady=20)
-
-        photobooth_button = ttk.Button(main_frame, text="Photobooth Mode",
-                                       command=self.controller.switch_to_photobooth_mode)
-        photobooth_button.pack(pady=self.pady, ipadx=50, ipady=20)
 
         bottom_frame = ttk.Frame(main_frame)
         bottom_frame.pack(side=tk.BOTTOM, pady=(50, self.pady))
@@ -86,7 +94,9 @@ class BaseGUI(ThemedTk):
         help_button = ttk.Button(bottom_frame, text="Help", command=self.show_help)
         help_button.pack(side=tk.RIGHT, padx=self.padx)
 
-        settings_button = ttk.Button(bottom_frame, text="Settings", command=self.settings)
+        settings_button = ttk.Button(
+            bottom_frame, text="Settings", command=self.settings
+        )
         settings_button.pack(side=tk.RIGHT, padx=self.padx)
 
     def show_help(self):
@@ -112,11 +122,6 @@ if __name__ == "__main__":
         @staticmethod
         def switch_to_zoom_mode():
             print("Switching to zoom mode")
-
-        @staticmethod
-        def switch_to_photobooth_mode():
-            print("Switching to photobooth mode")
-
 
     dummy_controller = DummyController()
     base_gui = BaseGUI(dummy_controller)

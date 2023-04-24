@@ -3,8 +3,6 @@
 """
 from controller.base_controller import BaseController
 from controller.continuous_controller import ContinuousController
-from concurrent.futures import ThreadPoolExecutor
-
 
 class ChatController(BaseController):
     def __init__(self, model):

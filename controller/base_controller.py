@@ -3,7 +3,6 @@
 """
 from view.base_gui import BaseGUI
 from view.discord_gui import DiscordGUI
-from view.photobooth_gui import PhotoboothGUI
 from view.zoom_gui import ZoomGUI
 
 
@@ -17,7 +16,7 @@ class BaseController:
     def get_bot_response(self, bot, chat_history, user):
         agent = self.model.agents.get(bot.lower())
         response = self.model.get_chat_response(agent, chat_history, user)
-        chat_history.append({'role': 'assistant', 'content': f"{response}"})
+        chat_history.append({"role": "assistant", "content": f"{response}"})
 
         return response
 
@@ -31,18 +30,13 @@ class BaseController:
         self.model.mode = 0
         self.view.withdraw()
         from controller.chat_controller import ChatController
+
         self.view = DiscordGUI(ChatController(self.model))
         self.view.run()
 
-    def switch_to_photobooth_mode(self):
-        self.model.mode = 1
-        self.view.withdraw()
-        self.view = PhotoboothGUI(self)
-        self.view.run()
-
     def switch_to_zoom_mode(self):
-        self.model.mode = 2
-        self.view.withdraw()
+        self.model.mode = 1
+        self.view.destroy()
         self.view = ZoomGUI(self)
+        self.view.create_main_frame()
         self.view.run()
-

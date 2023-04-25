@@ -1,17 +1,12 @@
 """
 ./controller/base_controller.py
 """
-from view.base_gui import BaseGUI
-from view.discord_gui import DiscordGUI
-from view.zoom_gui import ZoomGUI
-
 
 class BaseController:
-    def __init__(self, model):
-        self.continuous_controller = None
+    def __init__(self, model, view):
         self.model = model
-
-        self.view = BaseGUI(self)
+        self.view = view
+        self.view.set_controller(self)
 
     def get_bot_response(self, bot, chat_history, user):
         agent = self.model.agents.get(bot.lower())
@@ -23,20 +18,27 @@ class BaseController:
     def switch_to_base_mode(self):
         self.model.mode = 0
         self.view.withdraw()
-        self.view = BaseGUI(self)
-        self.view.run()
+        from view.discord_gui import BaseGUI
+        self.view = BaseGUI()
+        self.view.create_main_frame()
 
     def switch_to_chat_mode(self):
         self.model.mode = 0
         self.view.withdraw()
+        from view.discord_gui import DiscordGUI
         from controller.chat_controller import ChatController
-
-        self.view = DiscordGUI(ChatController(self.model))
-        self.view.run()
+        from model.chat_model import ChatModel
+        self.model = ChatModel()
+        self.view = DiscordGUI()
+        controller = ChatController(self.model, self.view)
+        self.view.set_controller(controller)
+        self.view.create_main_frame()
 
     def switch_to_zoom_mode(self):
         self.model.mode = 1
         self.view.destroy()
-        self.view = ZoomGUI(self)
+        from view.zoom_gui import ZoomGUI
+        self.view = ZoomGUI()
+        self.view.set_controller(self)
         self.view.create_main_frame()
         self.view.run()

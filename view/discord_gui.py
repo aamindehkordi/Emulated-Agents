@@ -7,10 +7,11 @@ from tkinter import StringVar
 from view.base_gui import BaseGUI
 
 class DiscordGUI(BaseGUI):
-    def __init__(self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10):
-        super().__init__(controller, theme, font, padx, pady)
+    def __init__(self, theme="equilux", font=("Arial", 12), padx=10, pady=10):
+        super().__init__(theme, font, padx, pady)
         self.geometry("1400x600")
         self.title("AI Friends Chat Mode")
+        self.chat_history = None
         self.chat_history_list = []
         self.user_var = StringVar()
         self.user_options = []
@@ -136,13 +137,7 @@ class DiscordGUI(BaseGUI):
         self.chat_history.insert(tk.END, "{}\n".format(response), tag)
         self.chat_history.insert(tk.END, "\n", "newline")
         self.chat_history.config(state=tk.DISABLED)
-        self.chat_history.yview_moveto(1.0)
-
-    def set_controller(self, controller):
-        # Set the controller
-        self.controller = controller
-        self.send_button.config(
-            command=self.send_message)  # Update the send button's command with the controller's send_message method
+        self.chat_history.yview_moveto(1.0)# Update the send button's command with the controller's send_message method
 
     def remove_default_text(self, event):
         # Remove default text when user clicks on entry

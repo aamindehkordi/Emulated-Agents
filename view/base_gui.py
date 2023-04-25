@@ -9,11 +9,11 @@ from ttkthemes import ThemedTk
 
 class BaseGUI(ThemedTk):
     def __init__(
-        self, controller, theme="equilux", font=("Arial", 12), padx=10, pady=10
+        self, theme="equilux", font=("Arial", 12), padx=10, pady=10
     ):
         super().__init__()
 
-        self.controller = controller
+        self.controller = None
         self.theme = theme
         self.font = font
         self.padx = padx
@@ -30,8 +30,9 @@ class BaseGUI(ThemedTk):
         self.title("AI Friends App")
         self.geometry("1500x750")
 
-        self.create_menu_bar()
-        self.create_main_frame()
+
+    def set_controller(self, controller):
+        self.controller = controller
 
     def create_menu_bar(self):
         menu_bar = tk.Menu(self)
@@ -72,6 +73,7 @@ class BaseGUI(ThemedTk):
         self.set_theme(self.theme)
 
     def create_main_frame(self):
+        self.create_menu_bar()
         main_frame = ttk.Frame(self)
         main_frame.pack(expand=True, fill=tk.BOTH, padx=self.padx, pady=self.pady)
 
@@ -124,5 +126,6 @@ if __name__ == "__main__":
             print("Switching to zoom mode")
 
     dummy_controller = DummyController()
-    base_gui = BaseGUI(dummy_controller)
+    base_gui = BaseGUI()
+    base_gui.set_controller(dummy_controller)
     base_gui.mainloop()

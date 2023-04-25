@@ -1,10 +1,10 @@
 """
 ./model/chat_model.py
 """
-from model.base_model import BaseModel as Base
+from model.base_model import BaseModel
 import yaml
 
-class ChatModel(Base):
+class ChatModel(BaseModel):
 
     def __init__(self):
         super().__init__()

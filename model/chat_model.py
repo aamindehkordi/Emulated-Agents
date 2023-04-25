@@ -14,12 +14,11 @@ class ChatModel(BaseModel):
         self.path = f"./model/agents"
         with open(f"{self.path}/general.yaml", 'r') as f:
             data = yaml.load(f, Loader=yaml.FullLoader)
-            #self.personal = data["personal"]
             self.relationships = data["Relationships"]
             self.activities = data["Activities"]
-            #self.expressions = data["expressions"]
+            self.phrases = data["Phrases"]
             self.locations = data["Locations"]
-            self.general = f"Useful information:\nRelationships: {self.relationships}\nActivities: {self.activities}\nLocations: {self.locations}\n\n"
+            self.general = f"You will soon be given a character to emulate in a Chat room\nHere is relevant general information about everyone and everything involved:\nRelationships: {self.relationships}\nActivities: {self.activities}\nLocations: {self.locations}\n\nPhrases: {self.phrases}"
 
     def get_chat_response(self, agent, history, user_name):
         """

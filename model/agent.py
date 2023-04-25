@@ -35,9 +35,6 @@ class Agent:
     def get_prompt(self):
         return self.prompt
 
-    def get_general(self):
-        return self.general
-
     def get_mode(self):
         return self.mode
 

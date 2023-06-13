@@ -1,4 +1,4 @@
-# Senior Project
+# Emulated Agents
 
 The primary objective of this project is to develop a sophisticated, AI-powered chatbot capable of replicating the speech patterns of individuals with high accuracy. To achieve this, we aim to leverage existing AI technologies and integrate them with a user-friendly chat application for seamless digital conversations. The current version of our project has successfully implemented a graphical user interface (GUI) using TKinter and optimized the AI's response generation by effectively managing token usage from OpenAI's ChatGPT.
 This project is a chatbot application built using the OpenAI GPT-3.5-turbo model. The project is structured using the Model-View-Controller (MVC) pattern to separate the concerns of the application and make it more modular and maintainable.
